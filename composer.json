@@ -1,14 +1,13 @@
 {
 	"name": "data-values/time",
 	"type": "library",
-	"description": "Temporal value objects, parsers and formatters",
+	"description": "Time value objects, parsers and formatters",
 	"keywords": [
 		"datavalues",
 		"valueparsers",
 		"valueformatters",
 		"wikidata",
-		"time",
-		"temporal"
+		"time"
 	],
 	"homepage": "https://github.com/DataValues/Time",
 	"license": "GPL-2.0+",
@@ -19,7 +18,6 @@
 		}
 	],
 	"support": {
-		"issues": "https://bugzilla.wikimedia.org/",
 		"irc": "irc://irc.freenode.net/wikidata"
 	},
 	"require": {
@@ -31,7 +29,7 @@
 	"minimum-stability" : "dev",
 	"autoload": {
 		"files" : [
-			"Geo.php"
+			"Time.php"
 		],
 		"psr-0": {
 			"DataValues\\": "src",

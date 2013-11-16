@@ -1,6 +1,6 @@
-# DataValues Geo
+# DataValues Time
 
-Library containing value objects to represent geographical information, parsers to turn user input
+Library containing value objects to represent temporal information, parsers to turn user input
 into such value objects, and formatters to turn them back into user consumable representations.
 
 [![Build Status](https://secure.travis-ci.org/DataValues/Time.png?branch=master)](http://travis-ci.org/DataValues/Time)
