@@ -6,6 +6,7 @@ into such value objects, and formatters to turn them back into user consumable r
 It is part of the [DataValues set of libraries](https://github.com/DataValues).
 
 [![Build Status](https://secure.travis-ci.org/DataValues/Time.png?branch=master)](http://travis-ci.org/DataValues/Time)
+[![Coverage Status](https://coveralls.io/repos/DataValues/Time/badge.png)](https://coveralls.io/r/DataValues/Time)
 
 On [Packagist](https://packagist.org/packages/data-values/time):
 [![Latest Stable Version](https://poser.pugx.org/data-values/time/version.png)](https://packagist.org/packages/data-values/time)
@@ -51,9 +52,9 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 Initial release with these features:
 
-	* TimeValue
-	* TimeFormatter
-	* TimeIsoFormatter
+* TimeValue
+* TimeFormatter
+* TimeIsoFormatter
 
 ## Links
 
