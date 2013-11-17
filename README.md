@@ -3,6 +3,8 @@
 Library containing value objects to represent temporal information, parsers to turn user input
 into such value objects, and formatters to turn them back into user consumable representations.
 
+It is part of the [DataValues set of libraries](https://github.com/DataValues).
+
 [![Build Status](https://secure.travis-ci.org/DataValues/Time.png?branch=master)](http://travis-ci.org/DataValues/Time)
 
 On [Packagist](https://packagist.org/packages/data-values/time):
