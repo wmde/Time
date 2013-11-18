@@ -6,7 +6,8 @@ into such value objects, and formatters to turn them back into user consumable r
 It is part of the [DataValues set of libraries](https://github.com/DataValues).
 
 [![Build Status](https://secure.travis-ci.org/DataValues/Time.png?branch=master)](http://travis-ci.org/DataValues/Time)
-[![Coverage Status](https://coveralls.io/repos/DataValues/Time/badge.png)](https://coveralls.io/r/DataValues/Time)
+[![Code Coverage](https://scrutinizer-ci.com/g/DataValues/Time/badges/coverage.png?s=c5db7b37576dedaedd28d27a0e5fda2b79e86da6)](https://scrutinizer-ci.com/g/DataValues/Time/)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/Time/badges/quality-score.png?s=3c66db1e59a8bf77f9e9a08760a92ca9c26538b9)](https://scrutinizer-ci.com/g/DataValues/Time/)
 
 On [Packagist](https://packagist.org/packages/data-values/time):
 [![Latest Stable Version](https://poser.pugx.org/data-values/time/version.png)](https://packagist.org/packages/data-values/time)
