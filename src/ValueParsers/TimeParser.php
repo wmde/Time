@@ -60,7 +60,7 @@ class TimeParser extends StringValueParser {
 	 * @return string
 	 */
 	private function padTime( $time ) {
-		return str_pad( $time, 32, '0' );
+		return str_pad( $time, 32, '0', STR_PAD_LEFT );
 	}
 
 	private function getPrecisionFromTime( $time ) {

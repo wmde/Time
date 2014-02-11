@@ -217,6 +217,30 @@ class TimeParserTest extends ValueParserTestBase {
 				'precision' => TimeValue::PRECISION_DAY,
 				'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 			) ),
+			'-00000000001-01-01T00:00:00Z (Gregorian)' => TimeValue::newFromArray( array(
+				'time' => '-0000000000000001-01-01T00:00:00Z',
+				'timezone' => 0,
+				'before' => 0,
+				'after' => 0,
+				'precision' => TimeValue::PRECISION_DAY,
+				'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+			) ),
+			'-000001-01-01T00:00:00Z (Gregorian)' => TimeValue::newFromArray( array(
+				'time' => '-0000000000000001-01-01T00:00:00Z',
+				'timezone' => 0,
+				'before' => 0,
+				'after' => 0,
+				'precision' => TimeValue::PRECISION_DAY,
+				'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+			) ),
+			'-1-01-01T00:00:00Z (Gregorian)' => TimeValue::newFromArray( array(
+				'time' => '-0000000000000001-01-01T00:00:00Z',
+				'timezone' => 0,
+				'before' => 0,
+				'after' => 0,
+				'precision' => TimeValue::PRECISION_DAY,
+				'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+			) ),
 		);
 
 		foreach ( $valid as $value => $expected ) {
