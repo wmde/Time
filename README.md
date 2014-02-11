@@ -49,6 +49,13 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.2 (2014-02-11)
+
+Added features:
+
+* TimeParser
+* CalenderModelParser
+
 ### 0.1 (2013-11-17)
 
 Initial release with these features:
