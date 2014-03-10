@@ -17,6 +17,19 @@ use InvalidArgumentException;
 class TimeParser extends StringValueParser {
 
 	/**
+	 * @since 0.3
+	 */
+	const OPT_PRECISION = 'precision';
+	const OPT_CALENDAR = 'calender';
+
+	/**
+	 * @since 0.3
+	 */
+	const OPT_CALENDAR_GREGORIAN = 'gregorian';
+	const OPT_CALENDER_JULIAN = 'julian';
+	const OPT_PRECISION_NONE = 'noprecision';
+
+	/**
 	 * Regex pattern constant matching the sign preceding the time
 	 */
 	const SIGN_PATTERN = '([\+\-]?)';
@@ -37,18 +50,33 @@ class TimeParser extends StringValueParser {
 	 * @param ParserOptions|null $options
 	 */
 	public function __construct( CalendarModelParser $calendarModelParser, ParserOptions $options = null ) {
+
+		$options->defaultOption( TimeParser::OPT_CALENDAR, TimeParser::OPT_CALENDAR_GREGORIAN );
+		$options->defaultOption( TimeParser::OPT_PRECISION, TimeParser::OPT_PRECISION_NONE );
+
 		parent::__construct( $options );
 		$this->calendarModelParser = $calendarModelParser;
 	}
 
 	protected function stringParse( $value ) {
 		list( $sign, $time, $model ) = $this->splitTimeString( $value );
-		$time = $this->padTime( $time );
-		$precision = $this->getPrecisionFromTime( $sign . $time );
+		$time = $sign . $this->padTime( $time );
+
+		$calendarOpt = $this->getOptions()->getOption( TimeParser::OPT_CALENDAR );
+		if( $model === '' && preg_match( '/(' . self::OPT_CALENDAR_GREGORIAN . '|' . self::OPT_CALENDER_JULIAN . ')/i', $calendarOpt ) ) {
+			$model = $calendarOpt;
+		}
+		$model = $this->calendarModelParser->parse( $model );
+
+		$precisionOpt = $this->getOptions()->getOption( TimeParser::OPT_PRECISION );
+		if( is_int( $precisionOpt ) ) {
+			$precision = $precisionOpt;
+		} else {
+			$precision = $this->getPrecisionFromTime( $time );
+		}
 
 		try {
-			$time = $this->newTimeFromParts( $sign . $time, $model, $precision );
-			return $time;
+			return new TimeValue( $time, 0, 0, 0, $precision, $model );
 		} catch ( IllegalValueException $ex ) {
 			throw new ParseException( $ex->getMessage() );
 		}
@@ -107,11 +135,6 @@ class TimeParser extends StringValueParser {
 			$precision = TimeValue::PRECISION_Ga;
 		}
 		return $precision;
-	}
-
-	private function newTimeFromParts( $time, $model, $precision ) {
-		$model = $this->calendarModelParser->parse( $model );
-		return new TimeValue( $time, 0, 0, 0, $precision, $model );
 	}
 
 	private function splitTimeString( $value ) {

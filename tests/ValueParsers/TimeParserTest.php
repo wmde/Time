@@ -4,6 +4,7 @@ namespace ValueFormatters\Test;
 
 use DataValues\TimeValue;
 use ValueParsers\CalendarModelParser;
+use ValueParsers\ParserOptions;
 use ValueParsers\Test\ValueParserTestBase;
 use ValueFormatters\TimeFormatter;
 use ValueParsers\TimeParser;
@@ -46,10 +47,23 @@ class TimeParserTest extends ValueParserTestBase {
 	 * @return array
 	 */
 	public function validInputProvider() {
-		$argLists = array();
+		$emptyOpts = new ParserOptions();
+
+		$julianOpts = clone $emptyOpts;
+		$julianOpts->setOption( TimeParser::OPT_CALENDAR, TimeParser::OPT_CALENDER_JULIAN );
+
+		$gregorianOpts = clone $emptyOpts;
+		$gregorianOpts->setOption( TimeParser::OPT_CALENDAR, TimeParser::OPT_CALENDAR_GREGORIAN );
+
+		$prec10aOpts = clone $emptyOpts;
+		$prec10aOpts->setOption( TimeParser::OPT_PRECISION, TimeValue::PRECISION_10a );
+
+		$noPrecOpts = clone $emptyOpts;
+		$noPrecOpts->setOption( TimeParser::OPT_PRECISION, TimeParser::OPT_PRECISION_NONE );
 
 		$valid = array(
-			'+0000000000002013-07-16T00:00:00Z' => TimeValue::newFromArray( array(
+			'+0000000000002013-07-16T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0000000000002013-07-16T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -57,7 +71,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_DAY,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0000000000002013-07-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0000000000002013-07-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0000000000002013-07-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -65,7 +82,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_MONTH,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0000000000002013-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0000000000002013-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0000000000002013-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -73,7 +93,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0000000000002000-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0000000000002000-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0000000000002000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -81,7 +104,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_ka,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0000000000020000-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0000000000020000-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0000000000020000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -89,7 +115,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_10ka,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0000000000200000-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0000000000200000-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0000000000200000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -97,7 +126,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_100ka,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0000000002000000-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0000000002000000-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0000000002000000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -105,7 +137,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_Ma,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0000000020000000-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0000000020000000-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0000000020000000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -113,7 +148,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_10Ma,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0000000200000000-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0000000200000000-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0000000200000000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -121,7 +159,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_100Ma,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0000002000000000-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0000002000000000-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0000002000000000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -129,7 +170,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0000020000000000-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0000020000000000-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0000020000000000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -137,7 +181,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0000200000000000-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0000200000000000-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0000200000000000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -145,7 +192,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0002000000000000-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0002000000000000-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0002000000000000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -153,7 +203,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0020000000000000-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0020000000000000-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0020000000000000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -161,7 +214,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0200000000000000-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+0200000000000000-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+0200000000000000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -169,7 +225,10 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+2000000000000000-00-00T00:00:00Z' => TimeValue::newFromArray( array(
+				$emptyOpts,
+			),
+			'+2000000000000000-00-00T00:00:00Z' => array( 
+				TimeValue::newFromArray( array(
 					'time' => '+2000000000000000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
@@ -177,76 +236,151 @@ class TimeParserTest extends ValueParserTestBase {
 					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
-			'+0000000000002013-07-16T00:00:00Z (Gregorian)' => TimeValue::newFromArray( array(
-				'time' => '+0000000000002013-07-16T00:00:00Z',
-				'timezone' => 0,
-				'before' => 0,
-				'after' => 0,
-				'precision' => TimeValue::PRECISION_DAY,
-				'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+				$emptyOpts,
+			),
+			'+0000000000002013-07-16T00:00:00Z (Gregorian)' => array( 
+				TimeValue::newFromArray( array(
+					'time' => '+0000000000002013-07-16T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_DAY,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 			) ),
-			'+0000000000000000-01-01T00:00:00Z (Gregorian)' => TimeValue::newFromArray( array(
-				'time' => '+0000000000000000-01-01T00:00:00Z',
-				'timezone' => 0,
-				'before' => 0,
-				'after' => 0,
-				'precision' => TimeValue::PRECISION_DAY,
-				'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+				$emptyOpts,
+			),
+			'+0000000000000000-01-01T00:00:00Z (Gregorian)' => array( 
+				TimeValue::newFromArray( array(
+					'time' => '+0000000000000000-01-01T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_DAY,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 			) ),
-			'+0000000000000001-01-14T00:00:00Z (Julian)' => TimeValue::newFromArray( array(
-				'time' => '+0000000000000001-01-14T00:00:00Z',
-				'timezone' => 0,
-				'before' => 0,
-				'after' => 0,
-				'precision' => TimeValue::PRECISION_DAY,
-				'calendarmodel' => TimeFormatter::CALENDAR_JULIAN
+				$emptyOpts,
+			),
+			'+0000000000000001-01-14T00:00:00Z (Julian)' => array( 
+				TimeValue::newFromArray( array(
+					'time' => '+0000000000000001-01-14T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_DAY,
+					'calendarmodel' => TimeFormatter::CALENDAR_JULIAN
 			) ),
-			'+0000000000010000-01-01T00:00:00Z (Gregorian)' => TimeValue::newFromArray( array(
-				'time' => '+0000000000010000-01-01T00:00:00Z',
-				'timezone' => 0,
-				'before' => 0,
-				'after' => 0,
-				'precision' => TimeValue::PRECISION_DAY,
-				'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+				$emptyOpts,
+			),
+			'+0000000000010000-01-01T00:00:00Z (Gregorian)' => array( 
+				TimeValue::newFromArray( array(
+					'time' => '+0000000000010000-01-01T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_DAY,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 			) ),
-			'-0000000000000001-01-01T00:00:00Z (Gregorian)' => TimeValue::newFromArray( array(
-				'time' => '-0000000000000001-01-01T00:00:00Z',
-				'timezone' => 0,
-				'before' => 0,
-				'after' => 0,
-				'precision' => TimeValue::PRECISION_DAY,
-				'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+				$emptyOpts,
+			),
+			'-0000000000000001-01-01T00:00:00Z (Gregorian)' => array( 
+				TimeValue::newFromArray( array(
+					'time' => '-0000000000000001-01-01T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_DAY,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 			) ),
-			'-00000000001-01-01T00:00:00Z (Gregorian)' => TimeValue::newFromArray( array(
-				'time' => '-0000000000000001-01-01T00:00:00Z',
-				'timezone' => 0,
-				'before' => 0,
-				'after' => 0,
-				'precision' => TimeValue::PRECISION_DAY,
-				'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+				$emptyOpts,
+			),
+			'-00000000001-01-01T00:00:00Z (Gregorian)' => array( 
+				TimeValue::newFromArray( array(
+					'time' => '-0000000000000001-01-01T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_DAY,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 			) ),
-			'-000001-01-01T00:00:00Z (Gregorian)' => TimeValue::newFromArray( array(
-				'time' => '-0000000000000001-01-01T00:00:00Z',
-				'timezone' => 0,
-				'before' => 0,
-				'after' => 0,
-				'precision' => TimeValue::PRECISION_DAY,
-				'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+				$emptyOpts,
+			),
+			'-000001-01-01T00:00:00Z (Gregorian)' => array( 
+				TimeValue::newFromArray( array(
+					'time' => '-0000000000000001-01-01T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_DAY,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 			) ),
-			'-1-01-01T00:00:00Z (Gregorian)' => TimeValue::newFromArray( array(
-				'time' => '-0000000000000001-01-01T00:00:00Z',
-				'timezone' => 0,
-				'before' => 0,
-				'after' => 0,
-				'precision' => TimeValue::PRECISION_DAY,
-				'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+				$emptyOpts,
+			),
+			'-1-01-01T00:00:00Z (Gregorian)' => array(
+				TimeValue::newFromArray( array(
+					'time' => '-0000000000000001-01-01T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_DAY,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 			) ),
+				$emptyOpts,
+			),
+			'-1-01-02T00:00:00Z' => array(
+				TimeValue::newFromArray( array(
+					'time' => '-0000000000000001-01-02T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_DAY,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+			) ),
+				$gregorianOpts,
+			),
+			'-1-01-03T00:00:00Z' => array(
+				TimeValue::newFromArray( array(
+					'time' => '-0000000000000001-01-03T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_DAY,
+					'calendarmodel' => TimeFormatter::CALENDAR_JULIAN
+			) ),
+				$julianOpts,
+			),
+			'-1-01-04T00:00:00Z' => array(
+				TimeValue::newFromArray( array(
+					'time' => '-0000000000000001-01-04T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_10a,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+			) ),
+				$prec10aOpts,
+			),
+			'-1-01-05T00:00:00Z' => array(
+				TimeValue::newFromArray( array(
+					'time' => '-0000000000000001-01-05T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_DAY,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+			) ),
+				$noPrecOpts,
+			),
 		);
 
-		foreach ( $valid as $value => $expected ) {
-			// Because PHP turns some of them into ints/floats using black magic
-			$value = (string)$value;
-			$argLists[] = array( $value, $expected );
+		$argLists = array();
+		foreach ( $valid as $key => $value ) {
+			list( $timeValue, $opts ) = $value;
+			// Because PHP turns some of them into ints/floats using black magic (string)
+			$argLists[] = array(
+				(string)$key,
+				$timeValue,
+				new TimeParser( new CalendarModelParser( $opts ), $opts )
+			);
 		}
 
 		return $argLists;
