@@ -3,7 +3,7 @@
 namespace ValueFormatters\Test;
 
 use DataValues\TimeValue;
-use ValueParsers\CalenderModelParser;
+use ValueParsers\CalendarModelParser;
 use ValueParsers\Test\ValueParserTestBase;
 use ValueFormatters\TimeFormatter;
 use ValueParsers\TimeParser;
@@ -35,7 +35,7 @@ class TimeParserTest extends ValueParserTestBase {
 		$options = $this->newParserOptions();
 
 		$class = $this->getParserClass();
-		return new $class( new CalenderModelParser(), $options );
+		return new $class( new CalendarModelParser(), $options );
 	}
 
 	/**

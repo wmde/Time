@@ -26,19 +26,19 @@ class TimeParser extends StringValueParser {
 	const TIME_PATTERN = '(\d{1,16}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}Z)';
 
 	/**
-	 * @var CalenderModelParser
+	 * @var CalendarModelParser
 	 */
-	private $calenderModelParser;
+	private $calendarModelParser;
 
 	/**
 	 * @since 0.1
 	 *
-	 * @param CalenderModelParser $calenderModelParser
+	 * @param CalendarModelParser $calendarModelParser
 	 * @param ParserOptions|null $options
 	 */
-	public function __construct( CalenderModelParser $calenderModelParser, ParserOptions $options = null ) {
+	public function __construct( CalendarModelParser $calendarModelParser, ParserOptions $options = null ) {
 		parent::__construct( $options );
-		$this->calenderModelParser = $calenderModelParser;
+		$this->calendarModelParser = $calendarModelParser;
 	}
 
 	protected function stringParse( $value ) {
@@ -110,7 +110,7 @@ class TimeParser extends StringValueParser {
 	}
 
 	private function newTimeFromParts( $time, $model, $precision ) {
-		$model = $this->calenderModelParser->parse( $model );
+		$model = $this->calendarModelParser->parse( $model );
 		return new TimeValue( $time, 0, 0, 0, $precision, $model );
 	}
 
@@ -122,7 +122,7 @@ class TimeParser extends StringValueParser {
 		$pattern = '@^'
 			. '\s*' . self::SIGN_PATTERN . '' // $1: sign
 			. '\s*' . self::TIME_PATTERN . '' // $2: time
-			. '\s*\(?\s*' . CalenderModelParser::MODEL_PATTERN . '\s*\)?' // $3 model
+			. '\s*\(?\s*' . CalendarModelParser::MODEL_PATTERN . '\s*\)?' // $3 model
 			. '\s*$@iu';
 
 		if ( !preg_match( $pattern, $value, $groups ) ) {

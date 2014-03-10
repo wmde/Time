@@ -5,17 +5,17 @@ namespace ValueParsers;
 use ValueFormatters\TimeFormatter;
 
 /**
- * ValueParser that parses the string representation of a calender model.
+ * ValueParser that parses the string representation of a calendar model.
  *
  * @since 0.2
  *
  * @licence GNU GPL v2+
  * @author Adam Shorland
  */
-class CalenderModelParser extends StringValueParser {
+class CalendarModelParser extends StringValueParser {
 
 	/**
-	 * Regex pattern constant matching the parable calender models
+	 * Regex pattern constant matching the parable calendar models
 	 * should be used as an insensitive to match all cases
 	 */
 	const MODEL_PATTERN = '(Gregorian|Julian|)';
@@ -31,6 +31,6 @@ class CalenderModelParser extends StringValueParser {
 				return TimeFormatter::CALENDAR_JULIAN;
 		}
 
-		throw new ParseException( 'Cannot parse calender model: ' . $value );
+		throw new ParseException( 'Cannot parse calendar model: ' . $value );
 	}
 }
