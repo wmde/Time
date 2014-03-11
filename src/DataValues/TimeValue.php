@@ -105,7 +105,7 @@ class TimeValue extends DataValueObject {
 		}
 
 		if ( !preg_match( '!^[-+]\d{1,16}-(0\d|1[012])-([012]\d|3[01])T([01]\d|2[0123]):[0-5]\d:([0-5]\d|6[012])Z$!', $time ) ) {
-			throw new IllegalValueException( '$time needs to be a valid ISO 8601 date' );
+			throw new IllegalValueException( '$time needs to be a valid ISO 8601 date, given ' . $time );
 		}
 
 		if ( !is_integer( $timezone ) ) {
