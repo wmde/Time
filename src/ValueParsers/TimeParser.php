@@ -25,9 +25,9 @@ class TimeParser extends StringValueParser {
 	/**
 	 * @since 0.3
 	 */
-	const OPT_CALENDAR_GREGORIAN = 'gregorian';
-	const OPT_CALENDER_JULIAN = 'julian';
-	const OPT_PRECISION_NONE = 'noprecision';
+	const CALENDAR_GREGORIAN = 'http://www.wikidata.org/entity/Q1985727';
+	const CALENDAR_JULIAN = 'http://www.wikidata.org/entity/Q1985786';
+	const PRECISION_NONE = 'noprecision';
 
 	/**
 	 * Regex pattern constant matching the sign preceding the time
@@ -51,8 +51,8 @@ class TimeParser extends StringValueParser {
 	 */
 	public function __construct( CalendarModelParser $calendarModelParser, ParserOptions $options = null ) {
 
-		$options->defaultOption( TimeParser::OPT_CALENDAR, TimeParser::OPT_CALENDAR_GREGORIAN );
-		$options->defaultOption( TimeParser::OPT_PRECISION, TimeParser::OPT_PRECISION_NONE );
+		$options->defaultOption( TimeParser::OPT_CALENDAR, TimeParser::CALENDAR_GREGORIAN );
+		$options->defaultOption( TimeParser::OPT_PRECISION, TimeParser::PRECISION_NONE );
 
 		parent::__construct( $options );
 		$this->calendarModelParser = $calendarModelParser;
@@ -63,10 +63,15 @@ class TimeParser extends StringValueParser {
 		$time = $sign . $this->padTime( $time );
 
 		$calendarOpt = $this->getOptions()->getOption( TimeParser::OPT_CALENDAR );
-		if( $model === '' && preg_match( '/(' . self::OPT_CALENDAR_GREGORIAN . '|' . self::OPT_CALENDER_JULIAN . ')/i', $calendarOpt ) ) {
+		$calanderModelRegex = '/(' . preg_quote( self::CALENDAR_GREGORIAN, '/' ). '|' . preg_quote( self::CALENDAR_JULIAN, '/' ) . ')/i';
+
+		if( $model === '' && preg_match( $calanderModelRegex, $calendarOpt ) ) {
 			$model = $calendarOpt;
+		} else if( $model !== '' ) {
+			$model = $this->calendarModelParser->parse( $model );
+		} else {
+			$model = self::CALENDAR_GREGORIAN;
 		}
-		$model = $this->calendarModelParser->parse( $model );
 
 		$precisionOpt = $this->getOptions()->getOption( TimeParser::OPT_PRECISION );
 		if( is_int( $precisionOpt ) ) {

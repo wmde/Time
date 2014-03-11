@@ -50,16 +50,16 @@ class TimeParserTest extends ValueParserTestBase {
 		$emptyOpts = new ParserOptions();
 
 		$julianOpts = clone $emptyOpts;
-		$julianOpts->setOption( TimeParser::OPT_CALENDAR, TimeParser::OPT_CALENDER_JULIAN );
+		$julianOpts->setOption( TimeParser::OPT_CALENDAR, TimeParser::CALENDAR_JULIAN );
 
 		$gregorianOpts = clone $emptyOpts;
-		$gregorianOpts->setOption( TimeParser::OPT_CALENDAR, TimeParser::OPT_CALENDAR_GREGORIAN );
+		$gregorianOpts->setOption( TimeParser::OPT_CALENDAR, TimeParser::CALENDAR_GREGORIAN );
 
 		$prec10aOpts = clone $emptyOpts;
 		$prec10aOpts->setOption( TimeParser::OPT_PRECISION, TimeValue::PRECISION_10a );
 
 		$noPrecOpts = clone $emptyOpts;
-		$noPrecOpts->setOption( TimeParser::OPT_PRECISION, TimeParser::OPT_PRECISION_NONE );
+		$noPrecOpts->setOption( TimeParser::OPT_PRECISION, TimeParser::PRECISION_NONE );
 
 		$valid = array(
 			'+0000000000002013-07-16T00:00:00Z' => array( 
