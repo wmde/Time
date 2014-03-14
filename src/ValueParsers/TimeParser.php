@@ -20,7 +20,7 @@ class TimeParser extends StringValueParser {
 	 * @since 0.3
 	 */
 	const OPT_PRECISION = 'precision';
-	const OPT_CALENDAR = 'calender';
+	const OPT_CALENDAR = 'calendar';
 
 	/**
 	 * @since 0.3
@@ -63,9 +63,9 @@ class TimeParser extends StringValueParser {
 		$time = $sign . $this->padTime( $time );
 
 		$calendarOpt = $this->getOptions()->getOption( TimeParser::OPT_CALENDAR );
-		$calanderModelRegex = '/(' . preg_quote( self::CALENDAR_GREGORIAN, '/' ). '|' . preg_quote( self::CALENDAR_JULIAN, '/' ) . ')/i';
+		$calendarModelRegex = '/(' . preg_quote( self::CALENDAR_GREGORIAN, '/' ). '|' . preg_quote( self::CALENDAR_JULIAN, '/' ) . ')/i';
 
-		if( $model === '' && preg_match( $calanderModelRegex, $calendarOpt ) ) {
+		if( $model === '' && preg_match( $calendarModelRegex, $calendarOpt ) ) {
 			$model = $calendarOpt;
 		} else if( $model !== '' ) {
 			$model = $this->calendarModelParser->parse( $model );
