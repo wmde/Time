@@ -51,7 +51,7 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ### 0.4 (2014-03-14)
 
-* Corrected spelling errors calender/calander -> calendar
+* ...
 
 ### 0.3 (2014-03-13)
 
