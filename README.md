@@ -49,7 +49,7 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.5 (dev)
+### 0.5 (2014-03-21)
 
 * Removed TimeParser::SIGN_PATTERN constant
 * Removed TimeParser::TIME_PATTERN constant
