@@ -65,10 +65,11 @@ class TimeParser extends StringValueParser {
 		}
 
 		$precisionOpt = $this->getOptions()->getOption( TimeParser::OPT_PRECISION );
-		if( is_int( $precisionOpt ) ) {
+		$precisionFromTime = $this->getPrecisionFromTimeParts( $timeParts );
+		if( is_int( $precisionOpt ) && $precisionOpt <= $precisionFromTime ) {
 			$precision = $precisionOpt;
 		} else {
-			$precision = $this->getPrecisionFromTimeParts( $timeParts );
+			$precision = $precisionFromTime;
 		}
 
 		$time = $this->getTimeStringFromParts( $timeParts );
