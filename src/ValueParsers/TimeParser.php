@@ -30,15 +30,6 @@ class TimeParser extends StringValueParser {
 	const PRECISION_NONE = 'noprecision';
 
 	/**
-	 * Regex pattern constant matching the sign preceding the time
-	 */
-	const SIGN_PATTERN = '([\+\-]?)';
-	/**
-	 * Regex pattern constant matching the ISO timestamp
-	 */
-	const TIME_PATTERN = '(\d{1,16}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}Z)';
-
-	/**
 	 * @var CalendarModelParser
 	 */
 	private $calendarModelParser;
@@ -59,74 +50,68 @@ class TimeParser extends StringValueParser {
 	}
 
 	protected function stringParse( $value ) {
-		list( $sign, $time, $model ) = $this->splitTimeString( $value );
-		$time = $sign . $this->padTime( $time );
+		$timeParts = $this->splitTimeString( $value );
+		$timeParts['year'] = $this->padYear( $timeParts['year'] );
 
 		$calendarOpt = $this->getOptions()->getOption( TimeParser::OPT_CALENDAR );
 		$calendarModelRegex = '/(' . preg_quote( self::CALENDAR_GREGORIAN, '/' ). '|' . preg_quote( self::CALENDAR_JULIAN, '/' ) . ')/i';
 
-		if( $model === '' && preg_match( $calendarModelRegex, $calendarOpt ) ) {
-			$model = $calendarOpt;
-		} else if( $model !== '' ) {
-			$model = $this->calendarModelParser->parse( $model );
+		if( $timeParts['calendar'] === '' && preg_match( $calendarModelRegex, $calendarOpt ) ) {
+			$timeParts['calendar'] = $calendarOpt;
+		} else if( $timeParts['calendar'] !== '' ) {
+			$timeParts['calendar'] = $this->calendarModelParser->parse( $timeParts['calendar'] );
 		} else {
-			$model = self::CALENDAR_GREGORIAN;
+			$timeParts['calendar'] = self::CALENDAR_GREGORIAN;
 		}
 
 		$precisionOpt = $this->getOptions()->getOption( TimeParser::OPT_PRECISION );
-		if( is_int( $precisionOpt ) ) {
+		$precisionFromTime = $this->getPrecisionFromTimeParts( $timeParts );
+		if( is_int( $precisionOpt ) && $precisionOpt <= $precisionFromTime ) {
 			$precision = $precisionOpt;
 		} else {
-			$precision = $this->getPrecisionFromTime( $time );
+			$precision = $precisionFromTime;
 		}
 
+		$time = $this->getTimeStringFromParts( $timeParts );
 		try {
-			return new TimeValue( $time, 0, 0, 0, $precision, $model );
+			return new TimeValue( $time, 0, 0, 0, $precision, $timeParts['calendar'] );
 		} catch ( IllegalValueException $ex ) {
 			throw new ParseException( $ex->getMessage() );
 		}
 	}
 
 	/**
-	 * Pads the given timestamp to force year to have 16 digits
-	 * @param string $time in a format such as 0002013-07-16T01:02:03Z
+	 * Pads the given year to force year to have 16 digits
+	 * @param string $year in a format such as 0002013
 	 * @return string
 	 */
-	private function padTime( $time ) {
-		return str_pad( $time, 32, '0', STR_PAD_LEFT );
+	private function padYear( $year ) {
+		return str_pad( $year, 16, '0', STR_PAD_LEFT );
 	}
 
-	private function getPrecisionFromTime( $time ) {
-		/**
-		 * $matches for +0000000000002013-07-16T01:02:03Z
-		 * [0] => +0000000000002013-07-16T00:00:00Z
-		 * [1] => +
-		 * [2] => 0000000000002013
-		 * [5] => 07
-		 * [6] => 16
-		 * [7] => 01
-		 * [8] => 02
-		 * [9] => 03
-		 */
-		preg_match( '/^(\+|\-)(\d{1,16})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z/',
-			$time, $matches );
-		list( , , $years, $months, $days, $hours, $mins, $secs ) = $matches;
-		if( $secs !== '00' ) {
+	/**
+	 * @param array $timeParts with the following keys.
+	 *            sign, year, month, day, hour, minute, second, calendar
+	 *
+	 * @return int precision as a TimeValue PRECISION_ constant
+	 */
+	private function getPrecisionFromTimeParts( $timeParts ) {
+		if( $timeParts['second'] !== '00' ) {
 			return TimeValue::PRECISION_SECOND;
 		}
-		if( $mins !== '00' ) {
+		if( $timeParts['minute'] !== '00' ) {
 			return TimeValue::PRECISION_MINUTE;
 		}
-		if( $hours !== '00' ) {
+		if( $timeParts['hour'] !== '00' ) {
 			return TimeValue::PRECISION_HOUR;
 		}
-		if( $days !== '00' ) {
+		if( $timeParts['day'] !== '00' ) {
 			return TimeValue::PRECISION_DAY;
 		}
-		if( $months !== '00' ) {
+		if( $timeParts['month'] !== '00' ) {
 			return TimeValue::PRECISION_MONTH;
 		}
-		return $this->getPrecisionFromYear( $years );
+		return $this->getPrecisionFromYear( $timeParts['year'] );
 	}
 
 	/**
@@ -142,23 +127,62 @@ class TimeParser extends StringValueParser {
 		return $precision;
 	}
 
+	/**
+	 * @param string $value
+	 *
+	 * @return array with the following keys.
+	 *            sign, year, month, day, hour, minute, second, calendar
+	 *
+	 * @throws InvalidArgumentException
+	 * @throws ParseException
+	 */
 	private function splitTimeString( $value ) {
 		if ( !is_string( $value ) ) {
 			throw new InvalidArgumentException( '$value must be a string' );
 		}
 
 		$pattern = '@^'
-			. '\s*' . self::SIGN_PATTERN . '' // $1: sign
-			. '\s*' . self::TIME_PATTERN . '' // $2: time
-			. '\s*\(?\s*' . CalendarModelParser::MODEL_PATTERN . '\s*\)?' // $3 model
+			. '\s*' . '([\+\-]?)'
+			. '\s*' . '(\d{1,16})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z'
+			. '\s*\(?\s*' . CalendarModelParser::MODEL_PATTERN . '\s*\)?'
 			. '\s*$@iu';
 
 		if ( !preg_match( $pattern, $value, $groups ) ) {
 			throw new ParseException( 'Malformed time: ' . $value );
 		}
 
-		array_shift( $groups ); // remove $groups[0]
-		return $groups;
+		return array(
+			'sign' => $groups[1],
+			'year' => $groups[2],
+			'month' => $groups[3],
+			'day' => $groups[4],
+			'hour' => $groups[5],
+			'minute' => $groups[6],
+			'second' => $groups[7],
+			'calendar' => $groups[8],
+		);
+	}
+
+	/**
+	 * @param array $timeParts with the following keys.
+	 *            sign, year, month, day, hour, minute, second, calendar
+	 *
+	 * @throws InvalidArgumentException
+	 *
+	 * @return string
+	 */
+	private function getTimeStringFromParts( array $timeParts ) {
+		if( array_keys( $timeParts ) !== array( 'sign', 'year', 'month', 'day', 'hour', 'minute', 'second', 'calendar' ) ) {
+			throw new InvalidArgumentException( 'Time string can not be created with missing $timeParts keys' );
+		}
+		return $timeParts['sign']
+			. $timeParts['year'] . '-'
+			. $timeParts['month'] . '-'
+			. $timeParts['day'] . 'T'
+			. $timeParts['hour'] . ':'
+			. $timeParts['minute'] . ':'
+			. $timeParts['second'] . 'Z';
+
 	}
 
 }

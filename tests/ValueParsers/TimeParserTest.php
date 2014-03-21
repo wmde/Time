@@ -58,10 +58,14 @@ class TimeParserTest extends ValueParserTestBase {
 		$prec10aOpts = clone $emptyOpts;
 		$prec10aOpts->setOption( TimeParser::OPT_PRECISION, TimeValue::PRECISION_10a );
 
+		$precDayOpts = clone $emptyOpts;
+		$precDayOpts->setOption( TimeParser::OPT_PRECISION, TimeValue::PRECISION_DAY );
+
 		$noPrecOpts = clone $emptyOpts;
 		$noPrecOpts->setOption( TimeParser::OPT_PRECISION, TimeParser::PRECISION_NONE );
 
 		$valid = array(
+			// Empty options tests
 			'+0000000000002013-07-16T00:00:00Z' => array( 
 				TimeValue::newFromArray( array(
 					'time' => '+0000000000002013-07-16T00:00:00Z',
@@ -326,6 +330,8 @@ class TimeParserTest extends ValueParserTestBase {
 			) ),
 				$emptyOpts,
 			),
+
+			//Tests with different options
 			'-1-01-02T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '-0000000000000001-01-02T00:00:00Z',
@@ -369,6 +375,20 @@ class TimeParserTest extends ValueParserTestBase {
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 			) ),
 				$noPrecOpts,
+			),
+
+			//Tests for correct precision when a bad precision is passed through the opts
+			//@see https://bugzilla.wikimedia.org/show_bug.cgi?id=62730
+			'+0000000000000012-12-00T00:00:00Z' => array(
+				TimeValue::newFromArray( array(
+					'time' => '+0000000000000012-12-00T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_MONTH,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+				) ),
+				$precDayOpts,
 			),
 		);
 

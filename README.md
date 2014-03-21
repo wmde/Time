@@ -49,6 +49,12 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.5 (dev)
+
+* Removed TimeParser::SIGN_PATTERN constant
+* Removed TimeParser::TIME_PATTERN constant
+* Fix [bug 62730](https://bugzilla.wikimedia.org/show_bug.cgi?id=62730) TimeParser should return correct precision when only month and year or year is given
+
 ### 0.4 (2014-03-14)
 
 * Corrected spelling errors calender/calander -> calendar
