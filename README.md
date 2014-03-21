@@ -24,11 +24,13 @@ dependency on `data-values/time` to your project's `composer.json` file.
 Here is a minimal example of a `composer.json` file that just defines a dependency on
 version 1.0 of this package:
 
+```js
     {
         "require": {
             "data-values/time": "1.0.*"
         }
     }
+```
 
 ### Manual
 
