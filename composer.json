@@ -24,7 +24,7 @@
 		"php": ">=5.3.0",
 		"data-values/data-values": "~0.1.0",
 		"data-values/interfaces": "~0.1.0",
-		"data-values/common": "~0.2.2@dev"
+		"data-values/common": "~0.2.0"
 	},
 	"autoload": {
 		"files" : [
