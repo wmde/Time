@@ -33,7 +33,8 @@
 		"psr-0": {
 			"DataValues\\": "src",
 			"ValueFormatters\\": "src",
-			"ValueParsers\\": "src"
+			"ValueParsers\\": "src",
+			"ValueCalculators\\": "src"
 		}
 	}
 }
