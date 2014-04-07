@@ -3,6 +3,7 @@
 namespace ValueFormatters\Test;
 
 use DataValues\TimeValue;
+use ValueFormatters\FormatterOptions;
 use ValueFormatters\TimeFormatter;
 
 /**
@@ -65,24 +66,24 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				11,
 				TimeFormatter::CALENDAR_GREGORIAN
 			),
-			'+00000002013-07-16T00:00:00Z (Gregorian)' => array(
-				'+00000002013-07-16T00:00:00Z',
+			'+00000002013-07-17T00:00:00Z (Gregorian)' => array(
+				'+00000002013-07-17T00:00:00Z',
 				0,
 				0,
 				0,
 				10,
 				TimeFormatter::CALENDAR_GREGORIAN
 			),
-			'+00000002013-07-16T00:00:00Z (Gregorian)' => array(
-				'+00000002013-07-16T00:00:00Z',
+			'+00000002013-07-18T00:00:00Z (Gregorian)' => array(
+				'+00000002013-07-18T00:00:00Z',
 				0,
 				0,
 				0,
 				9,
 				TimeFormatter::CALENDAR_GREGORIAN
 			),
-			'+00000002013-07-16T00:00:00Z (Gregorian)' => array(
-				'+00000002013-07-16T00:00:00Z',
+			'+00000002013-07-19T00:00:00Z (Gregorian)' => array(
+				'+00000002013-07-19T00:00:00Z',
 				0,
 				0,
 				0,
@@ -94,7 +95,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 		$argLists = array();
 
 		// TODO: Test with different parser options.
-		$options = new \ValueFormatters\FormatterOptions();
+		$options = new FormatterOptions();
 
 		foreach ( $tests as $expected => $args ) {
 			$timeValue = new TimeValue( $args[0], $args[1], $args[2], $args[3], $args[4], $args[5] );
