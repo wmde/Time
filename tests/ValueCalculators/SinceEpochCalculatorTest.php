@@ -50,67 +50,77 @@ class EpochCalculatorTest extends \PHPUnit_Framework_TestCase {
 				'+00000001971-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY
 			),
-			'157680000' => array(
-				'5 years after the Epoch (ignoring leap years!)',
+			'63072000' => array(
+				'2 years after the Epoch',
+				'+00000001972-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY
+			),
+			'94694400' => array(
+				'3 years after the Epoch (1 leap year)',
+				'+00000001973-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY
+			),
+			'157766400' => array(
+				'5 years after the Epoch (1 leap year)',
 				'+00000001975-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY
 			),
-			'1576800000' => array(
-				'50 years after the Epoch (ignoring leap years!)',
+			'1577836800' => array(
+				'50 years after the Epoch (12 leap years)',
 				'+00000002020-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY
 			),
-			'15768000000' => array(
-				'500 years after the Epoch (ignoring leap years!)',
-				'+00000002470-01-01T00:00:00Z',
-				TimeValue::PRECISION_DAY
-			),
-			'157680000000' => array(
-				'5,000 years after the Epoch (ignoring leap years!)',
-				'+00000006970-01-01T00:00:00Z',
-				TimeValue::PRECISION_DAY
-			),
-			'1576800000000' => array(
-				'50,000 years after the Epoch (ignoring leap years!)',
-				'+00000051970-01-01T00:00:00Z',
-				TimeValue::PRECISION_DAY
-			),
-			'15768000000000' => array(
-				'500,000 years after the Epoch (ignoring leap years!)',
-				'+00000501970-01-01T00:00:00Z',
-				TimeValue::PRECISION_DAY
-			),
-			'157680000000000' => array(
-				'5,000,000 years after the Epoch (ignoring leap years!)',
-				'+00005001970-01-01T00:00:00Z',
-				TimeValue::PRECISION_DAY
-			),
-			'1576800000000000' => array(
-				'50,000,000 years after the Epoch (ignoring leap years!)',
-				'+00050001970-01-01T00:00:00Z',
-				TimeValue::PRECISION_DAY
-			),
-			'15768000000000000' => array(
-				'500,000,000 years after the Epoch (ignoring leap years!)',
-				'+00500001970-01-01T00:00:00Z',
-				TimeValue::PRECISION_DAY
-			),
-			'157680000000000000' => array(
-				'5,000,000,000 years after the Epoch (ignoring leap years!)',
-				'+05000001970-01-01T00:00:00Z',
-				TimeValue::PRECISION_DAY
-			),
-			'1576800000000000000' => array(
-				'50,000,000,000 years after the Epoch (ignoring leap years!)',
-				'+50000001970-01-01T00:00:00Z',
-				TimeValue::PRECISION_DAY
-			),
-			'1576800000000172800' => array(
-				'50,000,000,000 years and 2 days after the Epoch (ignoring leap years!)',
-				'+50000001970-01-03T00:00:00Z',
-				TimeValue::PRECISION_DAY
-			),
-
+//			'15778713600' => array(
+//				'500 years after the Epoch (124 leap years)',
+//				'+00000002470-01-01T00:00:00Z',
+//				TimeValue::PRECISION_DAY
+//			),
+//			'157783680000' => array(
+//				'5,000 years after the Epoch (1250 leap years)',
+//				'+00000006970-01-01T00:00:00Z',
+//				TimeValue::PRECISION_DAY
+//			),
+//			'1577836800000' => array(
+//				'50,000 years after the Epoch (12500 leap years)',
+//				'+00000051970-01-01T00:00:00Z',
+//				TimeValue::PRECISION_DAY
+//			),
+//			'15778368000000' => array(
+//				'500,000 years after the Epoch (125,000 leap years)',
+//				'+00000501970-01-01T00:00:00Z',
+//				TimeValue::PRECISION_DAY
+//			),
+//			'157783680000000' => array(
+//				'5,000,000 years after the Epoch (1,250,000 leap years)',
+//				'+00005001970-01-01T00:00:00Z',
+//				TimeValue::PRECISION_DAY
+//			),
+//			'1577836800000000' => array(
+//				'50,000,000 years after the Epoch (12,500,000 leap years)',
+//				'+00050001970-01-01T00:00:00Z',
+//				TimeValue::PRECISION_DAY
+//			),
+//			'15778368000000000' => array(
+//				'500,000,000 years after the Epoch (125,000,000 leap years)',
+//				'+00500001970-01-01T00:00:00Z',
+//				TimeValue::PRECISION_DAY
+//			),
+//			'157783680000000000' => array(
+//				'5,000,000,000 years after the Epoch (1,250,000,000 leap years)',
+//				'+05000001970-01-01T00:00:00Z',
+//				TimeValue::PRECISION_DAY
+//			),
+//			'1577836800000000000' => array(
+//				'50,000,000,000 years after the Epoch (12,500,000,000 leap years)',
+//				'+50000001970-01-01T00:00:00Z',
+//				TimeValue::PRECISION_DAY
+//			),
+//			'15778368000000000000' => array(
+//				'50,000,000,000 years and 2 days after the Epoch (125,000,000,000 leap years)',
+//				'+50000001970-01-03T00:00:00Z',
+//				TimeValue::PRECISION_DAY
+//			),
+//
 			//Past dates
 			'-86400' => array(
 				'1 day before the Epoch',
@@ -128,7 +138,7 @@ class EpochCalculatorTest extends \PHPUnit_Framework_TestCase {
 				'+00000001969-11-30T00:00:00Z',
 				TimeValue::PRECISION_DAY
 			),
-			'-62094384000' => array(
+			'-62136892800' => array(
 				'1969 years before the Epoch',
 				'+00000000001-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY
