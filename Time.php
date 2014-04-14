@@ -15,7 +15,7 @@ if ( defined( 'DATAVALUES_TIME_VERSION' ) ) {
 	return 1;
 }
 
-define( 'DATAVALUES_TIME_VERSION', '0.5.1' );
+define( 'DATAVALUES_TIME_VERSION', '0.6 alpha' );
 
 if ( defined( 'MEDIAWIKI' ) ) {
 	$GLOBALS['wgExtensionCredits']['datavalues'][] = array(
