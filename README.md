@@ -51,6 +51,10 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.6 (dev)
+
+* Removed TimeIsoFormatter interface
+
 ### 0.5.1 (2014-03-24)
 
 * Fix composer version of DataValues/Common
