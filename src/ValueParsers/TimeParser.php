@@ -16,6 +16,8 @@ use InvalidArgumentException;
  */
 class TimeParser extends StringValueParser {
 
+	const FORMAT_NAME = 'time';
+
 	/**
 	 * @since 0.3
 	 */
@@ -76,7 +78,7 @@ class TimeParser extends StringValueParser {
 		try {
 			return new TimeValue( $time, 0, 0, 0, $precision, $timeParts['calendar'] );
 		} catch ( IllegalValueException $ex ) {
-			throw new ParseException( $ex->getMessage() );
+			throw new ParseException( $ex->getMessage(), $value, self::FORMAT_NAME );
 		}
 	}
 
@@ -148,7 +150,7 @@ class TimeParser extends StringValueParser {
 			. '\s*$@iu';
 
 		if ( !preg_match( $pattern, $value, $groups ) ) {
-			throw new ParseException( 'Malformed time: ' . $value );
+			throw new ParseException( 'Malformed time', $value, self::FORMAT_NAME );
 		}
 
 		return array(

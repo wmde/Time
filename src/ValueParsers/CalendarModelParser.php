@@ -14,6 +14,8 @@ use ValueFormatters\TimeFormatter;
  */
 class CalendarModelParser extends StringValueParser {
 
+	const FORMAT_NAME = 'calendar-model';
+
 	/**
 	 * Regex pattern constant matching the parable calendar models
 	 * should be used as an insensitive to match all cases
@@ -21,6 +23,8 @@ class CalendarModelParser extends StringValueParser {
 	const MODEL_PATTERN = '(Gregorian|Julian|)';
 
 	protected function stringParse( $value ) {
+		$rawValue = $value;
+
 		$value = strtolower( $value );
 
 		switch ( $value ) {
@@ -31,6 +35,6 @@ class CalendarModelParser extends StringValueParser {
 				return TimeFormatter::CALENDAR_JULIAN;
 		}
 
-		throw new ParseException( 'Cannot parse calendar model: ' . $value );
+		throw new ParseException( 'Cannot parse calendar model', $rawValue, self::FORMAT_NAME );
 	}
 }
