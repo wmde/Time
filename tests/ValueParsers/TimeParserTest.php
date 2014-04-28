@@ -105,7 +105,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_ka,
+					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -116,7 +116,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_10ka,
+					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -127,7 +127,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_100ka,
+					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -138,7 +138,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_Ma,
+					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -149,7 +149,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_10Ma,
+					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -160,7 +160,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_100Ma,
+					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -171,7 +171,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_Ga,
+					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -182,7 +182,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_Ga,
+					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -193,7 +193,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_Ga,
+					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -204,7 +204,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_Ga,
+					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -215,7 +215,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_Ga,
+					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -226,7 +226,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_Ga,
+					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -237,7 +237,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_Ga,
+					'precision' => TimeValue::PRECISION_YEAR,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
