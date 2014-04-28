@@ -110,13 +110,24 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
+			'+0000000000008000-00-00T00:00:00Z' => array(
+				TimeValue::newFromArray( array(
+					'time' => '+0000000000008000-00-00T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_ka,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+				) ),
+				$emptyOpts,
+			),
 			'+0000000000020000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000000020000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_YEAR,
+					'precision' => TimeValue::PRECISION_10ka,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -127,7 +138,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_YEAR,
+					'precision' => TimeValue::PRECISION_100ka,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -138,7 +149,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_YEAR,
+					'precision' => TimeValue::PRECISION_Ma,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -149,7 +160,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_YEAR,
+					'precision' => TimeValue::PRECISION_10Ma,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -160,7 +171,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_YEAR,
+					'precision' => TimeValue::PRECISION_100Ma,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -171,7 +182,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_YEAR,
+					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -182,7 +193,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_YEAR,
+					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -193,7 +204,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_YEAR,
+					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -204,7 +215,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_YEAR,
+					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -215,7 +226,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_YEAR,
+					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -226,7 +237,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_YEAR,
+					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
@@ -237,7 +248,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
-					'precision' => TimeValue::PRECISION_YEAR,
+					'precision' => TimeValue::PRECISION_Ga,
 					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
 				) ),
 				$emptyOpts,
