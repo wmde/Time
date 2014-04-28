@@ -1,6 +1,6 @@
 <?php
 
-namespace ValueFormatters\Test;
+namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
 use ValueParsers\CalendarModelParser;
