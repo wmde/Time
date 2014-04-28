@@ -1,6 +1,6 @@
 <?php
 
-namespace ValueFormatters\Test;
+namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
 use ValueParsers\CalendarModelParser;
@@ -66,7 +66,7 @@ class TimeParserTest extends ValueParserTestBase {
 
 		$valid = array(
 			// Empty options tests
-			'+0000000000002013-07-16T00:00:00Z' => array( 
+			'+0000000000002013-07-16T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000000002013-07-16T00:00:00Z',
 					'timezone' => 0,
@@ -77,7 +77,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0000000000002013-07-00T00:00:00Z' => array( 
+			'+0000000000002013-07-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000000002013-07-00T00:00:00Z',
 					'timezone' => 0,
@@ -88,7 +88,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0000000000002013-00-00T00:00:00Z' => array( 
+			'+0000000000002013-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000000002013-00-00T00:00:00Z',
 					'timezone' => 0,
@@ -99,9 +99,20 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0000000000002000-00-00T00:00:00Z' => array( 
+			'+0000000000002000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000000002000-00-00T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_YEAR,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+				) ),
+				$emptyOpts,
+			),
+			'+0000000000008000-00-00T00:00:00Z' => array(
+				TimeValue::newFromArray( array(
+					'time' => '+0000000000008000-00-00T00:00:00Z',
 					'timezone' => 0,
 					'before' => 0,
 					'after' => 0,
@@ -110,7 +121,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0000000000020000-00-00T00:00:00Z' => array( 
+			'+0000000000020000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000000020000-00-00T00:00:00Z',
 					'timezone' => 0,
@@ -121,7 +132,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0000000000200000-00-00T00:00:00Z' => array( 
+			'+0000000000200000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000000200000-00-00T00:00:00Z',
 					'timezone' => 0,
@@ -132,7 +143,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0000000002000000-00-00T00:00:00Z' => array( 
+			'+0000000002000000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000002000000-00-00T00:00:00Z',
 					'timezone' => 0,
@@ -143,7 +154,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0000000020000000-00-00T00:00:00Z' => array( 
+			'+0000000020000000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000020000000-00-00T00:00:00Z',
 					'timezone' => 0,
@@ -154,7 +165,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0000000200000000-00-00T00:00:00Z' => array( 
+			'+0000000200000000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000200000000-00-00T00:00:00Z',
 					'timezone' => 0,
@@ -165,7 +176,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0000002000000000-00-00T00:00:00Z' => array( 
+			'+0000002000000000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000002000000000-00-00T00:00:00Z',
 					'timezone' => 0,
@@ -176,7 +187,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0000020000000000-00-00T00:00:00Z' => array( 
+			'+0000020000000000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000020000000000-00-00T00:00:00Z',
 					'timezone' => 0,
@@ -187,7 +198,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0000200000000000-00-00T00:00:00Z' => array( 
+			'+0000200000000000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000200000000000-00-00T00:00:00Z',
 					'timezone' => 0,
@@ -198,7 +209,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0002000000000000-00-00T00:00:00Z' => array( 
+			'+0002000000000000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0002000000000000-00-00T00:00:00Z',
 					'timezone' => 0,
@@ -209,7 +220,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0020000000000000-00-00T00:00:00Z' => array( 
+			'+0020000000000000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0020000000000000-00-00T00:00:00Z',
 					'timezone' => 0,
@@ -220,7 +231,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0200000000000000-00-00T00:00:00Z' => array( 
+			'+0200000000000000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0200000000000000-00-00T00:00:00Z',
 					'timezone' => 0,
@@ -231,7 +242,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+2000000000000000-00-00T00:00:00Z' => array( 
+			'+2000000000000000-00-00T00:00:00Z' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+2000000000000000-00-00T00:00:00Z',
 					'timezone' => 0,
@@ -242,7 +253,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$emptyOpts,
 			),
-			'+0000000000002013-07-16T00:00:00Z (Gregorian)' => array( 
+			'+0000000000002013-07-16T00:00:00Z (Gregorian)' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000000002013-07-16T00:00:00Z',
 					'timezone' => 0,
@@ -253,7 +264,7 @@ class TimeParserTest extends ValueParserTestBase {
 			) ),
 				$emptyOpts,
 			),
-			'+0000000000000000-01-01T00:00:00Z (Gregorian)' => array( 
+			'+0000000000000000-01-01T00:00:00Z (Gregorian)' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000000000000-01-01T00:00:00Z',
 					'timezone' => 0,
@@ -264,7 +275,7 @@ class TimeParserTest extends ValueParserTestBase {
 			) ),
 				$emptyOpts,
 			),
-			'+0000000000000001-01-14T00:00:00Z (Julian)' => array( 
+			'+0000000000000001-01-14T00:00:00Z (Julian)' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000000000001-01-14T00:00:00Z',
 					'timezone' => 0,
@@ -275,7 +286,7 @@ class TimeParserTest extends ValueParserTestBase {
 			) ),
 				$emptyOpts,
 			),
-			'+0000000000010000-01-01T00:00:00Z (Gregorian)' => array( 
+			'+0000000000010000-01-01T00:00:00Z (Gregorian)' => array(
 				TimeValue::newFromArray( array(
 					'time' => '+0000000000010000-01-01T00:00:00Z',
 					'timezone' => 0,
@@ -286,7 +297,7 @@ class TimeParserTest extends ValueParserTestBase {
 			) ),
 				$emptyOpts,
 			),
-			'-0000000000000001-01-01T00:00:00Z (Gregorian)' => array( 
+			'-0000000000000001-01-01T00:00:00Z (Gregorian)' => array(
 				TimeValue::newFromArray( array(
 					'time' => '-0000000000000001-01-01T00:00:00Z',
 					'timezone' => 0,
@@ -297,7 +308,7 @@ class TimeParserTest extends ValueParserTestBase {
 			) ),
 				$emptyOpts,
 			),
-			'-00000000001-01-01T00:00:00Z (Gregorian)' => array( 
+			'-00000000001-01-01T00:00:00Z (Gregorian)' => array(
 				TimeValue::newFromArray( array(
 					'time' => '-0000000000000001-01-01T00:00:00Z',
 					'timezone' => 0,
@@ -308,7 +319,7 @@ class TimeParserTest extends ValueParserTestBase {
 			) ),
 				$emptyOpts,
 			),
-			'-000001-01-01T00:00:00Z (Gregorian)' => array( 
+			'-000001-01-01T00:00:00Z (Gregorian)' => array(
 				TimeValue::newFromArray( array(
 					'time' => '-0000000000000001-01-01T00:00:00Z',
 					'timezone' => 0,
@@ -377,6 +388,40 @@ class TimeParserTest extends ValueParserTestBase {
 				$noPrecOpts,
 			),
 
+			'+1999-00-00T00:00:00Z' => array(
+				TimeValue::newFromArray( array(
+					'time' => '+0000000000001999-00-00T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_YEAR,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+			) ),
+				$noPrecOpts,
+			),
+			'+2000-00-00T00:00:00Z' => array(
+				TimeValue::newFromArray( array(
+					'time' => '+0000000000002000-00-00T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_YEAR,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+			) ),
+				$noPrecOpts,
+			),
+			'+2010-00-00T00:00:00Z' => array(
+				TimeValue::newFromArray( array(
+					'time' => '+0000000000002010-00-00T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_YEAR,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+			) ),
+				$noPrecOpts,
+			),
+
 			//Tests for correct precision when a bad precision is passed through the opts
 			//@see https://bugzilla.wikimedia.org/show_bug.cgi?id=62730
 			'+0000000000000012-12-00T00:00:00Z' => array(
@@ -390,6 +435,7 @@ class TimeParserTest extends ValueParserTestBase {
 				) ),
 				$precDayOpts,
 			),
+
 		);
 
 		$argLists = array();
@@ -427,4 +473,4 @@ class TimeParserTest extends ValueParserTestBase {
 		return $argLists;
 	}
 
-} 
+}
