@@ -112,7 +112,26 @@ class TimeParser extends StringValueParser {
 			return TimeValue::PRECISION_MONTH;
 		}
 
-		return TimeValue::PRECISION_YEAR;
+		return $this->getPrecisionFromYear( $timeParts['year'] );
+	}
+
+	/**
+	 * @param string $year
+	 * @return int precision
+	 */
+	private function getPrecisionFromYear( $year ) {
+		// default to year precision for range 4000 BC to 4000
+		if ( $year >= -4000 && $year <= 4000 ) {
+			return TimeValue::PRECISION_YEAR;
+		}
+
+		$rightZeros = strlen( $year ) - strlen( rtrim( $year, '0' ) );
+		$precision = TimeValue::PRECISION_YEAR - $rightZeros;
+		if( $precision < TimeValue::PRECISION_Ga ) {
+			$precision = TimeValue::PRECISION_Ga;
+		}
+
+		return $precision;
 	}
 
 	/**
