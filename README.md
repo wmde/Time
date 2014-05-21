@@ -53,6 +53,7 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ### 0.6 (dev)
 
+* Added TimeValueCalculator
 * Removed TimeIsoFormatter interface
 * Introduce FORMAT_NAME class constants on ValueParsers in order to use them as
 	expectedFormat
