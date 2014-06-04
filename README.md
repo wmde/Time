@@ -60,7 +60,7 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 * Change ValueParsers to pass rawValue and expectedFormat arguments when constructing
 	a ParseException
 
-+### 0.5.2 (2014-04-28)
+### 0.5.2 (2014-04-28)
 
 * Fix parsing of years ending in zero, defaulting precision to year when
   year is <= 4000 and >= 4000 BC.
