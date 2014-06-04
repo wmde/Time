@@ -95,7 +95,7 @@ class TimeValue extends DataValueObject {
 	 * @param int $before number of units given by the precision
 	 * @param int $after number of units given by the precision
 	 * @param int $precision one of the PRECISION_... constants
-	 * @param string $calendarModel an URI identifying the calendar model
+	 * @param string $calendarModel a URI identifying the calendar model
 	 *
 	 * @throws IllegalValueException
 	 */
