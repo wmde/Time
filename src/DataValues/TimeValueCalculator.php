@@ -5,7 +5,7 @@ namespace DataValues;
 use InvalidArgumentException;
 
 /**
- * @since 0.5.3
+ * @since 0.6
  *
  * @licence GNU GPL v2+
  * @author Thiemo Mättig
@@ -14,13 +14,14 @@ class TimeValueCalculator {
 
 	/**
 	 * Average length of a year in the Gregorian calendar.
-	 * 365 + 1 / 4 - 1 / 100 + 1 / 400 = 365.2425 days.
+	 * 365 + 1/4 - 1/100 + 1/400 = 365.2425 days.
 	 */
 	const SECONDS_PER_GREGORIAN_YEAR = 31556952;
 
 	/**
-	 * This returns Unix timestamps just as PHP's mk_time (or strtotime) without any range
-	 * limitation.
+	 * This returns a Unix timestamp from a TimeValue similar to PHP's mk_time() (or strtotime()),
+	 * but with no range limitations. Data type is float because PHP's 32 bit integer would
+	 * clip in the year 2038.
 	 *
 	 * @param TimeValue $timeValue
 	 *
@@ -70,7 +71,7 @@ class TimeValueCalculator {
 	/**
 	 * @param float $year
 	 *
-	 * @return bool
+	 * @return bool if the year is a leap year in the Gregorian calendar
 	 */
 	public function isLeapYear( $year ) {
 		$year = $year < 0 ? ceil( $year ) + 1 : floor( $year );
@@ -83,7 +84,8 @@ class TimeValueCalculator {
 	/**
 	 * @param float $year
 	 *
-	 * @return float
+	 * @return float The number of leap years since year 1. To be more precise: The number of
+	 * leap days in the range between 31 December of year 1 and 31 December of the given year.
 	 */
 	public function getNumberOfLeapYears( $year ) {
 		$year = $year < 0 ? ceil( $year ) + 1 : floor( $year );
@@ -91,10 +93,10 @@ class TimeValueCalculator {
 	}
 
 	/**
-	 * @param int $precision
+	 * @param int $precision One of the TimeValue::PRECISION_... constants
 	 *
 	 * @throws InvalidArgumentException
-	 * @return float
+	 * @return float number of seconds in one unit of the given precision
 	 */
 	public function getSecondsForPrecision( $precision ) {
 		if ( $precision <= TimeValue::PRECISION_YEAR ) {

@@ -26,10 +26,10 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @param string $time
+	 * @param string $time an ISO 8601 date and time
 	 * @param int $timezone offset from UTC in minutes
 	 *
-	 * @return \PHPUnit_Framework_MockObject_MockObject
+	 * @return TimeValue
 	 */
 	private function getTimeValueMock( $time, $timezone = 0 ) {
 		$timeValue = $this->getMockBuilder( 'DataValues\TimeValue' )
@@ -85,6 +85,10 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 			array( '-0001-12-31T23:59:59Z', -62135596801 ),
 			array( '+0001-00-00T00:00:00Z', -62135596800 ),
 
+			// No special calculation for leap seconds, just make sure they pass
+			array( '+1970-10-11T12:13:61Z', 24495241 ),
+			array( '+1970-10-11T12:14:01Z', 24495241 ),
+
 			// Year 0 does not exist, but we do not complain, assume -1
 			array( '-0000-12-31T23:59:59Z', -62135596801 ),
 			array( '+0000-00-00T00:00:00Z', floor( ( -1 - 1969 ) * 365.2425 ) * 86400 ),
@@ -105,7 +109,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider timestampProvider
 	 *
-	 * @param string $time
+	 * @param string $time an ISO 8601 date and time
 	 * @param float $expectedTimestamp
 	 * @param int $timezone offset from UTC in minutes
 	 */
@@ -129,12 +133,13 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 			array( 2100, 509 ),
 
 			// Extremes
-			array( 1 ),
-			array( 9999, 2424, false ),
-			array( 2147483647, 520764784, false ),
+			array(          1,         0 ),
+			array(       9999,      2424 ),
+			array( 2147483647, 520764784 ),
 
 			// There is no year zero, assume -1
-			array( 0, 0, true ),
+			array( -1, 0, true ),
+			array(  0, 0, true ),
 
 			// Off by 1 for negative years because zero is skipped
 			array( -6, -2 ),
@@ -150,18 +155,18 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 			array(  5,  1 ),
 
 			// Because we can
-			array(   -6.9, -2 ),
-			array(   -6.1, -2 ),
-			array(   -5.501, -1, true ),
-			array(   -5.499, -1, true ),
-			array(   -4.6, -1 ),
-			array(   -4.4, -1 ),
-			array( 1995.01, 483 ),
-			array( 1995.09, 483 ),
+			array(   -6.9,    -2 ),
+			array(   -6.1,    -2 ),
+			array(   -5.501,  -1, true ),
+			array(   -5.499,  -1, true ),
+			array(   -4.6,    -1 ),
+			array(   -4.4,    -1 ),
+			array( 1995.01,  483 ),
+			array( 1995.09,  483 ),
 			array( 1996.001, 484, true ),
 			array( 1996.009, 484, true ),
-			array( 1997.1, 484 ),
-			array( 1997.9, 484 ),
+			array( 1997.1,   484 ),
+			array( 1997.9,   484 ),
 		);
 	}
 
@@ -169,7 +174,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider yearProvider
 	 *
 	 * @param float $year
-	 * @param float $numberOfLeapYears
+	 * @param float $numberOfLeapYears Unused in this test
 	 * @param bool $expected
 	 */
 	public function testIsLeapYear( $year, $numberOfLeapYears = 0.0, $expected = false ) {
@@ -183,7 +188,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @param float $year
 	 * @param float $expected
-	 * @param bool $isLeapYear
+	 * @param bool $isLeapYear Unused in this test
 	 */
 	public function testGetNumberOfLeapYears( $year, $expected = 0.0, $isLeapYear = false ) {
 		$numberOfLeapYears = $this->calculator->getNumberOfLeapYears( $year );
@@ -193,7 +198,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function precisionProvider() {
 		$secondsPerDay = 60 * 60 * 24;
-		$daysPerGregorianYear = 365 + 1 / 4 - 1 / 100 + 1 / 400;
+		$daysPerGregorianYear = 365 + 1/4 - 1/100 + 1/400;
 
 		return array(
 			array( TimeValue::PRECISION_SECOND, 1 ),

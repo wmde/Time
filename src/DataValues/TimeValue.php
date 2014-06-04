@@ -91,7 +91,7 @@ class TimeValue extends DataValueObject {
 	 * @since 0.1
 	 *
 	 * @param string $time
-	 * @param integer $timezone offset from UTC in minutes
+	 * @param integer $timezone
 	 * @param integer $before
 	 * @param integer $after
 	 * @param integer $precision
