@@ -44,7 +44,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $precision;
 
@@ -54,7 +54,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $after;
 
@@ -64,7 +64,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $before;
 
@@ -90,12 +90,12 @@ class TimeValue extends DataValueObject {
 	/**
 	 * @since 0.1
 	 *
-	 * @param string $time
-	 * @param integer $timezone
-	 * @param integer $before
-	 * @param integer $after
-	 * @param integer $precision
-	 * @param string $calendarModel
+	 * @param string $time an ISO 8601 date and time
+	 * @param int $timezone offset from UTC in minutes
+	 * @param int $before number of units given by the precision
+	 * @param int $after number of units given by the precision
+	 * @param int $precision one of the PRECISION_... constants
+	 * @param string $calendarModel an URI identifying the calendar model
 	 *
 	 * @throws IllegalValueException
 	 */
@@ -173,7 +173,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getBefore() {
 		return $this->before;
@@ -184,7 +184,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getAfter() {
 		return $this->after;
@@ -195,7 +195,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getPrecision() {
 		return $this->precision;
@@ -206,7 +206,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getTimezone() {
 		return $this->timezone;
