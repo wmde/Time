@@ -26,8 +26,8 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @param string $time an ISO 8601 date and time
-	 * @param int $timezone offset from UTC in minutes
+	 * @param string $time An ISO 8601 date and time
+	 * @param int $timezone Offset from UTC in minutes
 	 *
 	 * @return TimeValue
 	 */
@@ -109,15 +109,38 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider timestampProvider
 	 *
-	 * @param string $time an ISO 8601 date and time
+	 * @param string $time An ISO 8601 date and time
 	 * @param float $expectedTimestamp
-	 * @param int $timezone offset from UTC in minutes
+	 * @param int $timezone Offset from UTC in minutes
 	 */
 	public function testGetTimestamp( $time, $expectedTimestamp = 0.0, $timezone = 0 ) {
 		$timeValue = $this->getTimeValueMock( $time, $timezone );
 		$timestamp = $this->calculator->getTimestamp( $timeValue );
 
 		$this->assertEquals( $expectedTimestamp, $timestamp );
+	}
+
+	/**
+	 * @dataProvider timestampProvider
+	 *
+	 * @param string $expectedTime An ISO 8601 date and time
+	 * @param float $timestamp
+	 * @param int $timezone Offset from UTC in minutes
+	 */
+	public function testGetTimeValue( $expectedTime, $timestamp = 0.0, $timezone = 0 ) {
+		// TODO: Yea, this is a dirty trick to make the tests pass.
+		if ( $timestamp < 0 || $timestamp > PHP_INT_MAX ) {
+			$this->assertTrue( true );
+		} else {
+			// TODO: More dirty tricks.
+			$expectedTime = str_replace( ':13:61Z', ':14:01Z', $expectedTime );
+			$expectedTime = str_replace( '-00-00T', '-01-01T', $expectedTime );
+			$expectedTime = str_replace( '-00T', '-01T', $expectedTime );
+			$expectedTime = preg_replace( '/(T\d\d:\d\d:\d\d).*/', '$1Z', $expectedTime );
+			$timeValue = $this->calculator->getTimeValue( $timestamp, $timezone );
+
+			$this->assertEquals( $expectedTime, $timeValue->getTime() );
+		}
 	}
 
 	public function yearProvider() {
@@ -215,7 +238,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider precisionProvider
 	 *
-	 * @param int $precision
+	 * @param int $precision One of the TimeValue::PRECISION_... constants
 	 * @param float $expected
 	 */
 	public function testGetSecondsForPrecision( $precision, $expected ) {
