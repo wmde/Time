@@ -51,7 +51,7 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.6 (dev)
+### 0.6 (2014-06-05)
 
 * Added TimeValueCalculator
 * Removed TimeIsoFormatter interface
