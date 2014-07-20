@@ -29,3 +29,6 @@ if ( defined( 'MEDIAWIKI' ) ) {
 		'description' => 'Time value objects, parsers and formatters',
 	);
 }
+
+// Aliases introduced in 0.7
+class_alias( 'DataValues\Time\Values\TimeValue', 'DataValues\TimeValue' );
