@@ -1,13 +1,14 @@
 <?php
 
-namespace ValueFormatters\Test;
+namespace DataValues\Time\Formatters\Tests;
 
-use DataValues\TimeValue;
+use DataValues\Time\Formatters\TimeFormatter;
+use DataValues\Time\Values\TimeValue;
 use ValueFormatters\FormatterOptions;
-use ValueFormatters\TimeFormatter;
+use ValueFormatters\Test\ValueFormatterTestBase;
 
 /**
- * @covers ValueFormatters\TimeFormatter
+ * @covers DataValues\Time\Formatters\TimeFormatter
  *
  * @group ValueFormatters
  * @group DataValueExtensions
@@ -113,7 +114,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 	 * @return string
 	 */
 	protected function getFormatterClass() {
-		return 'ValueFormatters\TimeFormatter';
+		return 'DataValues\Time\Formatters\TimeFormatter';
 	}
 
 }

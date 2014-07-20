@@ -1,6 +1,9 @@
 <?php
 
-namespace ValueParsers;
+namespace DataValues\Time\Parsers;
+
+use ValueParsers\ParseException;
+use ValueParsers\StringValueParser;
 
 /**
  * @since 0.7

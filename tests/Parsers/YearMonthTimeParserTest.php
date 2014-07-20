@@ -1,13 +1,14 @@
 <?php
 
-namespace ValueParsers\Test;
+namespace DataValues\Time\Parsers\Tests;
 
-use DataValues\TimeValue;
-use ValueFormatters\TimeFormatter;
-use ValueParsers\YearMonthTimeParser;
+use DataValues\Time\Formatters\TimeFormatter;
+use DataValues\Time\Parsers\YearMonthTimeParser;
+use DataValues\Time\Values\TimeValue;
+use ValueParsers\Test\StringValueParserTest;
 
 /**
- * @covers ValueParsers\YearMonthTimeParser
+ * @covers DataValues\Time\Parsers\YearMonthTimeParser
  *
  * @group DataValue
  * @group DataValueExtensions
@@ -29,7 +30,7 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 	 * @return string
 	 */
 	protected function getParserClass() {
-		return 'ValueParsers\YearMonthTimeParser';
+		return 'DataValues\Time\Parsers\YearMonthTimeParser';
 	}
 
 	private function getValidMonthNameMaps() {

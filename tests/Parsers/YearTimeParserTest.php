@@ -1,14 +1,15 @@
 <?php
 
-namespace ValueParsers\Test;
+namespace DataValues\Time\Parsers\Tests;
 
-use DataValues\TimeValue;
-use ValueFormatters\TimeFormatter;
-use ValueParsers\EraParser;
-use ValueParsers\YearTimeParser;
+use DataValues\Time\Formatters\TimeFormatter;
+use DataValues\Time\Parsers\EraParser;
+use DataValues\Time\Parsers\YearTimeParser;
+use DataValues\Time\Values\TimeValue;
+use ValueParsers\Test\StringValueParserTest;
 
 /**
- * @covers ValueParsers\YearTimeParser
+ * @covers DataValues\Time\Parsers\YearTimeParser
  *
  * @group DataValue
  * @group DataValueExtensions
@@ -27,7 +28,7 @@ class YearTimeParserTest extends StringValueParserTest {
 	}
 
 	private function getMockEraParser() {
-		$mock = $this->getMockBuilder( 'ValueParsers\EraParser' )
+		$mock = $this->getMockBuilder( 'DataValues\Time\Parsers\EraParser' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
@@ -45,7 +46,7 @@ class YearTimeParserTest extends StringValueParserTest {
 	 * @return string
 	 */
 	protected function getParserClass() {
-		return 'ValueParsers\YearTimeParser';
+		return 'DataValues\Time\Parsers\YearTimeParser';
 	}
 
 	/**

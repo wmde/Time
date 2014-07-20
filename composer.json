@@ -30,10 +30,8 @@
 		"files" : [
 			"Time.php"
 		],
-		"psr-0": {
-			"DataValues\\": "src",
-			"ValueFormatters\\": "src",
-			"ValueParsers\\": "src"
+		"psr-4": {
+			"DataValues\\Time\\": "src"
 		}
 	}
 }

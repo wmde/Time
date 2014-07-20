@@ -1,11 +1,11 @@
 <?php
 
-namespace ValueParsers\Test;
+namespace DataValues\Time\Parsers\Tests;
 
-use ValueParsers\MonthNameUnlocalizer;
+use DataValues\Time\Parsers\MonthNameUnlocalizer;
 
 /**
- * @covers \ValueParsers\MonthNameUnlocalizer
+ * @covers DataValues\Time\Parsers\MonthNameUnlocalizer
  *
  * @group DataValue
  * @group DataValueExtensions

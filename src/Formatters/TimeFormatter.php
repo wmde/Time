@@ -1,9 +1,11 @@
 <?php
 
-namespace ValueFormatters;
+namespace DataValues\Time\Formatters;
 
-use DataValues\TimeValue;
+use DataValues\Time\Values\TimeValue;
 use InvalidArgumentException;
+use ValueFormatters\FormatterOptions;
+use ValueFormatters\ValueFormatterBase;
 
 /**
  * Time formatter.

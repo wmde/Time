@@ -1,10 +1,13 @@
 <?php
 
-namespace ValueParsers;
+namespace DataValues\Time\Parsers;
 
 use DataValues\IllegalValueException;
-use DataValues\TimeValue;
+use DataValues\Time\Values\TimeValue;
 use InvalidArgumentException;
+use ValueParsers\ParseException;
+use ValueParsers\ParserOptions;
+use ValueParsers\StringValueParser;
 
 /**
  * ValueParser that parses the string representation of a time.

@@ -1,10 +1,14 @@
 <?php
 
-namespace ValueParsers;
+namespace DataValues\Time\Parsers;
 
-use DataValues\TimeValue;
+use DataValues\Time\Values\TimeValue;
 use DateTime;
 use Exception;
+use ValueParsers\ParseException;
+use ValueParsers\ParserOptions;
+use ValueParsers\StringValueParser;
+use ValueParsers\ValueParser;
 
 /**
  * Time Parser using the DateTime object

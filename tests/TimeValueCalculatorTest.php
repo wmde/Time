@@ -1,12 +1,12 @@
 <?php
 
-namespace DataValues\Tests;
+namespace DataValues\Time\Tests;
 
-use DataValues\TimeValue;
-use DataValues\TimeValueCalculator;
+use DataValues\Time\TimeValueCalculator;
+use DataValues\Time\Values\TimeValue;
 
 /**
- * @covers DataValues\TimeValueCalculator
+ * @covers DataValues\Time\TimeValueCalculator
  *
  * @group DataValue
  * @group DataValueExtensions
@@ -32,7 +32,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	 * @return TimeValue
 	 */
 	private function getTimeValueMock( $time, $timezone = 0 ) {
-		$timeValue = $this->getMockBuilder( 'DataValues\TimeValue' )
+		$timeValue = $this->getMockBuilder( 'DataValues\Time\Values\TimeValue' )
 			->disableOriginalConstructor()
 			->getMock();
 

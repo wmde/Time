@@ -1,6 +1,10 @@
 <?php
 
-namespace DataValues;
+namespace DataValues\Time\Values;
+
+use DataValues\DataValueObject;
+use DataValues\IllegalValueException;
+use DataValues\MonolingualTextValue;
 
 /**
  * Class representing a time value.

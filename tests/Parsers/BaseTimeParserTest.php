@@ -1,15 +1,16 @@
 <?php
 
-namespace ValueParsers\Test;
+namespace DataValues\Time\Parsers\Tests;
 
-use DataValues\TimeValue;
-use ValueParsers\CalendarModelParser;
+use DataValues\Time\Formatters\TimeFormatter;
+use DataValues\Time\Parsers\BaseTimeParser;
+use DataValues\Time\Parsers\CalendarModelParser;
+use DataValues\Time\Values\TimeValue;
 use ValueParsers\ParserOptions;
-use ValueFormatters\TimeFormatter;
-use ValueParsers\BaseTimeParser;
+use ValueParsers\Test\ValueParserTestBase;
 
 /**
- * @covers \ValueParsers\BaseTimeParser
+ * @covers DataValues\Time\Parsers\BaseTimeParser
  *
  * @group DataValue
  * @group DataValueExtensions
@@ -24,7 +25,7 @@ class BaseTimeParserTest extends ValueParserTestBase {
 	 * @return string
 	 */
 	protected function getParserClass() {
-		return 'ValueParsers\BaseTimeParser';
+		return 'DataValues\Time\Parsers\BaseTimeParser';
 	}
 
 	/**

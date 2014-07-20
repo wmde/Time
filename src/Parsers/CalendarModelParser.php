@@ -1,8 +1,10 @@
 <?php
 
-namespace ValueParsers;
+namespace DataValues\Time\Parsers;
 
-use ValueFormatters\TimeFormatter;
+use DataValues\Time\Formatters\TimeFormatter;
+use ValueParsers\ParseException;
+use ValueParsers\StringValueParser;
 
 /**
  * ValueParser that parses the string representation of a calendar model.

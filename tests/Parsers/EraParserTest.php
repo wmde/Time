@@ -1,9 +1,11 @@
 <?php
 
-namespace ValueParsers\Test;
+namespace DataValues\Time\Parsers\Tests;
+
+use ValueParsers\Test\StringValueParserTest;
 
 /**
- * @covers ValueParsers\EraParser
+ * @covers DataValues\Time\Parsers\EraParser
  *
  * @group DataValue
  * @group DataValueExtensions
@@ -17,7 +19,7 @@ class EraParserTest extends StringValueParserTest {
 	 * @return string
 	 */
 	protected function getParserClass() {
-		return 'ValueParsers\EraParser';
+		return 'DataValues\Time\Parsers\EraParser';
 	}
 
 	/**

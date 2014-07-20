@@ -1,11 +1,12 @@
 <?php
 
-namespace DataValues\Tests;
+namespace DataValues\Time\Values\Tests;
 
-use DataValues\TimeValue;
+use DataValues\Tests\DataValueTest;
+use DataValues\Time\Values\TimeValue;
 
 /**
- * @covers DataValues\TimeValue
+ * @covers DataValues\Time\Values\TimeValue
  *
  * @group DataValue
  * @group DataValueExtensions
@@ -23,7 +24,7 @@ class TimeValueTest extends DataValueTest {
 	 * @return string
 	 */
 	public function getClass() {
-		return 'DataValues\TimeValue';
+		return 'DataValues\Time\Values\TimeValue';
 	}
 
 	public function validConstructorArgumentsProvider() {

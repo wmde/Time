@@ -1,7 +1,8 @@
 <?php
 
-namespace DataValues;
+namespace DataValues\Time;
 
+use DataValues\Time\Values\TimeValue;
 use InvalidArgumentException;
 
 /**

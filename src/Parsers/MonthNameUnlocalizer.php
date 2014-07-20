@@ -1,6 +1,6 @@
 <?php
 
-namespace ValueParsers;
+namespace DataValues\Time\Parsers;
 
 use InvalidArgumentException;
 

@@ -1,9 +1,12 @@
 <?php
 
-namespace ValueParsers;
+namespace DataValues\Time\Parsers;
 
-use DataValues\TimeValue;
+use DataValues\Time\Values\TimeValue;
 use InvalidArgumentException;
+use ValueParsers\ParseException;
+use ValueParsers\ParserOptions;
+use ValueParsers\StringValueParser;
 
 /**
  * @since 0.7

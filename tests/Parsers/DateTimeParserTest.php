@@ -1,14 +1,15 @@
 <?php
 
-namespace ValueParsers\Test;
+namespace DataValues\Time\Parsers\Tests;
 
-use DataValues\TimeValue;
-use ValueFormatters\TimeFormatter;
-use ValueParsers\DateTimeParser;
-use ValueParsers\EraParser;
+use DataValues\Time\Formatters\TimeFormatter;
+use DataValues\Time\Parsers\DateTimeParser;
+use DataValues\Time\Parsers\EraParser;
+use DataValues\Time\Values\TimeValue;
+use ValueParsers\Test\StringValueParserTest;
 
 /**
- * @covers ValueParsers\DateTimeParser
+ * @covers DataValues\Time\Parsers\DateTimeParser
  *
  * @group DataValue
  * @group DataValueExtensions
@@ -27,7 +28,7 @@ class DateTimeParserTest extends StringValueParserTest {
 	}
 
 	private function getMockEraParser() {
-		$mock = $this->getMockBuilder( 'ValueParsers\EraParser' )
+		$mock = $this->getMockBuilder( 'DataValues\Time\Parsers\EraParser' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
@@ -48,7 +49,7 @@ class DateTimeParserTest extends StringValueParserTest {
 	}
 
 	private function getMockMonthUnlocalizer() {
-		$mock = $this->getMockBuilder( 'ValueParsers\MonthNameUnlocalizer' )
+		$mock = $this->getMockBuilder( 'DataValues\Time\Parsers\MonthNameUnlocalizer' )
 			->disableOriginalConstructor()
 			->getMock();
 		$mock->expects( $this->any() )
@@ -65,7 +66,7 @@ class DateTimeParserTest extends StringValueParserTest {
 	 * @return string
 	 */
 	protected function getParserClass() {
-		return 'ValueParsers\DateTimeParser';
+		return 'DataValues\Time\Parsers\DateTimeParser';
 	}
 
 	/**
