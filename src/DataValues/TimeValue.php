@@ -33,59 +33,47 @@ class TimeValue extends DataValueObject {
 	 * Point in time, represented per ISO8601.
 	 * The year always having 11 digits, the date always be signed, in the format +00000002013-01-01T00:00:00Z
 	 *
-	 * @since 0.1
-	 *
 	 * @var string
 	 */
-	protected $time;
+	private $time;
 
 	/**
 	 * Unit used for the $after and $before values.
 	 *
-	 * @since 0.1
-	 *
 	 * @var int
 	 */
-	protected $precision;
+	private $precision;
 
 	/**
 	 * If the date is uncertain, how many units after the given time could it be?
 	 * The unit is given by the precision.
 	 *
-	 * @since 0.1
-	 *
 	 * @var int
 	 */
-	protected $after;
+	private $after;
 
 	/**
 	 * If the date is uncertain, how many units before the given time could it be?
 	 * The unit is given by the precision.
 	 *
-	 * @since 0.1
-	 *
 	 * @var int
 	 */
-	protected $before;
+	private $before;
 
 	/**
 	 * Timezone information as an offset from UTC in minutes.
 	 *
-	 * @since 0.1
-	 *
 	 * @var int
 	 */
-	protected $timezone;
+	private $timezone;
 
 	/**
 	 * URI identifying the calendar model that should be used to display this time value.
 	 * Note that time is always saved in proleptic Gregorian, this URI states how the value should be displayed.
 	 *
-	 * @since 0.1
-	 *
 	 * @var string
 	 */
-	protected $calendarModel;
+	private $calendarModel;
 
 	/**
 	 * @since 0.1
@@ -312,6 +300,10 @@ class TimeValue extends DataValueObject {
 			$data['precision'],
 			$data['calendarmodel']
 		);
+	}
+
+	public function __toString() {
+		return $this->time;
 	}
 
 }
