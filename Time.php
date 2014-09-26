@@ -27,5 +27,6 @@ if ( defined( 'MEDIAWIKI' ) ) {
 		),
 		'url' => 'https://github.com/DataValues/Time',
 		'description' => 'Time value objects, parsers and formatters',
+		'license-name' => 'GPL-2.0+'
 	);
 }
