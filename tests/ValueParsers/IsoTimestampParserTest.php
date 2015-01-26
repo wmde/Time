@@ -330,7 +330,6 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 					TimeValue::PRECISION_DAY,
 					TimeParser::CALENDAR_GREGORIAN
 				),
-				$noPrecOpts,
 			),
 
 			// Optional time zone
@@ -341,7 +340,6 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 					TimeValue::PRECISION_DAY,
 					TimeParser::CALENDAR_GREGORIAN
 				),
-				$noPrecOpts,
 			),
 
 			// Optional second
@@ -352,7 +350,6 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 					TimeValue::PRECISION_DAY,
 					TimeParser::CALENDAR_GREGORIAN
 				),
-				$noPrecOpts,
 			),
 
 			// Optional hour and minute
@@ -363,7 +360,6 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 					TimeValue::PRECISION_DAY,
 					TimeParser::CALENDAR_GREGORIAN
 				),
-				$noPrecOpts,
 			),
 
 			// Day zero
@@ -374,7 +370,6 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 					TimeValue::PRECISION_MONTH,
 					TimeParser::CALENDAR_GREGORIAN
 				),
-				$noPrecOpts,
 			),
 
 			// Month zero
@@ -385,7 +380,16 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 					TimeValue::PRECISION_YEAR,
 					TimeParser::CALENDAR_GREGORIAN
 				),
-				$noPrecOpts,
+			),
+
+			// Leap seconds are a valid concept
+			'+2015-01-01T00:00:60Z' => array(
+				new TimeValue(
+					'+0000000000002015-01-01T00:00:60Z',
+					0, 0, 0,
+					TimeValue::PRECISION_SECOND,
+					TimeParser::CALENDAR_GREGORIAN
+				),
 			),
 
 			// Tests for correct precision when a bad precision is passed through the opts
@@ -431,6 +435,10 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			array(),
 			'foooooooooo',
 			'1 June 2014',
+			'+2015-13-01T00:00:00Z',
+			'+2015-01-32T00:00:00Z',
+			'+2015-01-01T24:00:00Z',
+			'+2015-01-01T00:60:00Z',
 			'1234567890873',
 			2134567890
 		);

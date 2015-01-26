@@ -93,6 +93,14 @@ class IsoTimestampParser extends StringValueParser {
 
 		if ( !preg_match( $pattern, $value, $matches ) ) {
 			throw new ParseException( 'Malformed time', $value, self::FORMAT_NAME );
+		} elseif ( $matches[3] > 12 ) {
+			throw new ParseException( 'Month out of range', $value, self::FORMAT_NAME );
+		} elseif ( $matches[4] > 31 ) {
+			throw new ParseException( 'Day out of range', $value, self::FORMAT_NAME );
+		} elseif ( $matches[5] > 23 ) {
+			throw new ParseException( 'Hour out of range', $value, self::FORMAT_NAME );
+		} elseif ( $matches[6] > 59 ) {
+			throw new ParseException( 'Minute out of range', $value, self::FORMAT_NAME );
 		}
 
 		return array_slice( $matches, 1 );
