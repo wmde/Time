@@ -322,6 +322,72 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				),
 			),
 
+			// Optional sign character
+			'2015-01-01T00:00:00Z' => array(
+				new TimeValue(
+					'+0000000000002015-01-01T00:00:00Z',
+					0, 0, 0,
+					TimeValue::PRECISION_DAY,
+					TimeParser::CALENDAR_GREGORIAN
+				),
+				$noPrecOpts,
+			),
+
+			// Optional time zone
+			'2015-01-01T00:00:00' => array(
+				new TimeValue(
+					'+0000000000002015-01-01T00:00:00Z',
+					0, 0, 0,
+					TimeValue::PRECISION_DAY,
+					TimeParser::CALENDAR_GREGORIAN
+				),
+				$noPrecOpts,
+			),
+
+			// Optional second
+			'2015-01-01T00:00' => array(
+				new TimeValue(
+					'+0000000000002015-01-01T00:00:00Z',
+					0, 0, 0,
+					TimeValue::PRECISION_DAY,
+					TimeParser::CALENDAR_GREGORIAN
+				),
+				$noPrecOpts,
+			),
+
+			// Optional hour and minute
+			'2015-01-01' => array(
+				new TimeValue(
+					'+0000000000002015-01-01T00:00:00Z',
+					0, 0, 0,
+					TimeValue::PRECISION_DAY,
+					TimeParser::CALENDAR_GREGORIAN
+				),
+				$noPrecOpts,
+			),
+
+			// Day zero
+			'2015-01-00' => array(
+				new TimeValue(
+					'+0000000000002015-01-00T00:00:00Z',
+					0, 0, 0,
+					TimeValue::PRECISION_MONTH,
+					TimeParser::CALENDAR_GREGORIAN
+				),
+				$noPrecOpts,
+			),
+
+			// Month zero
+			'2015-00-00' => array(
+				new TimeValue(
+					'+0000000000002015-00-00T00:00:00Z',
+					0, 0, 0,
+					TimeValue::PRECISION_YEAR,
+					TimeParser::CALENDAR_GREGORIAN
+				),
+				$noPrecOpts,
+			),
+
 			// Tests for correct precision when a bad precision is passed through the opts
 			// @see https://bugzilla.wikimedia.org/show_bug.cgi?id=62730
 			'+0000000000000012-12-00T00:00:00Z' => array(

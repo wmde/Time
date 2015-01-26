@@ -16,6 +16,7 @@ use InvalidArgumentException;
  *
  * @licence GNU GPL v2+
  * @author Adam Shorland
+ * @author Thiemo Mättig
  */
 class IsoTimestampParser extends StringValueParser {
 
@@ -62,65 +63,66 @@ class IsoTimestampParser extends StringValueParser {
 		}
 
 		$timeParts = $this->splitTimeString( $value );
-		$timeParts['year'] = $this->padYear( $timeParts['year'] );
+		// Pad sign with 1 plus, year with 16 zeros and hour, minute and second with 2 zeros
+		$time = vsprintf( '%\'+1s%016s-%s-%sT%02s:%02s:%02sZ', $timeParts );
+		$precision = $this->getPrecision( $timeParts );
+		$calendarModel = $this->getCalendarModel( $timeParts[7] );
 
-		$calendarOpt = $this->getOption( self::OPT_CALENDAR );
-		$calendarModelRegex = '/(' . preg_quote( self::CALENDAR_GREGORIAN, '/' ). '|' . preg_quote( self::CALENDAR_JULIAN, '/' ) . ')/i';
-
-		if ( $timeParts['calendar'] === '' && preg_match( $calendarModelRegex, $calendarOpt ) ) {
-			$timeParts['calendar'] = $calendarOpt;
-		} elseif ( $timeParts['calendar'] !== '' ) {
-			$timeParts['calendar'] = $this->calendarModelParser->parse( $timeParts['calendar'] );
-		} else {
-			$timeParts['calendar'] = self::CALENDAR_GREGORIAN;
-		}
-
-		$precisionOpt = $this->getOption( self::OPT_PRECISION );
-		$precisionFromTime = $this->getPrecisionFromTimeParts( $timeParts );
-		if ( is_int( $precisionOpt ) && $precisionOpt <= $precisionFromTime ) {
-			$precision = $precisionOpt;
-		} else {
-			$precision = $precisionFromTime;
-		}
-
-		$time = $this->getTimeStringFromParts( $timeParts );
 		try {
-			return new TimeValue( $time, 0, 0, 0, $precision, $timeParts['calendar'] );
+			return new TimeValue( $time, 0, 0, 0, $precision, $calendarModel );
 		} catch ( IllegalValueException $ex ) {
 			throw new ParseException( $ex->getMessage(), $value, self::FORMAT_NAME );
 		}
 	}
 
 	/**
-	 * Pads the given year to force year to have 16 digits
+	 * @param string $value
 	 *
-	 * @param string $year in a format such as 0002013
-	 *
-	 * @return string
+	 * @throws ParseException
+	 * @return string[] Array with index 0 => sign, 1 => year, 2 => month, 3 => day, 4 => hour,
+	 * 5 => minute, 6 => second and 7 => calendar model.
 	 */
-	private function padYear( $year ) {
-		return str_pad( $year, 16, '0', STR_PAD_LEFT );
+	private function splitTimeString( $value ) {
+		$pattern = '@^\s*'                                                //leading spaces
+			. '([-+]?)\s*'                                                //sign
+			. '(\d{1,16})-(\d{2})-(\d{2})'                                //year, month and day
+			. '(?:T(\d{2}):(\d{2})(?::(\d{2}))?)?'                        //hour, minute and second
+			. 'Z?'                                                        //time zone
+			. '\s*\(?\s*' . CalendarModelParser::MODEL_PATTERN . '\s*\)?' //calendar model
+			. '\s*$@iu';                                                  //trailing spaces
+
+		if ( !preg_match( $pattern, $value, $matches ) ) {
+			throw new ParseException( 'Malformed time', $value, self::FORMAT_NAME );
+		}
+
+		return array_slice( $matches, 1 );
 	}
 
 	/**
-	 * @param string[] $timeParts Array with the following keys.
-	 *            sign, year, month, day, hour, minute, second, calendar
+	 * @param string[] $timeParts Array with index 0 => sign, 1 => year, 2 => month, etc.
 	 *
 	 * @return int One of the TimeValue::PRECISION_... constants.
 	 */
-	private function getPrecisionFromTimeParts( $timeParts ) {
-		if ( $timeParts['second'] !== '00' ) {
+	private function getPrecision( array $timeParts ) {
+		if ( intval( $timeParts[6] ) > 0 ) {
 			$precision = TimeValue::PRECISION_SECOND;
-		} elseif ( $timeParts['minute'] !== '00' ) {
+		} elseif ( intval( $timeParts[5] ) > 0 ) {
 			$precision = TimeValue::PRECISION_MINUTE;
-		} elseif ( $timeParts['hour'] !== '00' ) {
+		} elseif ( intval( $timeParts[4] ) > 0 ) {
 			$precision = TimeValue::PRECISION_HOUR;
-		} elseif ( $timeParts['day'] !== '00' ) {
+		} elseif ( intval( $timeParts[3] ) > 0 ) {
 			$precision = TimeValue::PRECISION_DAY;
-		} elseif ( $timeParts['month'] !== '00' ) {
+		} elseif ( intval( $timeParts[2] ) > 0 ) {
 			$precision = TimeValue::PRECISION_MONTH;
 		} else {
-			$precision = $this->getPrecisionFromYear( $timeParts['year'] );
+			$precision = $this->getPrecisionFromYear( $timeParts[1] );
+		}
+
+		$option = $this->getOption( self::OPT_PRECISION );
+
+		// It's impossible to increase precision via option, e.g. to month if no month is given
+		if ( is_int( $option ) && $option <= $precision ) {
+			return $option;
 		}
 
 		return $precision;
@@ -129,7 +131,7 @@ class IsoTimestampParser extends StringValueParser {
 	/**
 	 * @param string $year
 	 *
-	 * @return int precision
+	 * @return int One of the TimeValue::PRECISION_... constants.
 	 */
 	private function getPrecisionFromYear( $year ) {
 		// default to year precision for range 4000 BC to 4000
@@ -139,7 +141,7 @@ class IsoTimestampParser extends StringValueParser {
 
 		$rightZeros = strlen( $year ) - strlen( rtrim( $year, '0' ) );
 		$precision = TimeValue::PRECISION_YEAR - $rightZeros;
-		if( $precision < TimeValue::PRECISION_Ga ) {
+		if ( $precision < TimeValue::PRECISION_Ga ) {
 			$precision = TimeValue::PRECISION_Ga;
 		}
 
@@ -147,54 +149,22 @@ class IsoTimestampParser extends StringValueParser {
 	}
 
 	/**
-	 * @param string $value
+	 * @param string $calendarModelName
 	 *
-	 * @throws ParseException
-	 * @return string[] Array with the following keys.
-	 *            sign, year, month, day, hour, minute, second, calendar
-	 */
-	private function splitTimeString( $value ) {
-		$pattern = '@^'
-			. '\s*' . '([\+\-]?)'
-			. '\s*' . '(\d{1,16})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z'
-			. '\s*\(?\s*' . CalendarModelParser::MODEL_PATTERN . '\s*\)?'
-			. '\s*$@iu';
-
-		if ( !preg_match( $pattern, $value, $groups ) ) {
-			throw new ParseException( 'Malformed time', $value, self::FORMAT_NAME );
-		}
-
-		return array(
-			'sign' => $groups[1],
-			'year' => $groups[2],
-			'month' => $groups[3],
-			'day' => $groups[4],
-			'hour' => $groups[5],
-			'minute' => $groups[6],
-			'second' => $groups[7],
-			'calendar' => $groups[8],
-		);
-	}
-
-	/**
-	 * @param string[] $timeParts Array with the following keys.
-	 *            sign, year, month, day, hour, minute, second, calendar
-	 *
-	 * @throws InvalidArgumentException
 	 * @return string
 	 */
-	private function getTimeStringFromParts( array $timeParts ) {
-		if ( array_keys( $timeParts ) !== array( 'sign', 'year', 'month', 'day', 'hour', 'minute', 'second', 'calendar' ) ) {
-			throw new InvalidArgumentException( 'Time string can not be created with missing $timeParts keys' );
+	private function getCalendarModel( $calendarModelName ) {
+		if ( !empty( $calendarModelName ) ) {
+			return $this->calendarModelParser->parse( $calendarModelName );
 		}
-		return $timeParts['sign']
-			. $timeParts['year'] . '-'
-			. $timeParts['month'] . '-'
-			. $timeParts['day'] . 'T'
-			. $timeParts['hour'] . ':'
-			. $timeParts['minute'] . ':'
-			. $timeParts['second'] . 'Z';
 
+		// The calendar model is an URI and URIs can't be case-insensitive
+		switch ( $this->getOption( self::OPT_CALENDAR ) ) {
+			case self::CALENDAR_JULIAN:
+				return self::CALENDAR_JULIAN;
+			default:
+				return self::CALENDAR_GREGORIAN;
+		}
 	}
 
 }
