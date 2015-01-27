@@ -4,7 +4,7 @@ namespace DataValues;
 
 /**
  * Class representing a time value.
- * @see https://meta.wikimedia.org/wiki/Wikidata/Data_model#Dates_and_times
+ * @see https://www.mediawiki.org/wiki/Wikibase/DataModel#Dates_and_times
  *
  * @since 0.1
  *
@@ -30,8 +30,8 @@ class TimeValue extends DataValueObject {
 	const PRECISION_SECOND = 14;
 
 	/**
-	 * Point in time, represented per ISO8601.
-	 * The year always having 11 digits, the date always be signed, in the format +00000002013-01-01T00:00:00Z
+	 * Point in time, represented per ISO8601, in the format +0000000000002013-01-01T00:00:00Z.
+	 * The year must be signed. It may be padded with zero characters to have up to 16 digits.
 	 *
 	 * @var string
 	 */
@@ -92,11 +92,12 @@ class TimeValue extends DataValueObject {
 			throw new IllegalValueException( '$time needs to be a string' );
 		}
 
+		// Leap seconds are a valid concept
 		if ( !preg_match( '!^[-+]\d{1,16}-(0\d|1[012])-([012]\d|3[01])T([01]\d|2[0123]):[0-5]\d:([0-5]\d|6[012])Z$!', $time ) ) {
 			throw new IllegalValueException( '$time needs to be a valid ISO 8601 date, given ' . $time );
 		}
 
-		if ( !is_integer( $timezone ) ) {
+		if ( !is_int( $timezone ) ) {
 			throw new IllegalValueException( '$timezone needs to be an integer' );
 		}
 
@@ -104,15 +105,15 @@ class TimeValue extends DataValueObject {
 			throw new IllegalValueException( '$timezone out of allowed bounds' );
 		}
 
-		if ( !is_integer( $before ) || $before < 0 ) {
+		if ( !is_int( $before ) || $before < 0 ) {
 			throw new IllegalValueException( '$before needs to be an unsigned integer' );
 		}
 
-		if ( !is_integer( $after ) || $after < 0 ) {
+		if ( !is_int( $after ) || $after < 0 ) {
 			throw new IllegalValueException( '$after needs to be an unsigned integer' );
 		}
 
-		if ( !is_integer( $precision ) ) {
+		if ( !is_int( $precision ) ) {
 			throw new IllegalValueException( '$precision needs to be an integer' );
 		}
 
@@ -123,8 +124,6 @@ class TimeValue extends DataValueObject {
 		if ( !is_string( $calendarModel ) ) { //XXX: enforce IRI? Or at least a size limit?
 			throw new IllegalValueException( '$calendarModel needs to be a string' );
 		}
-
-		// Can haz scalar type hints plox? ^^
 
 		$this->time = $time;
 		$this->timezone = $timezone;
