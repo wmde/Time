@@ -3,10 +3,9 @@
 namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
+use ValueFormatters\TimeFormatter;
 use ValueParsers\CalendarModelParser;
 use ValueParsers\ParserOptions;
-use ValueParsers\Test\ValueParserTestBase;
-use ValueFormatters\TimeFormatter;
 use ValueParsers\TimeParser;
 
 /**
