@@ -251,7 +251,6 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @param string $value
 	 *
-	 * @return MonolingualTextValue
 	 * @throws IllegalValueException
 	 */
 	public function unserialize( $value ) {
