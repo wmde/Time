@@ -35,7 +35,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * Gregorian and Julian dates use the same YMD ordered format, resembling ISO 8601, e.g.
 	 * +2013-01-01T00:00:00Z. In this format the year is always signed and padded with zero
-	 * characters to have between 1 and 16 digits. Month and day can be zero, indicating they are
+	 * characters to have between 4 and 16 digits. Month and day can be zero, indicating they are
 	 * unknown. The timezone suffix Z is meaningless and must be ignored. Use $timezone instead.
 	 *
 	 * @see $timezone
@@ -102,7 +102,11 @@ class TimeValue extends DataValueObject {
 		}
 
 		// Leap seconds are a valid concept
-		if ( !preg_match( '!^[-+]\d{1,16}-(0\d|1[012])-([012]\d|3[01])T([01]\d|2[0123]):[0-5]\d:([0-5]\d|6[012])Z$!', $time ) ) {
+		if ( !preg_match(
+			'/^([-+])(\d{1,16})(-(?:0\d|1[012])-(?:[012]\d|3[01])T(?:[01]\d|2[0-3]):[0-5]\d:(?:[0-5]\d|6[012])Z)$/',
+			$time,
+			$matches
+		) ) {
 			throw new IllegalValueException( '$time must be a YMD string resembling ISO 8601, given ' . $time );
 		}
 
@@ -135,7 +139,10 @@ class TimeValue extends DataValueObject {
 			throw new IllegalValueException( '$calendarModel must be a non-empty string' );
 		}
 
-		$this->time = $time;
+		$year = $matches[2];
+		$year = str_pad( $year, 4, '0', STR_PAD_LEFT );
+
+		$this->time = $matches[1] . $year . $matches[3];
 		$this->timezone = $timezone;
 		$this->before = $before;
 		$this->after = $after;

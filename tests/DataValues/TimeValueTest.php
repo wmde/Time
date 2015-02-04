@@ -12,6 +12,7 @@ use DataValues\TimeValue;
  *
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @author Thiemo Mättig
  */
 class TimeValueTest extends DataValueTest {
 
@@ -66,7 +67,7 @@ class TimeValueTest extends DataValueTest {
 		);
 
 		$argLists[] = array(
-			'-5-01-01T00:00:00Z',
+			'-0005-01-01T00:00:00Z',
 			0,
 			0,
 			0,
@@ -224,6 +225,13 @@ class TimeValueTest extends DataValueTest {
 			'http://nyan.cat/original.php',
 		);
 
+		$argLists[] = array(
+			'+00000000000000001-01-01T00:00:00Z',
+			0, 0, 0,
+			TimeValue::PRECISION_DAY,
+			'http://nyan.cat/original.php',
+		);
+
 		return $argLists;
 	}
 
@@ -288,6 +296,31 @@ class TimeValueTest extends DataValueTest {
 	 */
 	public function testGetValue( TimeValue $time, array $arguments ) {
 		$this->assertTrue( $time->equals( $time->getValue() ) );
+	}
+
+	/**
+	 * @dataProvider unpaddedYearsProvider
+	 * @param string $year
+	 * @param string $expected
+	 */
+	public function testGivenUnpaddedYear_yearIsPadded( $year, $expected ) {
+		$timeValue = new TimeValue(
+			$year . '-01-01T00:00:00Z',
+			0, 0, 0,
+			TimeValue::PRECISION_DAY,
+			'Stardate'
+		);
+		$this->assertSame( $expected . '-01-01T00:00:00Z', $timeValue->getTime() );
+	}
+
+	public function unpaddedYearsProvider() {
+		return array(
+			array( '+1', '+0001' ),
+			array( '-10', '-0010' ),
+			array( '+2015', '+2015' ),
+			array( '+0000000000000001', '+0000000000000001' ),
+			array( '+9999999999999999', '+9999999999999999' ),
+		);
 	}
 
 }
