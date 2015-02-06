@@ -362,6 +362,19 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				),
 			),
 
+			// Years < 59 require at least hour and minute
+			'1-01-01T00:00' => array(
+				TimeValue::newFromArray( array(
+					'time' => '+0000000000000001-01-01T00:00:00Z',
+					'timezone' => 0,
+					'before' => 0,
+					'after' => 0,
+					'precision' => TimeValue::PRECISION_DAY,
+					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
+				) ),
+				$noPrecOpts,
+			),
+
 			// Day zero
 			'2015-01-00' => array(
 				new TimeValue(
@@ -435,10 +448,13 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			array(),
 			'foooooooooo',
 			'1 June 2014',
+			'59-01-01',
+			'+59-01-01',
 			'+2015-13-01T00:00:00Z',
 			'+2015-01-32T00:00:00Z',
 			'+2015-01-01T24:00:00Z',
 			'+2015-01-01T00:60:00Z',
+			'+2015-01-01T00:00:63Z',
 			'1234567890873',
 			2134567890
 		);
