@@ -31,8 +31,15 @@ class TimeValue extends DataValueObject {
 	const PRECISION_SECOND = 14;
 
 	/**
-	 * Point in time, represented per ISO8601, in the format +0000000000002013-01-01T00:00:00Z.
-	 * The year must be signed. It may be padded with zero characters to have up to 16 digits.
+	 * Timestamp describing a point in time. The actual format depends on the calendar model.
+	 *
+	 * Gregorian and Julian dates use the same YMD ordered format, resembling ISO 8601, e.g.
+	 * +2013-01-01T00:00:00Z. In this format the year is always signed and padded with zero
+	 * characters to have between 1 and 16 digits. Month and day can be zero, indicating they are
+	 * unknown. The timezone suffix Z is meaningless and must be ignored. Use $timezone instead.
+	 *
+	 * @see $timezone
+	 * @see $calendarModel
 	 *
 	 * @var string
 	 */
@@ -69,8 +76,8 @@ class TimeValue extends DataValueObject {
 	private $timezone;
 
 	/**
-	 * URI identifying the calendar model that should be used to display this time value.
-	 * Note that time is always saved in proleptic Gregorian, this URI states how the value should be displayed.
+	 * URI identifying the calendar model. The actual timestamp should be in this calendar model,
+	 * but note that there is nothing this class can do to enforce this convention.
 	 *
 	 * @var string URI
 	 */
@@ -79,7 +86,7 @@ class TimeValue extends DataValueObject {
 	/**
 	 * @since 0.1
 	 *
-	 * @param string $time an ISO 8601 date and time
+	 * @param string $time timestamp in a format depending on the calendar model
 	 * @param int $timezone offset from UTC in minutes
 	 * @param int $before number of units given by the precision
 	 * @param int $after number of units given by the precision
@@ -95,7 +102,7 @@ class TimeValue extends DataValueObject {
 
 		// Leap seconds are a valid concept
 		if ( !preg_match( '!^[-+]\d{1,16}-(0\d|1[012])-([012]\d|3[01])T([01]\d|2[0123]):[0-5]\d:([0-5]\d|6[012])Z$!', $time ) ) {
-			throw new IllegalValueException( '$time needs to be a valid ISO 8601 date, given ' . $time );
+			throw new IllegalValueException( '$time must be a YMD string resembling ISO 8601, given ' . $time );
 		}
 
 		if ( !is_int( $timezone ) ) {
