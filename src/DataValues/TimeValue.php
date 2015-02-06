@@ -10,6 +10,7 @@ namespace DataValues;
  *
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @author Thiemo Mättig
  */
 class TimeValue extends DataValueObject {
 
@@ -48,7 +49,7 @@ class TimeValue extends DataValueObject {
 	 * If the date is uncertain, how many units after the given time could it be?
 	 * The unit is given by the precision.
 	 *
-	 * @var int
+	 * @var int Amount
 	 */
 	private $after;
 
@@ -56,14 +57,14 @@ class TimeValue extends DataValueObject {
 	 * If the date is uncertain, how many units before the given time could it be?
 	 * The unit is given by the precision.
 	 *
-	 * @var int
+	 * @var int Amount
 	 */
 	private $before;
 
 	/**
 	 * Timezone information as an offset from UTC in minutes.
 	 *
-	 * @var int
+	 * @var int Minutes
 	 */
 	private $timezone;
 
@@ -71,7 +72,7 @@ class TimeValue extends DataValueObject {
 	 * URI identifying the calendar model that should be used to display this time value.
 	 * Note that time is always saved in proleptic Gregorian, this URI states how the value should be displayed.
 	 *
-	 * @var string
+	 * @var string URI
 	 */
 	private $calendarModel;
 
@@ -149,7 +150,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return string
+	 * @return string URI
 	 */
 	public function getCalendarModel() {
 		return $this->calendarModel;
@@ -160,7 +161,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return int
+	 * @return int Amount
 	 */
 	public function getBefore() {
 		return $this->before;
@@ -171,7 +172,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return int
+	 * @return int Amount
 	 */
 	public function getAfter() {
 		return $this->after;
@@ -193,7 +194,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return int
+	 * @return int Minutes
 	 */
 	public function getTimezone() {
 		return $this->timezone;
@@ -215,7 +216,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return string|float|int
+	 * @return string
 	 */
 	public function getSortKey() {
 		return $this->time;
@@ -263,7 +264,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return mixed
+	 * @return array
 	 */
 	public function getArrayValue() {
 		return array(
