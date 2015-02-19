@@ -84,7 +84,7 @@ class IsoTimestampParser extends StringValueParser {
 	 */
 	private function splitTimeString( $value ) {
 		$pattern = '@^\s*'                                                //leading spaces
-			. '([-+]?)\s*'                                                //sign
+			. "([-+\xE2\x88\x92]?)\\s*"                                   //sign
 			. '(\d{1,16})-(\d{2})-(\d{2})'                                //year, month and day
 			. '(?:T(\d{2}):(\d{2})(?::(\d{2}))?)?'                        //hour, minute and second
 			. 'Z?'                                                        //time zone
@@ -108,7 +108,11 @@ class IsoTimestampParser extends StringValueParser {
 			throw new ParseException( 'Second out of range', $value, self::FORMAT_NAME );
 		}
 
-		return array_slice( $matches, 1 );
+
+		$matches = array_slice( $matches, 1 );
+		$matches[0] = str_replace( "\xE2\x88\x92", '-', $matches[0] );
+
+		return $matches;
 	}
 
 	/**

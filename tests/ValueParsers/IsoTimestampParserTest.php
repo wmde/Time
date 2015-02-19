@@ -342,6 +342,17 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				),
 			),
 
+			// Actual minus character from Unicode; roundtrip with TimeDetailsFormatter
+			"\xE2\x88\x922015-01-01T00:00:00" => array(
+				new TimeValue(
+					'-0000000000002015-01-01T00:00:00Z',
+					0, 0, 0,
+					TimeValue::PRECISION_DAY,
+					TimeFormatter::CALENDAR_GREGORIAN
+				),
+				$noPrecOpts,
+			),
+
 			// Optional second
 			'2015-01-01T00:00' => array(
 				new TimeValue(
