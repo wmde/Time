@@ -348,7 +348,7 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 					'-0000000000002015-01-01T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_DAY,
-					TimeFormatter::CALENDAR_GREGORIAN
+					TimeParser::CALENDAR_GREGORIAN
 				),
 				$noPrecOpts,
 			),
@@ -375,14 +375,12 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 
 			// Years < 59 require at least hour and minute
 			'1-01-01T00:00' => array(
-				TimeValue::newFromArray( array(
-					'time' => '+0000000000000001-01-01T00:00:00Z',
-					'timezone' => 0,
-					'before' => 0,
-					'after' => 0,
-					'precision' => TimeValue::PRECISION_DAY,
-					'calendarmodel' => TimeFormatter::CALENDAR_GREGORIAN
-				) ),
+				new TimeValue(
+					'+0000000000000001-01-01T00:00:00Z',
+					0, 0, 0,
+					TimeValue::PRECISION_DAY,
+					TimeParser::CALENDAR_GREGORIAN
+				),
 				$noPrecOpts,
 			),
 
