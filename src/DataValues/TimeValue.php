@@ -89,8 +89,8 @@ class TimeValue extends DataValueObject {
 	 * @throws IllegalValueException
 	 */
 	public function __construct( $time, $timezone, $before, $after, $precision, $calendarModel ) {
-		if ( !is_string( $time ) ) {
-			throw new IllegalValueException( '$time needs to be a string' );
+		if ( !is_string( $time ) || $time === '' ) {
+			throw new IllegalValueException( '$time must be a non-empty string' );
 		}
 
 		// Leap seconds are a valid concept
@@ -99,7 +99,7 @@ class TimeValue extends DataValueObject {
 		}
 
 		if ( !is_int( $timezone ) ) {
-			throw new IllegalValueException( '$timezone needs to be an integer' );
+			throw new IllegalValueException( '$timezone must be an integer' );
 		}
 
 		if ( $timezone < -12 * 3600 || $timezone > 14 * 3600 ) {
@@ -107,23 +107,24 @@ class TimeValue extends DataValueObject {
 		}
 
 		if ( !is_int( $before ) || $before < 0 ) {
-			throw new IllegalValueException( '$before needs to be an unsigned integer' );
+			throw new IllegalValueException( '$before must be an unsigned integer' );
 		}
 
 		if ( !is_int( $after ) || $after < 0 ) {
-			throw new IllegalValueException( '$after needs to be an unsigned integer' );
+			throw new IllegalValueException( '$after must be an unsigned integer' );
 		}
 
 		if ( !is_int( $precision ) ) {
-			throw new IllegalValueException( '$precision needs to be an integer' );
+			throw new IllegalValueException( '$precision must be an integer' );
 		}
 
 		if ( $precision < self::PRECISION_Ga || $precision > self::PRECISION_SECOND ) {
 			throw new IllegalValueException( '$precision out of allowed bounds' );
 		}
 
-		if ( !is_string( $calendarModel ) ) { //XXX: enforce IRI? Or at least a size limit?
-			throw new IllegalValueException( '$calendarModel needs to be a string' );
+		// XXX: Enforce an IRI? Or at least a size limit?
+		if ( !is_string( $calendarModel ) || $calendarModel === '' ) {
+			throw new IllegalValueException( '$calendarModel must be a non-empty string' );
 		}
 
 		$this->time = $time;
