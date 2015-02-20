@@ -39,7 +39,8 @@ class TimeValue extends DataValueObject {
 	private $time;
 
 	/**
-	 * Unit used for the $after and $before values.
+	 * Unit used for the $after and $before values. Use one of the TimeValue::PRECISION_...
+	 * constants.
 	 *
 	 * @var int
 	 */
@@ -83,8 +84,8 @@ class TimeValue extends DataValueObject {
 	 * @param int $timezone offset from UTC in minutes
 	 * @param int $before number of units given by the precision
 	 * @param int $after number of units given by the precision
-	 * @param int $precision one of the PRECISION_... constants
-	 * @param string $calendarModel a URI identifying the calendar model
+	 * @param int $precision one of the TimeValue::PRECISION_... constants
+	 * @param string $calendarModel an URI identifying the calendar model
 	 *
 	 * @throws IllegalValueException
 	 */
@@ -183,7 +184,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return int
+	 * @return int one of the TimeValue::PRECISION_... constants
 	 */
 	public function getPrecision() {
 		return $this->precision;
@@ -223,7 +224,6 @@ class TimeValue extends DataValueObject {
 	}
 
 	/**
-	 * Returns the text.
 	 * @see DataValue::getValue
 	 *
 	 * @since 0.1
