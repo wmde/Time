@@ -7,26 +7,23 @@ use DataValues\TimeValue;
 use InvalidArgumentException;
 
 /**
- * ValueParser that parses the string representation of a time.
+ * ValueParser that parses YMD ordered timestamp strings resembling ISO 8601, e.g.
+ * +2013-01-01T00:00:00Z. While the parser tries to be relaxed, certain aspects of the ISO norm are
+ * obligatory: The order must be YMD. All elements but the year must have 2 digits. The seperation
+ * characters must be dashes (in the date part), "T" and colons (in the time part).
  *
- * @since 0.2
+ * @since 0.7
  *
  * @licence GNU GPL v2+
  * @author Adam Shorland
  */
-class TimeParser extends StringValueParser {
+class IsoTimestampParser extends StringValueParser {
 
 	const FORMAT_NAME = 'time';
 
-	/**
-	 * @since 0.3
-	 */
 	const OPT_PRECISION = 'precision';
 	const OPT_CALENDAR = 'calendar';
 
-	/**
-	 * @since 0.3
-	 */
 	const CALENDAR_GREGORIAN = 'http://www.wikidata.org/entity/Q1985727';
 	const CALENDAR_JULIAN = 'http://www.wikidata.org/entity/Q1985786';
 	const PRECISION_NONE = 'noprecision';
@@ -37,8 +34,6 @@ class TimeParser extends StringValueParser {
 	private $calendarModelParser;
 
 	/**
-	 * @since 0.1
-	 *
 	 * @param CalendarModelParser|null $calendarModelParser
 	 * @param ParserOptions|null $options
 	 */
