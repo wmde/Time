@@ -22,7 +22,6 @@ class TimeFormatter extends ValueFormatterBase {
 
 	const OPT_LANGUAGE = 'language';
 	const OPT_CALENDARNAMES = 'calendars';
-	const OPT_TIME_ISO_FORMATTER = 'time iso formatter';
 
 	/**
 	 * @since 0.1
@@ -38,8 +37,6 @@ class TimeFormatter extends ValueFormatterBase {
 			self::CALENDAR_GREGORIAN => 'Gregorian',
 			self::CALENDAR_JULIAN => 'Julian',
 		) );
-
-		$this->defaultOption( self::OPT_TIME_ISO_FORMATTER, null );
 	}
 
 	/**
@@ -59,14 +56,6 @@ class TimeFormatter extends ValueFormatterBase {
 		}
 
 		$formatted = $value->getTime();
-
-		$isoFormatter = $this->getOption( self::OPT_TIME_ISO_FORMATTER );
-
-		if( is_subclass_of( $isoFormatter, 'ValueFormatters\TimeIsoFormatter' ) ) {
-			$formatted = $isoFormatter->formatDate(
-				$value->getTime(), $value->getPrecision()
-			);
-		}
 
 		$calendarNames = $this->getOption( self::OPT_CALENDARNAMES );
 
