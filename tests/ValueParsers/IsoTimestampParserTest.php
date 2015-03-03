@@ -59,397 +59,220 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 		$valid = array(
 			// Empty options tests
 			'+0000000000002013-07-16T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000000002013-07-16T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					$gregorian
-				),
+				'+0000000000002013-07-16T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 			'+0000000000002013-07-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000000002013-07-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_MONTH,
-					$gregorian
-				),
+				'+0000000000002013-07-00T00:00:00Z',
+				TimeValue::PRECISION_MONTH,
 			),
 			'+0000000000002013-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000000002013-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_YEAR,
-					$gregorian
-				),
+				'+0000000000002013-00-00T00:00:00Z',
+				TimeValue::PRECISION_YEAR,
 			),
 			'+0000000000000000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000000000000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_YEAR,
-					TimeFormatter::CALENDAR_GREGORIAN
-				),
-				$emptyOpts,
+				'+0000000000000000-00-00T00:00:00Z',
+				TimeValue::PRECISION_YEAR,
 			),
 			'+0000000000002000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000000002000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_YEAR,
-					$gregorian
-				),
+				'+0000000000002000-00-00T00:00:00Z',
+				TimeValue::PRECISION_YEAR,
 			),
 			'+0000000000008000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000000008000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_ka,
-					$gregorian
-				),
+				'+0000000000008000-00-00T00:00:00Z',
+				TimeValue::PRECISION_ka,
 			),
 			'+0000000000020000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000000020000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_10ka,
-					$gregorian
-				),
+				'+0000000000020000-00-00T00:00:00Z',
+				TimeValue::PRECISION_10ka,
 			),
 			'+0000000000200000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000000200000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_100ka,
-					$gregorian
-				),
+				'+0000000000200000-00-00T00:00:00Z',
+				TimeValue::PRECISION_100ka,
 			),
 			'+0000000002000000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000002000000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_Ma,
-					$gregorian
-				),
+				'+0000000002000000-00-00T00:00:00Z',
+				TimeValue::PRECISION_Ma,
 			),
 			'+0000000020000000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000020000000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_10Ma,
-					$gregorian
-				),
+				'+0000000020000000-00-00T00:00:00Z',
+				TimeValue::PRECISION_10Ma,
 			),
 			'+0000000200000000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000200000000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_100Ma,
-					$gregorian
-				),
+				'+0000000200000000-00-00T00:00:00Z',
+				TimeValue::PRECISION_100Ma,
 			),
 			'+0000002000000000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000002000000000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_Ga,
-					$gregorian
-				),
+				'+0000002000000000-00-00T00:00:00Z',
+				TimeValue::PRECISION_Ga,
 			),
 			'+0000020000000000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000020000000000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_Ga,
-					$gregorian
-				),
+				'+0000020000000000-00-00T00:00:00Z',
+				TimeValue::PRECISION_Ga,
 			),
 			'+0000200000000000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000200000000000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_Ga,
-					$gregorian
-				),
+				'+0000200000000000-00-00T00:00:00Z',
+				TimeValue::PRECISION_Ga,
 			),
 			'+0002000000000000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0002000000000000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_Ga,
-					$gregorian
-				),
+				'+0002000000000000-00-00T00:00:00Z',
+				TimeValue::PRECISION_Ga,
 			),
 			'+0020000000000000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0020000000000000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_Ga,
-					$gregorian
-				),
+				'+0020000000000000-00-00T00:00:00Z',
+				TimeValue::PRECISION_Ga,
 			),
 			'+0200000000000000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0200000000000000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_Ga,
-					$gregorian
-				),
+				'+0200000000000000-00-00T00:00:00Z',
+				TimeValue::PRECISION_Ga,
 			),
 			'+2000000000000000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+2000000000000000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_Ga,
-					$gregorian
-				),
+				'+2000000000000000-00-00T00:00:00Z',
+				TimeValue::PRECISION_Ga,
 			),
 			'+0000000000002013-07-16T00:00:00Z (Gregorian)' => array(
-				new TimeValue(
-					'+0000000000002013-07-16T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					$gregorian
-				),
+				'+0000000000002013-07-16T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 			'+0000000000000000-01-01T00:00:00Z (Gregorian)' => array(
-				new TimeValue(
-					'+0000000000000000-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					$gregorian
-				),
+				'+0000000000000000-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
+
 			),
 			'+0000000000000001-01-14T00:00:00Z (Julian)' => array(
-				new TimeValue(
-					'+0000000000000001-01-14T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					$julian
-				),
+				'+0000000000000001-01-14T00:00:00Z',
+				TimeValue::PRECISION_DAY,
+				$julian,
 			),
 			'+0000000000010000-01-01T00:00:00Z (Gregorian)' => array(
-				new TimeValue(
-					'+0000000000010000-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					$gregorian
-				),
+				'+0000000000010000-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 			'-0000000000000001-01-01T00:00:00Z (Gregorian)' => array(
-				new TimeValue(
-					'-0000000000000001-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					$gregorian
-				),
+				'-0000000000000001-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 			'-00000000001-01-01T00:00:00Z (Gregorian)' => array(
-				new TimeValue(
-					'-0000000000000001-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					$gregorian
-				),
+				'-0000000000000001-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 			'-000001-01-01T00:00:00Z (Gregorian)' => array(
-				new TimeValue(
-					'-0000000000000001-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					$gregorian
-				),
+				'-0000000000000001-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 			'-1-01-01T00:00:00Z (Gregorian)' => array(
-				new TimeValue(
-					'-0000000000000001-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					$gregorian
-				),
+				'-0000000000000001-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 
 			// Tests with different options
 			'-1-01-02T00:00:00Z' => array(
-				new TimeValue(
-					'-0000000000000001-01-02T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					$gregorian
-				),
+				'-0000000000000001-01-02T00:00:00Z',
+				TimeValue::PRECISION_DAY,
+				$gregorian,
 				$gregorianOpts,
 			),
 			'-1-01-03T00:00:00Z' => array(
-				new TimeValue(
-					'-0000000000000001-01-03T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					$julian
-				),
+				'-0000000000000001-01-03T00:00:00Z',
+				TimeValue::PRECISION_DAY,
+				$julian,
 				$julianOpts,
 			),
 			'-1-01-04T00:00:00Z' => array(
-				new TimeValue(
-					'-0000000000000001-01-04T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_10a,
-					$gregorian
-				),
+				'-0000000000000001-01-04T00:00:00Z',
+				TimeValue::PRECISION_10a,
+				$gregorian,
 				$prec10aOpts,
 			),
 			'-1-01-05T00:00:00Z' => array(
-				new TimeValue(
-					'-0000000000000001-01-05T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					$gregorian
-				),
+				'-0000000000000001-01-05T00:00:00Z',
+				TimeValue::PRECISION_DAY,
+				$gregorian,
 				$noPrecOpts,
 			),
 
 			'+1999-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000000001999-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_YEAR,
-					$gregorian
-				),
+				'+0000000000001999-00-00T00:00:00Z',
+				TimeValue::PRECISION_YEAR,
 			),
 			'+2000-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000000002000-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_YEAR,
-					$gregorian
-				),
+				'+0000000000002000-00-00T00:00:00Z',
+				TimeValue::PRECISION_YEAR,
 			),
 			'+2010-00-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000000002010-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_YEAR,
-					$gregorian
-				),
+				'+0000000000002010-00-00T00:00:00Z',
+				TimeValue::PRECISION_YEAR,
 			),
 
 			// Optional sign character
 			'2015-01-01T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000000002015-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
-				),
+				'+0000000000002015-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 
 			// Optional time zone
 			'2015-01-01T00:00:00' => array(
-				new TimeValue(
-					'+0000000000002015-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
-				),
+				'+0000000000002015-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 
 			// Actual minus character from Unicode; roundtrip with TimeDetailsFormatter
 			"\xE2\x88\x922015-01-01T00:00:00" => array(
-				new TimeValue(
-					'-0000000000002015-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
-				),
-				$noPrecOpts,
+				'-0000000000002015-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 
 			// Optional second
 			'2015-01-01T00:00' => array(
-				new TimeValue(
-					'+0000000000002015-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
-				),
+				'+0000000000002015-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 
 			// Optional hour and minute
 			'2015-01-01' => array(
-				new TimeValue(
-					'+0000000000002015-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
-				),
+				'+0000000000002015-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 			'60-01-01' => array(
-				new TimeValue(
-					'+0000000000000060-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					TimeFormatter::CALENDAR_GREGORIAN
-				),
-				$noPrecOpts,
+				'+0000000000000060-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 
 			// Years < 60 require either the time part or a year with more than 2 digits
 			'1-01-01T00:00' => array(
-				new TimeValue(
-					'+0000000000000001-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
-				),
-				$noPrecOpts,
+				'+0000000000000001-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
 			),
 			'001-01-01' => array(
-				new TimeValue(
-					'+0000000000000001-01-01T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_DAY,
-					TimeFormatter::CALENDAR_GREGORIAN
-				),
-				$noPrecOpts,
+				'+0000000000000001-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
+
 			),
 
 			// Day zero
 			'2015-01-00' => array(
-				new TimeValue(
-					'+0000000000002015-01-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_MONTH,
-					TimeParser::CALENDAR_GREGORIAN
-				),
+				'+0000000000002015-01-00T00:00:00Z',
+				TimeValue::PRECISION_MONTH,
 			),
 
 			// Month zero
 			'2015-00-00' => array(
-				new TimeValue(
-					'+0000000000002015-00-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_YEAR,
-					TimeParser::CALENDAR_GREGORIAN
-				),
+				'+0000000000002015-00-00T00:00:00Z',
+				TimeValue::PRECISION_YEAR,
 			),
 
 			// Leap seconds are a valid concept
 			'+2015-01-01T00:00:60Z' => array(
-				new TimeValue(
-					'+0000000000002015-01-01T00:00:60Z',
-					0, 0, 0,
-					TimeValue::PRECISION_SECOND,
-					TimeParser::CALENDAR_GREGORIAN
-				),
+				'+0000000000002015-01-01T00:00:60Z',
+				TimeValue::PRECISION_SECOND,
 			),
 
 			// Tests for correct precision when a bad precision is passed through the opts
 			// @see https://bugzilla.wikimedia.org/show_bug.cgi?id=62730
 			'+0000000000000012-12-00T00:00:00Z' => array(
-				new TimeValue(
-					'+0000000000000012-12-00T00:00:00Z',
-					0, 0, 0,
-					TimeValue::PRECISION_MONTH,
-					$gregorian
-				),
+				'+0000000000000012-12-00T00:00:00Z',
+				TimeValue::PRECISION_MONTH,
+				$gregorian,
 				$precDayOpts,
 			),
 
@@ -457,13 +280,15 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 
 		$argLists = array();
 		foreach ( $valid as $key => $value ) {
-			$timeValue = $value[0];
-			$options = isset( $value[1] ) ? $value[1] : null;
+			$timestamp = $value[0];
+			$precision = isset( $value[1] ) ? $value[1] : TimeValue::PRECISION_DAY;
+			$calendareModel = isset( $value[2] ) ? $value[2] : $gregorian;
+			$options = isset( $value[3] ) ? $value[3] : null;
 
 			$argLists[] = array(
 				// Because PHP magically turns numeric keys into ints/floats
 				(string)$key,
-				$timeValue,
+				new TimeValue( $timestamp, 0, 0, 0, $precision, $calendareModel ),
 				new IsoTimestampParser( new CalendarModelParser( $options ), $options )
 			);
 		}

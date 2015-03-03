@@ -6,7 +6,7 @@ use ValueFormatters\TimeFormatter;
 use ValueParsers\CalendarModelParser;
 
 /**
- * @covers \ValueParsers\CalendarModelParser
+ * @covers ValueParsers\CalendarModelParser
  *
  * @group DataValue
  * @group DataValueExtensions
@@ -19,7 +19,7 @@ class CalendarModelParserTest extends ValueParserTestBase {
 	 * @deprecated since 0.3, just use getInstance.
 	 */
 	protected function getParserClass() {
-		return 'ValueParsers\CalendarModelParser';
+		throw new \LogicException( 'Should not be called, use getInstance' );
 	}
 
 	/**
