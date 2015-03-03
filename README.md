@@ -52,6 +52,14 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.7.0 (dev)
+
+* The year in Gregorian and Julian `TimeValue`s is now padded to at least 4 digits
+* Empty strings are now detected as invalid calendar models in the `TimeValue` constructor
+* Major update of the `TimeValue` documentation
+* Constructor arguments in `TimeParser` are optional now
+* Fixed `TimeFormatter` delegating to an ISO timestamp formatter given via option
+
 ### 0.6.1 (2014-10-09)
 
 * Made component installable with DataValues 1.x
