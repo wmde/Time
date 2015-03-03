@@ -7,10 +7,14 @@ use DataValues\TimeValue;
 use InvalidArgumentException;
 
 /**
- * ValueParser that parses YMD ordered timestamp strings resembling ISO 8601, e.g.
- * +2013-01-01T00:00:00Z. While the parser tries to be relaxed, certain aspects of the ISO norm are
- * obligatory: The order must be YMD. All elements but the year must have 2 digits. The seperation
- * characters must be dashes (in the date part), "T" and colons (in the time part).
+ * ValueParser that parses various string representations of time values, in YMD ordered formats
+ * resembling ISO 8601, e.g. +2013-01-01T00:00:00Z. While the parser tries to be relaxed, certain
+ * aspects of the ISO norm are obligatory: The order must be YMD. All elements but the year must
+ * have 2 digits. The seperation characters must be dashes (in the date part), "T" and colons (in
+ * the time part).
+ *
+ * The parser refuses to parse strings that can be parsed differently by other, locale-aware
+ * parsers, e.g. 01-02-03 can be in YMD, DMY or MDY order depending on the language.
  *
  * @since 0.7
  *
@@ -93,8 +97,8 @@ class IsoTimestampParser extends StringValueParser {
 
 		if ( !preg_match( $pattern, $value, $matches ) ) {
 			throw new ParseException( 'Malformed time', $value, self::FORMAT_NAME );
-		} elseif ( $matches[2] < 60 && $matches[5] === '' ) {
-			throw new ParseException( 'Not enough information to decide if the format is YY-MM-DD',
+		} elseif ( strlen( $matches[2] ) < 3 && $matches[2] < 60 && $matches[5] === '' ) {
+			throw new ParseException( 'Not enough information to decide if the format is YMD',
 				$value, self::FORMAT_NAME );
 		} elseif ( $matches[3] > 12 ) {
 			throw new ParseException( 'Month out of range', $value, self::FORMAT_NAME );
