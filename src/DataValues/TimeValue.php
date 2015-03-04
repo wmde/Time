@@ -14,15 +14,15 @@ namespace DataValues;
  */
 class TimeValue extends DataValueObject {
 
-	const PRECISION_Ga = 0; // Gigayear
-	const PRECISION_100Ma = 1; // 100 Megayears
-	const PRECISION_10Ma = 2; // 10 Megayears
-	const PRECISION_Ma = 3; // Megayear
-	const PRECISION_100ka = 4; // 100 Kiloyears
-	const PRECISION_10ka = 5; // 10 Kiloyears
-	const PRECISION_ka = 6; // Kiloyear
-	const PRECISION_100a = 7; // 100 years
-	const PRECISION_10a = 8; // 10 years
+	const PRECISION_YEAR1G = 0;
+	const PRECISION_YEAR100M = 1;
+	const PRECISION_YEAR10M = 2;
+	const PRECISION_YEAR1M = 3;
+	const PRECISION_YEAR100K = 4;
+	const PRECISION_YEAR10K = 5;
+	const PRECISION_YEAR1K = 6;
+	const PRECISION_YEAR100 = 7;
+	const PRECISION_YEAR10 = 8;
 	const PRECISION_YEAR = 9;
 	const PRECISION_MONTH = 10;
 	const PRECISION_DAY = 11;
@@ -127,7 +127,7 @@ class TimeValue extends DataValueObject {
 
 		if ( !is_int( $precision ) ) {
 			throw new IllegalValueException( '$precision must be an integer' );
-		} elseif ( $precision < self::PRECISION_Ga || $precision > self::PRECISION_SECOND ) {
+		} elseif ( $precision < self::PRECISION_YEAR1G || $precision > self::PRECISION_SECOND ) {
 			throw new IllegalValueException( '$precision out of allowed bounds' );
 		}
 

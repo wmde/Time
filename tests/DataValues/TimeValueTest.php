@@ -39,7 +39,7 @@ class TimeValueTest extends DataValueTest {
 			'Maximum timezone' => array(
 				'+2013-01-01T00:00:00Z',
 				7200, 9001, 9001,
-				TimeValue::PRECISION_Ga,
+				TimeValue::PRECISION_YEAR1G,
 				'http://nyan.cat/original.php'
 			),
 			'Minimum timezone' => array(

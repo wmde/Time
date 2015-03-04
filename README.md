@@ -55,6 +55,7 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 ### 0.8.0 (alpha)
 
 #### Breaking changes
+* Renamed all `TimeValue::PRECISION_...` constants with lower case letters, e.g. `PRECISION_10a` to `PRECISION_YEAR10`
 * `IsoTimestampParser` auto-detects the calendar model and does not default to Gregorian any more
 * Removed `IsoTimestampParser::PRECISION_NONE`, use `null` instead
 * `TimeValue`s leap second range changed from [0..62] to [0..61]
