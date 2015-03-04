@@ -39,16 +39,16 @@ class TimeParser extends StringValueParser {
 	/**
 	 * @since 0.1
 	 *
-	 * @param CalendarModelParser $calendarModelParser
+	 * @param CalendarModelParser|null $calendarModelParser
 	 * @param ParserOptions|null $options
 	 */
-	public function __construct( CalendarModelParser $calendarModelParser, ParserOptions $options = null ) {
-
-		$options->defaultOption( TimeParser::OPT_CALENDAR, TimeParser::CALENDAR_GREGORIAN );
-		$options->defaultOption( TimeParser::OPT_PRECISION, TimeParser::PRECISION_NONE );
-
+	public function __construct( CalendarModelParser $calendarModelParser = null, ParserOptions $options = null ) {
 		parent::__construct( $options );
-		$this->calendarModelParser = $calendarModelParser;
+
+		$this->defaultOption( TimeParser::OPT_CALENDAR, TimeParser::CALENDAR_GREGORIAN );
+		$this->defaultOption( TimeParser::OPT_PRECISION, TimeParser::PRECISION_NONE );
+
+		$this->calendarModelParser = $calendarModelParser ?: new CalendarModelParser();
 	}
 
 	protected function stringParse( $value ) {
