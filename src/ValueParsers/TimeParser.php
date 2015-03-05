@@ -55,7 +55,7 @@ class TimeParser extends StringValueParser {
 		$timeParts = $this->splitTimeString( $value );
 		$timeParts['year'] = $this->padYear( $timeParts['year'] );
 
-		$calendarOpt = $this->getOptions()->getOption( TimeParser::OPT_CALENDAR );
+		$calendarOpt = $this->getOption( TimeParser::OPT_CALENDAR );
 		$calendarModelRegex = '/(' . preg_quote( self::CALENDAR_GREGORIAN, '/' ). '|' . preg_quote( self::CALENDAR_JULIAN, '/' ) . ')/i';
 
 		if( $timeParts['calendar'] === '' && preg_match( $calendarModelRegex, $calendarOpt ) ) {
@@ -66,7 +66,7 @@ class TimeParser extends StringValueParser {
 			$timeParts['calendar'] = self::CALENDAR_GREGORIAN;
 		}
 
-		$precisionOpt = $this->getOptions()->getOption( TimeParser::OPT_PRECISION );
+		$precisionOpt = $this->getOption( TimeParser::OPT_PRECISION );
 		$precisionFromTime = $this->getPrecisionFromTimeParts( $timeParts );
 		if( is_int( $precisionOpt ) && $precisionOpt <= $precisionFromTime ) {
 			$precision = $precisionOpt;
