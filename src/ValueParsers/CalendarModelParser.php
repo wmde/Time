@@ -11,6 +11,7 @@ use ValueFormatters\TimeFormatter;
  *
  * @licence GNU GPL v2+
  * @author Adam Shorland
+ * @author Thiemo Mättig
  */
 class CalendarModelParser extends StringValueParser {
 
@@ -19,22 +20,28 @@ class CalendarModelParser extends StringValueParser {
 	/**
 	 * Regex pattern constant matching the parable calendar models
 	 * should be used as an insensitive to match all cases
+	 *
+	 * TODO: How important is it that this regex is in sync with the list below?
 	 */
 	const MODEL_PATTERN = '(Gregorian|Julian|)';
 
 	protected function stringParse( $value ) {
-		$rawValue = $value;
+		$key = trim( $value );
 
-		$value = strtolower( $value );
-
-		switch ( $value ) {
-			case '':
-			case 'gregorian':
-				return TimeFormatter::CALENDAR_GREGORIAN;
-			case 'julian':
-				return TimeFormatter::CALENDAR_JULIAN;
+		// TODO: What about abbreviation, e.g. "greg" and "jul"?
+		// TODO: What about localizations?
+		if ( $key === ''
+			|| $key === TimeFormatter::CALENDAR_GREGORIAN
+			|| strtolower( $key ) === 'gregorian'
+		) {
+			return TimeFormatter::CALENDAR_GREGORIAN;
+		} elseif ( $key === TimeFormatter::CALENDAR_JULIAN
+			|| strtolower( $key ) === 'julian'
+		) {
+			return TimeFormatter::CALENDAR_JULIAN;
 		}
 
-		throw new ParseException( 'Cannot parse calendar model', $rawValue, self::FORMAT_NAME );
+		throw new ParseException( 'Cannot parse calendar model', $value, self::FORMAT_NAME );
 	}
+
 }
