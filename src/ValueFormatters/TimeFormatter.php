@@ -27,9 +27,9 @@ class TimeFormatter extends ValueFormatterBase {
 	/**
 	 * @since 0.1
 	 *
-	 * @param FormatterOptions $options
+	 * @param FormatterOptions|null $options
 	 */
-	public function __construct( FormatterOptions $options ) {
+	public function __construct( FormatterOptions $options = null ) {
 		parent::__construct( $options );
 
 		$this->defaultOption( self::OPT_LANGUAGE, null );

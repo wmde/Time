@@ -51,7 +51,7 @@ class TimeParser extends StringValueParser {
 		$this->defaultOption( self::OPT_CALENDAR, self::CALENDAR_GREGORIAN );
 		$this->defaultOption( self::OPT_PRECISION, self::PRECISION_NONE );
 
-		$this->calendarModelParser = $calendarModelParser ?: new CalendarModelParser();
+		$this->calendarModelParser = $calendarModelParser ?: new CalendarModelParser( $this->options );
 	}
 
 	/**

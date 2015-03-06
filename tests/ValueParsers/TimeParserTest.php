@@ -14,6 +14,7 @@ use ValueParsers\TimeParser;
  * @group DataValueExtensions
  *
  * @author Adam Shorland
+ * @author Thiemo Mättig
  */
 class TimeParserTest extends ValueParserTestBase {
 
@@ -21,7 +22,7 @@ class TimeParserTest extends ValueParserTestBase {
 	 * @deprecated since 0.3, just use getInstance.
 	 */
 	protected function getParserClass() {
-		return 'ValueParsers\TimeParser';
+		throw new \LogicException( 'Should not be called, use getInstance' );
 	}
 
 	/**
@@ -335,7 +336,7 @@ class TimeParserTest extends ValueParserTestBase {
 		$argLists = array();
 		foreach ( $valid as $key => $value ) {
 			$timeValue = $value[0];
-			$options = isset( $value[1] ) ? $value[1] : new ParserOptions();
+			$options = isset( $value[1] ) ? $value[1] : null;
 
 			$argLists[] = array(
 				// Because PHP magically turns numeric keys into ints/floats
