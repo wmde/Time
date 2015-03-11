@@ -61,11 +61,8 @@ class TimeFormatter extends ValueFormatterBase {
 		$formatted = $value->getTime();
 
 		$isoFormatter = $this->getOption( self::OPT_TIME_ISO_FORMATTER );
-
-		if( is_subclass_of( $isoFormatter, 'ValueFormatters\TimeIsoFormatter' ) ) {
-			$formatted = $isoFormatter->formatDate(
-				$value->getTime(), $value->getPrecision()
-			);
+		if ( $isoFormatter instanceof ValueFormatter ) {
+			$formatted = $isoFormatter->format( $value );
 		}
 
 		$calendarNames = $this->getOption( self::OPT_CALENDARNAMES );
