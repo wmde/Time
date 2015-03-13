@@ -3,6 +3,7 @@
 namespace ValueParsers\Test;
 
 use ValueFormatters\TimeFormatter;
+use ValueParsers\CalendarModelParser;
 
 /**
  * @covers \ValueParsers\CalendarModelParser
@@ -14,8 +15,20 @@ use ValueFormatters\TimeFormatter;
  */
 class CalendarModelParserTest extends ValueParserTestBase {
 
+	/**
+	 * @deprecated since 0.3, just use getInstance.
+	 */
 	protected function getParserClass() {
 		return 'ValueParsers\CalendarModelParser';
+	}
+
+	/**
+	 * @see ValueParserTestBase::getInstance
+	 *
+	 * @return CalendarModelParser
+	 */
+	protected function getInstance() {
+		return new CalendarModelParser();
 	}
 
 	protected function requireDataValue() {
@@ -37,4 +50,5 @@ class CalendarModelParserTest extends ValueParserTestBase {
 			array( 'foobar' ),
 		);
 	}
+
 }

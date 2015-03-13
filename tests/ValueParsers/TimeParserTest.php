@@ -19,15 +19,15 @@ use ValueParsers\TimeParser;
 class TimeParserTest extends ValueParserTestBase {
 
 	/**
-	 * @see ValueParserTestBase::getParserClass
-	 * @since 0.1
-	 * @return string
+	 * @deprecated since 0.3, just use getInstance.
 	 */
 	protected function getParserClass() {
 		return 'ValueParsers\TimeParser';
 	}
 
 	/**
+	 * @see ValueParserTestBase::getInstance
+	 *
 	 * @return TimeParser
 	 */
 	protected function getInstance() {
