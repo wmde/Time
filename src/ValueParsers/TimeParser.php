@@ -45,8 +45,8 @@ class TimeParser extends StringValueParser {
 	public function __construct( CalendarModelParser $calendarModelParser = null, ParserOptions $options = null ) {
 		parent::__construct( $options );
 
-		$this->defaultOption( TimeParser::OPT_CALENDAR, TimeParser::CALENDAR_GREGORIAN );
-		$this->defaultOption( TimeParser::OPT_PRECISION, TimeParser::PRECISION_NONE );
+		$this->defaultOption( self::OPT_CALENDAR, self::CALENDAR_GREGORIAN );
+		$this->defaultOption( self::OPT_PRECISION, self::PRECISION_NONE );
 
 		$this->calendarModelParser = $calendarModelParser ?: new CalendarModelParser();
 	}
@@ -55,7 +55,7 @@ class TimeParser extends StringValueParser {
 		$timeParts = $this->splitTimeString( $value );
 		$timeParts['year'] = $this->padYear( $timeParts['year'] );
 
-		$calendarOpt = $this->getOption( TimeParser::OPT_CALENDAR );
+		$calendarOpt = $this->getOption( self::OPT_CALENDAR );
 		$calendarModelRegex = '/(' . preg_quote( self::CALENDAR_GREGORIAN, '/' ). '|' . preg_quote( self::CALENDAR_JULIAN, '/' ) . ')/i';
 
 		if( $timeParts['calendar'] === '' && preg_match( $calendarModelRegex, $calendarOpt ) ) {
@@ -66,7 +66,7 @@ class TimeParser extends StringValueParser {
 			$timeParts['calendar'] = self::CALENDAR_GREGORIAN;
 		}
 
-		$precisionOpt = $this->getOption( TimeParser::OPT_PRECISION );
+		$precisionOpt = $this->getOption( self::OPT_PRECISION );
 		$precisionFromTime = $this->getPrecisionFromTimeParts( $timeParts );
 		if( is_int( $precisionOpt ) && $precisionOpt <= $precisionFromTime ) {
 			$precision = $precisionOpt;
@@ -95,7 +95,7 @@ class TimeParser extends StringValueParser {
 	 * @param array $timeParts with the following keys.
 	 *            sign, year, month, day, hour, minute, second, calendar
 	 *
-	 * @return int precision as a TimeValue PRECISION_ constant
+	 * @return int One of the TimeValue::PRECISION_... constants.
 	 */
 	private function getPrecisionFromTimeParts( $timeParts ) {
 		if( $timeParts['second'] !== '00' ) {
