@@ -28,39 +28,31 @@ class TimeParserTest extends ValueParserTestBase {
 	}
 
 	/**
-	 * @since 0.1
 	 * @return TimeParser
 	 */
 	protected function getInstance() {
-		$options = $this->newParserOptions();
-
-		$class = $this->getParserClass();
-		return new $class( new CalendarModelParser(), $options );
+		return new TimeParser();
 	}
 
 	/**
 	 * @see ValueParserTestBase::validInputProvider
-	 *
-	 * @since 0.1
-	 *
-	 * @return array
 	 */
 	public function validInputProvider() {
 		$emptyOpts = new ParserOptions();
 
-		$julianOpts = clone $emptyOpts;
+		$julianOpts = new ParserOptions();
 		$julianOpts->setOption( TimeParser::OPT_CALENDAR, TimeParser::CALENDAR_JULIAN );
 
-		$gregorianOpts = clone $emptyOpts;
+		$gregorianOpts = new ParserOptions();
 		$gregorianOpts->setOption( TimeParser::OPT_CALENDAR, TimeParser::CALENDAR_GREGORIAN );
 
-		$prec10aOpts = clone $emptyOpts;
+		$prec10aOpts = new ParserOptions();
 		$prec10aOpts->setOption( TimeParser::OPT_PRECISION, TimeValue::PRECISION_10a );
 
-		$precDayOpts = clone $emptyOpts;
+		$precDayOpts = new ParserOptions();
 		$precDayOpts->setOption( TimeParser::OPT_PRECISION, TimeValue::PRECISION_DAY );
 
-		$noPrecOpts = clone $emptyOpts;
+		$noPrecOpts = new ParserOptions();
 		$noPrecOpts->setOption( TimeParser::OPT_PRECISION, TimeParser::PRECISION_NONE );
 
 		$valid = array(
