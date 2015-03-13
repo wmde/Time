@@ -17,11 +17,10 @@ use InvalidArgumentException;
  * @author H. Snater < mediawiki@snater.com >
  */
 class TimeFormatter extends ValueFormatterBase {
+
 	const CALENDAR_GREGORIAN = 'http://www.wikidata.org/entity/Q1985727';
 	const CALENDAR_JULIAN = 'http://www.wikidata.org/entity/Q1985786';
 
-	const OPT_LANGUAGE = 'language';
-	const OPT_CALENDARNAMES = 'calendars';
 	const OPT_TIME_ISO_FORMATTER = 'time iso formatter';
 
 	/**
@@ -31,13 +30,6 @@ class TimeFormatter extends ValueFormatterBase {
 	 */
 	public function __construct( FormatterOptions $options ) {
 		parent::__construct( $options );
-
-		$this->defaultOption( self::OPT_LANGUAGE, null );
-
-		$this->defaultOption( self::OPT_CALENDARNAMES, array(
-			self::CALENDAR_GREGORIAN => 'Gregorian',
-			self::CALENDAR_JULIAN => 'Julian',
-		) );
 
 		$this->defaultOption( self::OPT_TIME_ISO_FORMATTER, null );
 	}
@@ -65,10 +57,7 @@ class TimeFormatter extends ValueFormatterBase {
 			$formatted = $isoFormatter->format( $value );
 		}
 
-		$calendarNames = $this->getOption( self::OPT_CALENDARNAMES );
-
-		// TODO: Support other calendar models retrieved via $value->getCalendarModel().
-		return $formatted . ' (' . $calendarNames[self::CALENDAR_GREGORIAN] . ')';
+		return $formatted;
 	}
 
 }

@@ -26,7 +26,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 	 */
 	public function validProvider() {
 		$tests = array(
-			'+00000002013-07-16T00:00:00Z (Gregorian)' => array(
+			'+00000002013-07-16T00:00:00Z' => array(
 				'+00000002013-07-16T00:00:00Z',
 				0,
 				0,
@@ -34,7 +34,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				11,
 				TimeFormatter::CALENDAR_GREGORIAN
 			),
-			'+00000000000-01-01T00:00:00Z (Gregorian)' => array(
+			'+00000000000-01-01T00:00:00Z' => array(
 				'+00000000000-01-01T00:00:00Z',
 				0,
 				0,
@@ -42,7 +42,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				11,
 				TimeFormatter::CALENDAR_GREGORIAN
 			),
-			'+00000000001-01-14T00:00:00Z (Gregorian)' => array(
+			'+00000000001-01-14T00:00:00Z' => array(
 				'+00000000001-01-14T00:00:00Z',
 				0,
 				0,
@@ -50,7 +50,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				11,
 				TimeFormatter::CALENDAR_JULIAN
 			),
-			'+00000010000-01-01T00:00:00Z (Gregorian)' => array(
+			'+00000010000-01-01T00:00:00Z' => array(
 				'+00000010000-01-01T00:00:00Z',
 				0,
 				0,
@@ -58,7 +58,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				11,
 				TimeFormatter::CALENDAR_GREGORIAN
 			),
-			'-00000000001-01-01T00:00:00Z (Gregorian)' => array(
+			'-00000000001-01-01T00:00:00Z' => array(
 				'-00000000001-01-01T00:00:00Z',
 				0,
 				0,
@@ -66,7 +66,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				11,
 				TimeFormatter::CALENDAR_GREGORIAN
 			),
-			'+00000002013-07-17T00:00:00Z (Gregorian)' => array(
+			'+00000002013-07-17T00:00:00Z' => array(
 				'+00000002013-07-17T00:00:00Z',
 				0,
 				0,
@@ -74,7 +74,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				10,
 				TimeFormatter::CALENDAR_GREGORIAN
 			),
-			'+00000002013-07-18T00:00:00Z (Gregorian)' => array(
+			'+00000002013-07-18T00:00:00Z' => array(
 				'+00000002013-07-18T00:00:00Z',
 				0,
 				0,
@@ -82,7 +82,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				9,
 				TimeFormatter::CALENDAR_GREGORIAN
 			),
-			'+00000002013-07-19T00:00:00Z (Gregorian)' => array(
+			'+00000002013-07-19T00:00:00Z' => array(
 				'+00000002013-07-19T00:00:00Z',
 				0,
 				0,
