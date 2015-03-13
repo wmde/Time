@@ -443,6 +443,9 @@ class TimeParserTest extends ValueParserTestBase {
 		return $argLists;
 	}
 
+	/**
+	 * @see ValueParserTestBase::invalidInputProvider
+	 */
 	public function invalidInputProvider() {
 		$argLists = array();
 

@@ -42,7 +42,10 @@ class TimeParser extends StringValueParser {
 	 * @param CalendarModelParser|null $calendarModelParser
 	 * @param ParserOptions|null $options
 	 */
-	public function __construct( CalendarModelParser $calendarModelParser = null, ParserOptions $options = null ) {
+	public function __construct(
+		CalendarModelParser $calendarModelParser = null,
+		ParserOptions $options = null
+	) {
 		parent::__construct( $options );
 
 		$this->defaultOption( TimeParser::OPT_CALENDAR, TimeParser::CALENDAR_GREGORIAN );
@@ -51,6 +54,13 @@ class TimeParser extends StringValueParser {
 		$this->calendarModelParser = $calendarModelParser ?: new CalendarModelParser();
 	}
 
+	/**
+	 * @param string $value
+	 *
+	 * @throws InvalidArgumentException
+	 * @throws ParseException
+	 * @return TimeValue
+	 */
 	protected function stringParse( $value ) {
 		$timeParts = $this->splitTimeString( $value );
 		$timeParts['year'] = $this->padYear( $timeParts['year'] );
@@ -58,9 +68,9 @@ class TimeParser extends StringValueParser {
 		$calendarOpt = $this->getOption( TimeParser::OPT_CALENDAR );
 		$calendarModelRegex = '/(' . preg_quote( self::CALENDAR_GREGORIAN, '/' ). '|' . preg_quote( self::CALENDAR_JULIAN, '/' ) . ')/i';
 
-		if( $timeParts['calendar'] === '' && preg_match( $calendarModelRegex, $calendarOpt ) ) {
+		if ( $timeParts['calendar'] === '' && preg_match( $calendarModelRegex, $calendarOpt ) ) {
 			$timeParts['calendar'] = $calendarOpt;
-		} else if( $timeParts['calendar'] !== '' ) {
+		} elseif ( $timeParts['calendar'] !== '' ) {
 			$timeParts['calendar'] = $this->calendarModelParser->parse( $timeParts['calendar'] );
 		} else {
 			$timeParts['calendar'] = self::CALENDAR_GREGORIAN;
@@ -68,7 +78,7 @@ class TimeParser extends StringValueParser {
 
 		$precisionOpt = $this->getOption( TimeParser::OPT_PRECISION );
 		$precisionFromTime = $this->getPrecisionFromTimeParts( $timeParts );
-		if( is_int( $precisionOpt ) && $precisionOpt <= $precisionFromTime ) {
+		if ( is_int( $precisionOpt ) && $precisionOpt <= $precisionFromTime ) {
 			$precision = $precisionOpt;
 		} else {
 			$precision = $precisionFromTime;
@@ -84,7 +94,9 @@ class TimeParser extends StringValueParser {
 
 	/**
 	 * Pads the given year to force year to have 16 digits
+	 *
 	 * @param string $year in a format such as 0002013
+	 *
 	 * @return string
 	 */
 	private function padYear( $year ) {
@@ -92,7 +104,7 @@ class TimeParser extends StringValueParser {
 	}
 
 	/**
-	 * @param array $timeParts with the following keys.
+	 * @param string[] $timeParts Array with the following keys.
 	 *            sign, year, month, day, hour, minute, second, calendar
 	 *
 	 * @return int precision as a TimeValue PRECISION_ constant
@@ -119,6 +131,7 @@ class TimeParser extends StringValueParser {
 
 	/**
 	 * @param string $year
+	 *
 	 * @return int precision
 	 */
 	private function getPrecisionFromYear( $year ) {
@@ -173,15 +186,14 @@ class TimeParser extends StringValueParser {
 	}
 
 	/**
-	 * @param array $timeParts with the following keys.
+	 * @param string[] $timeParts Array with the following keys.
 	 *            sign, year, month, day, hour, minute, second, calendar
 	 *
 	 * @throws InvalidArgumentException
-	 *
 	 * @return string
 	 */
 	private function getTimeStringFromParts( array $timeParts ) {
-		if( array_keys( $timeParts ) !== array( 'sign', 'year', 'month', 'day', 'hour', 'minute', 'second', 'calendar' ) ) {
+		if ( array_keys( $timeParts ) !== array( 'sign', 'year', 'month', 'day', 'hour', 'minute', 'second', 'calendar' ) ) {
 			throw new InvalidArgumentException( 'Time string can not be created with missing $timeParts keys' );
 		}
 		return $timeParts['sign']
