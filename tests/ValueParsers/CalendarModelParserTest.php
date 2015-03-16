@@ -4,6 +4,7 @@ namespace ValueParsers\Test;
 
 use ValueFormatters\TimeFormatter;
 use ValueParsers\CalendarModelParser;
+use ValueParsers\ParserOptions;
 
 /**
  * @covers \ValueParsers\CalendarModelParser
@@ -12,6 +13,7 @@ use ValueParsers\CalendarModelParser;
  * @group DataValueExtensions
  *
  * @author Adam Shorland
+ * @author Thiemo Mättig
  */
 class CalendarModelParserTest extends ValueParserTestBase {
 
@@ -19,7 +21,7 @@ class CalendarModelParserTest extends ValueParserTestBase {
 	 * @deprecated since 0.3, just use getInstance.
 	 */
 	protected function getParserClass() {
-		return 'ValueParsers\CalendarModelParser';
+		throw new \LogicException( 'Should not be called, use getInstance' );
 	}
 
 	/**
@@ -28,7 +30,13 @@ class CalendarModelParserTest extends ValueParserTestBase {
 	 * @return CalendarModelParser
 	 */
 	protected function getInstance() {
-		return new CalendarModelParser();
+		$options = new ParserOptions();
+
+		$options->setOption( CalendarModelParser::OPT_CALENDAR_MODEL_URIS, array(
+			'Localized' => 'Unlocalized',
+		) );
+
+		return new CalendarModelParser( $options );
 	}
 
 	/**
@@ -46,16 +54,29 @@ class CalendarModelParserTest extends ValueParserTestBase {
 	public function validInputProvider() {
 		return array(
 			array( '', TimeFormatter::CALENDAR_GREGORIAN ),
-			array( ' ', TimeFormatter::CALENDAR_GREGORIAN ),
 			array( 'Gregorian', TimeFormatter::CALENDAR_GREGORIAN ),
-			array( 'GreGOrIAN', TimeFormatter::CALENDAR_GREGORIAN ),
-			array( ' Gregorian ', TimeFormatter::CALENDAR_GREGORIAN ),
-			array( TimeFormatter::CALENDAR_GREGORIAN, TimeFormatter::CALENDAR_GREGORIAN ),
+			array( 'Julian', TimeFormatter::CALENDAR_JULIAN ),
 
+			// White space
+			array( ' ', TimeFormatter::CALENDAR_GREGORIAN ),
+			array( ' Gregorian ', TimeFormatter::CALENDAR_GREGORIAN ),
+			array( ' Julian ', TimeFormatter::CALENDAR_JULIAN ),
+
+			// Capitalization
+			array( 'GreGOrIAN', TimeFormatter::CALENDAR_GREGORIAN ),
 			array( 'julian', TimeFormatter::CALENDAR_JULIAN ),
 			array( 'JULIAN', TimeFormatter::CALENDAR_JULIAN ),
-			array( ' Julian ', TimeFormatter::CALENDAR_JULIAN ),
-			array( TimeFormatter::CALENDAR_JULIAN, TimeFormatter::CALENDAR_JULIAN ),
+
+			// See https://en.wikipedia.org/wiki/Gregorian_calendar
+			array( 'Western', TimeFormatter::CALENDAR_GREGORIAN ),
+			array( 'Christian', TimeFormatter::CALENDAR_GREGORIAN ),
+
+			// URIs
+			array( 'http://www.wikidata.org/entity/Q1985727', TimeFormatter::CALENDAR_GREGORIAN ),
+			array( 'http://www.wikidata.org/entity/Q1985786', TimeFormatter::CALENDAR_JULIAN ),
+
+			// Via OPT_CALENDAR_MODEL_URIS
+			array( 'Localized', 'Unlocalized' ),
 		);
 	}
 
@@ -68,6 +89,20 @@ class CalendarModelParserTest extends ValueParserTestBase {
 			array( true ),
 			array( 1 ),
 			array( 'foobar' ),
+
+			// Do not confuse Greece with Gregorian
+			array( 'gr' ),
+			array( 'gre' ),
+
+			// Do not confuse July with Julian
+			array( 'Jul' ),
+			array( 'J' ),
+
+			// Strict comparison for URIs and strings given via OPT_CALENDAR_MODEL_URIS
+			array( 'http://www.wikidata.org/entity/Q1985727 ' ),
+			array( 'Localized ' ),
+			array( 'localized' ),
+			array( 'LOCALIZED' ),
 		);
 	}
 
