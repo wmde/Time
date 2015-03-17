@@ -12,6 +12,7 @@ use DataValues\TimeValue;
  *
  * @licence GNU GPL v2+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
+ * @author Thiemo Mättig
  */
 class TimeValueTest extends DataValueTest {
 
@@ -27,204 +28,145 @@ class TimeValueTest extends DataValueTest {
 	}
 
 	public function validConstructorArgumentsProvider() {
-		$argLists = array();
-
-		$argLists[] = array(
-			'+00000002013-01-01T00:00:00Z',
-			0,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
+		return array(
+			array(
+				'+00000002013-01-01T00:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-01-01T00:00:00Z',
+				7200, 9001, 9001,
+				TimeValue::PRECISION_Ga,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-01-01T00:00:00Z',
+				-7200, 0, 42,
+				TimeValue::PRECISION_YEAR,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+2013-01-01T00:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'-0005-01-01T00:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			)
 		);
-
-		$argLists[] = array(
-			'+00000002013-01-01T00:00:00Z',
-			7200,
-			9001,
-			9001,
-			TimeValue::PRECISION_Ga,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+00000002013-01-01T00:00:00Z',
-			-7200,
-			0,
-			42,
-			TimeValue::PRECISION_YEAR,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+2013-01-01T00:00:00Z',
-			0,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'-5-01-01T00:00:00Z',
-			0,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		return $argLists;
 	}
 
 	public function invalidConstructorArgumentsProvider() {
-		$argLists = array();
-
-		$argLists[] = array(
-			'+00000002013-01-01T00:00:00Z',
-			'0',
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
+		return array(
+			array(
+				'+00000002013-01-01T00:00:00Z',
+				'0', 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-01-01T00:00:00Z',
+				4.2, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-01-01T00:00:00Z',
+				-20 * 3600, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-01-01T00:00:00Z',
+				0, 0, 0,
+				333,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-01-01T00:00:00Z',
+				0, 0, 0,
+				9001,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				42,
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-01-01T00:00:00Z',
+				0, 4.2, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-01-01T00:00:00Z',
+				0, 0, -1,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'bla',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013/01/01 00:00:00',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-22-01T00:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-01-35T00:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-01-01T27:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-01-01T00:66:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-01-01T00:00:66Z',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000002013-01-01T00:00:00+60',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php',
+			),
+			array(
+				'+00000000000000001-01-01T00:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_DAY,
+				'http://nyan.cat/original.php',
+			)
 		);
-
-		$argLists[] = array(
-			'+00000002013-01-01T00:00:00Z',
-			4.2,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+00000002013-01-01T00:00:00Z',
-			-20 * 3600,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+00000002013-01-01T00:00:00Z',
-			0,
-			0,
-			0,
-			333,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+00000002013-01-01T00:00:00Z',
-			0,
-			0,
-			0,
-			9001,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			42,
-			0,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+00000002013-01-01T00:00:00Z',
-			0,
-			4.2,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+00000002013-01-01T00:00:00Z',
-			0,
-			0,
-			-1,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'bla',
-			0,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+00000002013/01/01 00:00:00',
-			0,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+00000002013-22-01T00:00:00Z',
-			0,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+00000002013-01-35T00:00:00Z',
-			0,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+00000002013-01-01T27:00:00Z',
-			0,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+00000002013-01-01T00:66:00Z',
-			0,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+00000002013-01-01T00:00:66Z',
-			0,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		$argLists[] = array(
-			'+00000002013-01-01T00:00:00+60',
-			0,
-			0,
-			0,
-			TimeValue::PRECISION_SECOND,
-			'http://nyan.cat/original.php',
-		);
-
-		return $argLists;
 	}
 
 	/**
@@ -288,6 +230,31 @@ class TimeValueTest extends DataValueTest {
 	 */
 	public function testGetValue( TimeValue $time, array $arguments ) {
 		$this->assertTrue( $time->equals( $time->getValue() ) );
+	}
+
+	/**
+	 * @dataProvider unpaddedYearsProvider
+	 * @param string $year
+	 * @param string $expected
+	 */
+	public function testGivenUnpaddedYear_yearIsPadded( $year, $expected ) {
+		$timeValue = new TimeValue(
+			$year . '-01-01T00:00:00Z',
+			0, 0, 0,
+			TimeValue::PRECISION_DAY,
+			'Stardate'
+		);
+		$this->assertSame( $expected . '-01-01T00:00:00Z', $timeValue->getTime() );
+	}
+
+	public function unpaddedYearsProvider() {
+		return array(
+			array( '+1', '+0001' ),
+			array( '-10', '-0010' ),
+			array( '+2015', '+2015' ),
+			array( '+0000000000000001', '+0000000000000001' ),
+			array( '+9999999999999999', '+9999999999999999' ),
+		);
 	}
 
 }
