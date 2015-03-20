@@ -62,6 +62,10 @@ class TimeParser extends StringValueParser {
 	 * @return TimeValue
 	 */
 	protected function stringParse( $value ) {
+		if ( !is_string( $value ) ) {
+			throw new InvalidArgumentException( '$value must be a string' );
+		}
+
 		$timeParts = $this->splitTimeString( $value );
 		$timeParts['year'] = $this->padYear( $timeParts['year'] );
 
@@ -110,23 +114,21 @@ class TimeParser extends StringValueParser {
 	 * @return int One of the TimeValue::PRECISION_... constants.
 	 */
 	private function getPrecisionFromTimeParts( $timeParts ) {
-		if( $timeParts['second'] !== '00' ) {
-			return TimeValue::PRECISION_SECOND;
-		}
-		if( $timeParts['minute'] !== '00' ) {
-			return TimeValue::PRECISION_MINUTE;
-		}
-		if( $timeParts['hour'] !== '00' ) {
-			return TimeValue::PRECISION_HOUR;
-		}
-		if( $timeParts['day'] !== '00' ) {
-			return TimeValue::PRECISION_DAY;
-		}
-		if( $timeParts['month'] !== '00' ) {
-			return TimeValue::PRECISION_MONTH;
+		if ( $timeParts['second'] !== '00' ) {
+			$precision = TimeValue::PRECISION_SECOND;
+		} elseif ( $timeParts['minute'] !== '00' ) {
+			$precision = TimeValue::PRECISION_MINUTE;
+		} elseif ( $timeParts['hour'] !== '00' ) {
+			$precision = TimeValue::PRECISION_HOUR;
+		} elseif ( $timeParts['day'] !== '00' ) {
+			$precision = TimeValue::PRECISION_DAY;
+		} elseif ( $timeParts['month'] !== '00' ) {
+			$precision = TimeValue::PRECISION_MONTH;
+		} else {
+			$precision = $this->getPrecisionFromYear( $timeParts['year'] );
 		}
 
-		return $this->getPrecisionFromYear( $timeParts['year'] );
+		return $precision;
 	}
 
 	/**
@@ -152,17 +154,11 @@ class TimeParser extends StringValueParser {
 	/**
 	 * @param string $value
 	 *
-	 * @return array with the following keys.
-	 *            sign, year, month, day, hour, minute, second, calendar
-	 *
-	 * @throws InvalidArgumentException
 	 * @throws ParseException
+	 * @return string[] Array with the following keys.
+	 *            sign, year, month, day, hour, minute, second, calendar
 	 */
 	private function splitTimeString( $value ) {
-		if ( !is_string( $value ) ) {
-			throw new InvalidArgumentException( '$value must be a string' );
-		}
-
 		$pattern = '@^'
 			. '\s*' . '([\+\-]?)'
 			. '\s*' . '(\d{1,16})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})Z'
