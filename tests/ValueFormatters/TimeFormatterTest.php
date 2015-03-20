@@ -18,6 +18,24 @@ use ValueFormatters\TimeFormatter;
 class TimeFormatterTest extends ValueFormatterTestBase {
 
 	/**
+	 * @deprecated since 0.2, just use getInstance.
+	 */
+	protected function getFormatterClass() {
+		throw new \LogicException( 'Should not be called, use getInstance' );
+	}
+
+	/**
+	 * @see ValueFormatterTestBase::getInstance
+	 *
+	 * @param FormatterOptions|null $options
+	 *
+	 * @return TimeFormatter
+	 */
+	protected function getInstance( FormatterOptions $options = null ) {
+		return new TimeFormatter( $options );
+	}
+
+	/**
 	 * @see ValueFormatterTestBase::validProvider
 	 *
 	 * @since 0.1
@@ -103,17 +121,6 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 		}
 
 		return $argLists;
-	}
-
-	/**
-	 * @see ValueFormatterTestBase::getFormatterClass
-	 *
-	 * @since 0.1
-	 *
-	 * @return string
-	 */
-	protected function getFormatterClass() {
-		return 'ValueFormatters\TimeFormatter';
 	}
 
 }
