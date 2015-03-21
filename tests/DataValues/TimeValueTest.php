@@ -30,19 +30,19 @@ class TimeValueTest extends DataValueTest {
 	public function validConstructorArgumentsProvider() {
 		return array(
 			array(
-				'+00000002013-01-01T00:00:00Z',
+				'+2013-01-01T00:00:00Z',
 				0, 0, 0,
 				TimeValue::PRECISION_SECOND,
 				'http://nyan.cat/original.php',
 			),
 			array(
-				'+00000002013-01-01T00:00:00Z',
+				'+2013-01-01T00:00:00Z',
 				7200, 9001, 9001,
 				TimeValue::PRECISION_Ga,
 				'http://nyan.cat/original.php',
 			),
 			array(
-				'+00000002013-01-01T00:00:00Z',
+				'+2013-01-01T00:00:00Z',
 				-7200, 0, 42,
 				TimeValue::PRECISION_YEAR,
 				'http://nyan.cat/original.php',
@@ -171,8 +171,6 @@ class TimeValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param TimeValue $time
-	 * @param array $arguments
 	 */
 	public function testGetTime( TimeValue $time, array $arguments ) {
 		$this->assertEquals( $arguments[0], $time->getTime() );
@@ -180,8 +178,6 @@ class TimeValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param TimeValue $time
-	 * @param array $arguments
 	 */
 	public function testGetTimezone( TimeValue $time, array $arguments ) {
 		$this->assertEquals( $arguments[1], $time->getTimezone() );
@@ -189,8 +185,6 @@ class TimeValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param TimeValue $time
-	 * @param array $arguments
 	 */
 	public function testGetBefore( TimeValue $time, array $arguments ) {
 		$this->assertEquals( $arguments[2], $time->getBefore() );
@@ -198,8 +192,6 @@ class TimeValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param TimeValue $time
-	 * @param array $arguments
 	 */
 	public function testGetAfter( TimeValue $time, array $arguments ) {
 		$this->assertEquals( $arguments[3], $time->getAfter() );
@@ -207,8 +199,6 @@ class TimeValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param TimeValue $time
-	 * @param array $arguments
 	 */
 	public function testGetPrecision( TimeValue $time, array $arguments ) {
 		$this->assertEquals( $arguments[4], $time->getPrecision() );
@@ -216,8 +206,6 @@ class TimeValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param TimeValue $time
-	 * @param array $arguments
 	 */
 	public function testGetCalendarModel( TimeValue $time, array $arguments ) {
 		$this->assertEquals( $arguments[5], $time->getCalendarModel() );
@@ -225,8 +213,6 @@ class TimeValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider instanceProvider
-	 * @param TimeValue $time
-	 * @param array $arguments
 	 */
 	public function testGetValue( TimeValue $time, array $arguments ) {
 		$this->assertTrue( $time->equals( $time->getValue() ) );
@@ -234,8 +220,6 @@ class TimeValueTest extends DataValueTest {
 
 	/**
 	 * @dataProvider unpaddedYearsProvider
-	 * @param string $year
-	 * @param string $expected
 	 */
 	public function testGivenUnpaddedYear_yearIsPadded( $year, $expected ) {
 		$timeValue = new TimeValue(
@@ -252,7 +236,9 @@ class TimeValueTest extends DataValueTest {
 			array( '+1', '+0001' ),
 			array( '-10', '-0010' ),
 			array( '+2015', '+2015' ),
-			array( '+0000000000000001', '+0000000000000001' ),
+			array( '+02015', '+2015' ),
+			array( '+00000010000', '+10000' ),
+			array( '+0000000000000001', '+0001' ),
 			array( '+9999999999999999', '+9999999999999999' ),
 		);
 	}
