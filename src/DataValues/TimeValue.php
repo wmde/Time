@@ -36,17 +36,17 @@ class TimeValue extends DataValueObject {
 	 * Gregorian and Julian dates use the same YMD ordered format, resembling ISO 8601, e.g.
 	 * +2013-01-01T00:00:00Z. In this format the year is always signed and padded with zero
 	 * characters to have between 4 and 16 digits. Month and day can be zero, indicating they are
-	 * unknown. The timezone suffix Z is meaningless and must be ignored. Use $timezone instead.
+	 * unknown. The timezone suffix Z is meaningless and must be ignored. Use getTimezone() instead.
 	 *
 	 * @see $timezone
 	 * @see $calendarModel
 	 *
 	 * @var string
 	 */
-	private $time;
+	private $timestamp;
 
 	/**
-	 * Unit used for the $after and $before values. Use one of the TimeValue::PRECISION_...
+	 * Unit used for the getBefore() and getAfter() values. Use one of the TimeValue::PRECISION_...
 	 * constants.
 	 *
 	 * @var int
@@ -70,7 +70,7 @@ class TimeValue extends DataValueObject {
 	private $before;
 
 	/**
-	 * Timezone information as an offset from UTC in minutes.
+	 * Time zone information as an offset from UTC in minutes.
 	 *
 	 * @var int Minutes
 	 */
@@ -87,27 +87,27 @@ class TimeValue extends DataValueObject {
 	/**
 	 * @since 0.1
 	 *
-	 * @param string $time timestamp in a format depending on the calendar model
-	 * @param int $timezone offset from UTC in minutes
-	 * @param int $before number of units given by the precision
-	 * @param int $after number of units given by the precision
-	 * @param int $precision one of the TimeValue::PRECISION_... constants
-	 * @param string $calendarModel an URI identifying the calendar model
+	 * @param string $timestamp Timestamp in a format depending on the calendar model.
+	 * @param int $timezone Time zone offset from UTC in minutes.
+	 * @param int $before Number of units given by the precision.
+	 * @param int $after Number of units given by the precision.
+	 * @param int $precision One of the TimeValue::PRECISION_... constants.
+	 * @param string $calendarModel An URI identifying the calendar model.
 	 *
 	 * @throws IllegalValueException
 	 */
-	public function __construct( $time, $timezone, $before, $after, $precision, $calendarModel ) {
-		if ( !is_string( $time ) || $time === '' ) {
-			throw new IllegalValueException( '$time must be a non-empty string' );
+	public function __construct( $timestamp, $timezone, $before, $after, $precision, $calendarModel ) {
+		if ( !is_string( $timestamp ) || $timestamp === '' ) {
+			throw new IllegalValueException( '$timestamp must be a non-empty string' );
 		}
 
 		// Leap seconds are a valid concept
 		if ( !preg_match(
 			'/^([-+])(\d{1,16})(-(?:0\d|1[012])-(?:[012]\d|3[01])T(?:[01]\d|2[0-3]):[0-5]\d:(?:[0-5]\d|6[012])Z)$/',
-			$time,
+			$timestamp,
 			$matches
 		) ) {
-			throw new IllegalValueException( '$time must be a YMD string resembling ISO 8601, given ' . $time );
+			throw new IllegalValueException( '$timestamp must be a YMD string resembling ISO 8601, given ' . $timestamp );
 		}
 
 		if ( !is_int( $timezone ) ) {
@@ -140,9 +140,10 @@ class TimeValue extends DataValueObject {
 		}
 
 		$year = $matches[2];
+		$year = ltrim( $year, '0' );
 		$year = str_pad( $year, 4, '0', STR_PAD_LEFT );
 
-		$this->time = $matches[1] . $year . $matches[3];
+		$this->timestamp = $matches[1] . $year . $matches[3];
 		$this->timezone = $timezone;
 		$this->before = $before;
 		$this->after = $after;
@@ -151,14 +152,14 @@ class TimeValue extends DataValueObject {
 	}
 
 	/**
-	 * @see $time
+	 * @see $timestamp
 	 *
 	 * @since 0.1
 	 *
 	 * @return string
 	 */
 	public function getTime() {
-		return $this->time;
+		return $this->timestamp;
 	}
 
 	/**
@@ -235,7 +236,7 @@ class TimeValue extends DataValueObject {
 	 * @return string
 	 */
 	public function getSortKey() {
-		return $this->time;
+		return $this->timestamp;
 	}
 
 	/**
@@ -270,8 +271,8 @@ class TimeValue extends DataValueObject {
 	 * @throws IllegalValueException
 	 */
 	public function unserialize( $value ) {
-		list( $time, $timezone, $before, $after, $precision, $calendarModel ) = json_decode( $value );
-		$this->__construct( $time, $timezone, $before, $after, $precision, $calendarModel );
+		list( $timestamp, $timezone, $before, $after, $precision, $calendarModel ) = json_decode( $value );
+		$this->__construct( $timestamp, $timezone, $before, $after, $precision, $calendarModel );
 	}
 
 	/**
@@ -283,7 +284,7 @@ class TimeValue extends DataValueObject {
 	 */
 	public function getArrayValue() {
 		return array(
-			'time' => $this->time,
+			'time' => $this->timestamp,
 			'timezone' => $this->timezone,
 			'before' => $this->before,
 			'after' => $this->after,
@@ -317,7 +318,7 @@ class TimeValue extends DataValueObject {
 	}
 
 	public function __toString() {
-		return $this->time;
+		return $this->timestamp;
 	}
 
 }
