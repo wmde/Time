@@ -4,11 +4,11 @@ namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
 use ValueParsers\CalendarModelParser;
+use ValueParsers\IsoTimestampParser;
 use ValueParsers\ParserOptions;
-use ValueParsers\TimeParser;
 
 /**
- * @covers \ValueParsers\TimeParser
+ * @covers ValueParsers\IsoTimestampParser
  *
  * @group DataValue
  * @group DataValueExtensions
@@ -16,7 +16,7 @@ use ValueParsers\TimeParser;
  * @author Adam Shorland
  * @author Thiemo Mättig
  */
-class TimeParserTest extends ValueParserTestBase {
+class IsoTimestampParserTest extends ValueParserTestBase {
 
 	/**
 	 * @deprecated since 0.3, just use getInstance.
@@ -28,30 +28,33 @@ class TimeParserTest extends ValueParserTestBase {
 	/**
 	 * @see ValueParserTestBase::getInstance
 	 *
-	 * @return TimeParser
+	 * @return IsoTimestampParser
 	 */
 	protected function getInstance() {
-		return new TimeParser();
+		return new IsoTimestampParser();
 	}
 
 	/**
 	 * @see ValueParserTestBase::validInputProvider
 	 */
 	public function validInputProvider() {
+		$gregorian = 'http://www.wikidata.org/entity/Q1985727';
+		$julian = 'http://www.wikidata.org/entity/Q1985786';
+
 		$julianOpts = new ParserOptions();
-		$julianOpts->setOption( TimeParser::OPT_CALENDAR, TimeParser::CALENDAR_JULIAN );
+		$julianOpts->setOption( IsoTimestampParser::OPT_CALENDAR, $julian );
 
 		$gregorianOpts = new ParserOptions();
-		$gregorianOpts->setOption( TimeParser::OPT_CALENDAR, TimeParser::CALENDAR_GREGORIAN );
+		$gregorianOpts->setOption( IsoTimestampParser::OPT_CALENDAR, $gregorian );
 
 		$prec10aOpts = new ParserOptions();
-		$prec10aOpts->setOption( TimeParser::OPT_PRECISION, TimeValue::PRECISION_10a );
+		$prec10aOpts->setOption( IsoTimestampParser::OPT_PRECISION, TimeValue::PRECISION_10a );
 
 		$precDayOpts = new ParserOptions();
-		$precDayOpts->setOption( TimeParser::OPT_PRECISION, TimeValue::PRECISION_DAY );
+		$precDayOpts->setOption( IsoTimestampParser::OPT_PRECISION, TimeValue::PRECISION_DAY );
 
 		$noPrecOpts = new ParserOptions();
-		$noPrecOpts->setOption( TimeParser::OPT_PRECISION, TimeParser::PRECISION_NONE );
+		$noPrecOpts->setOption( IsoTimestampParser::OPT_PRECISION, IsoTimestampParser::PRECISION_NONE );
 
 		$valid = array(
 			// Empty options tests
@@ -60,7 +63,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000002013-07-16T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000000000002013-07-00T00:00:00Z' => array(
@@ -68,7 +71,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000002013-07-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_MONTH,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000000000002013-00-00T00:00:00Z' => array(
@@ -76,7 +79,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000002013-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_YEAR,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000000000002000-00-00T00:00:00Z' => array(
@@ -84,7 +87,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000002000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_YEAR,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000000000008000-00-00T00:00:00Z' => array(
@@ -92,7 +95,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000008000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_ka,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000000000020000-00-00T00:00:00Z' => array(
@@ -100,7 +103,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000020000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_10ka,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000000000200000-00-00T00:00:00Z' => array(
@@ -108,7 +111,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000200000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_100ka,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000000002000000-00-00T00:00:00Z' => array(
@@ -116,7 +119,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000002000000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_Ma,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000000020000000-00-00T00:00:00Z' => array(
@@ -124,7 +127,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000020000000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_10Ma,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000000200000000-00-00T00:00:00Z' => array(
@@ -132,7 +135,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000200000000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_100Ma,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000002000000000-00-00T00:00:00Z' => array(
@@ -140,7 +143,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000002000000000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_Ga,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000020000000000-00-00T00:00:00Z' => array(
@@ -148,7 +151,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000020000000000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_Ga,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000200000000000-00-00T00:00:00Z' => array(
@@ -156,7 +159,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000200000000000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_Ga,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0002000000000000-00-00T00:00:00Z' => array(
@@ -164,7 +167,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0002000000000000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_Ga,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0020000000000000-00-00T00:00:00Z' => array(
@@ -172,7 +175,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0020000000000000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_Ga,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0200000000000000-00-00T00:00:00Z' => array(
@@ -180,7 +183,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0200000000000000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_Ga,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+2000000000000000-00-00T00:00:00Z' => array(
@@ -188,7 +191,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+2000000000000000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_Ga,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000000000002013-07-16T00:00:00Z (Gregorian)' => array(
@@ -196,7 +199,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000002013-07-16T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000000000000000-01-01T00:00:00Z (Gregorian)' => array(
@@ -204,7 +207,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000000000-01-01T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+0000000000000001-01-14T00:00:00Z (Julian)' => array(
@@ -212,7 +215,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000000001-01-14T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_JULIAN
+					$julian
 				),
 			),
 			'+0000000000010000-01-01T00:00:00Z (Gregorian)' => array(
@@ -220,7 +223,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000010000-01-01T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'-0000000000000001-01-01T00:00:00Z (Gregorian)' => array(
@@ -228,7 +231,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'-0000000000000001-01-01T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'-00000000001-01-01T00:00:00Z (Gregorian)' => array(
@@ -236,7 +239,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'-0000000000000001-01-01T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'-000001-01-01T00:00:00Z (Gregorian)' => array(
@@ -244,7 +247,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'-0000000000000001-01-01T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'-1-01-01T00:00:00Z (Gregorian)' => array(
@@ -252,7 +255,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'-0000000000000001-01-01T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 
@@ -262,7 +265,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'-0000000000000001-01-02T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 				$gregorianOpts,
 			),
@@ -271,7 +274,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'-0000000000000001-01-03T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_JULIAN
+					$julian
 				),
 				$julianOpts,
 			),
@@ -280,7 +283,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'-0000000000000001-01-04T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_10a,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 				$prec10aOpts,
 			),
@@ -289,7 +292,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'-0000000000000001-01-05T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_DAY,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 				$noPrecOpts,
 			),
@@ -299,7 +302,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000001999-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_YEAR,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+2000-00-00T00:00:00Z' => array(
@@ -307,7 +310,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000002000-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_YEAR,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 			'+2010-00-00T00:00:00Z' => array(
@@ -315,7 +318,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000002010-00-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_YEAR,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 			),
 
@@ -326,7 +329,7 @@ class TimeParserTest extends ValueParserTestBase {
 					'+0000000000000012-12-00T00:00:00Z',
 					0, 0, 0,
 					TimeValue::PRECISION_MONTH,
-					TimeParser::CALENDAR_GREGORIAN
+					$gregorian
 				),
 				$precDayOpts,
 			),
@@ -342,7 +345,7 @@ class TimeParserTest extends ValueParserTestBase {
 				// Because PHP magically turns numeric keys into ints/floats
 				(string)$key,
 				$timeValue,
-				new TimeParser( new CalendarModelParser( $options ), $options )
+				new IsoTimestampParser( new CalendarModelParser( $options ), $options )
 			);
 		}
 
