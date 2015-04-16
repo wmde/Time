@@ -54,6 +54,8 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ### 0.7.0 (dev)
 
+* Added `MonthNameUnlocalizer`
+* Added `PhpDateTimeParser`
 * The year in Gregorian and Julian `TimeValue`s is now padded to at least 4 digits
 * Empty strings are now detected as invalid calendar models in the `TimeValue` constructor
 * Major update of the `TimeValue` documentation
