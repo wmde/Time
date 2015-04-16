@@ -11,30 +11,82 @@ use ValueFormatters\TimeFormatter;
  *
  * @licence GNU GPL v2+
  * @author Adam Shorland
+ * @author Thiemo Mättig
  */
 class CalendarModelParser extends StringValueParser {
 
 	const FORMAT_NAME = 'calendar-model';
 
 	/**
+	 * Option to provide localized calendar model names for unlocalization. Must be an array mapping
+	 * localized calendar model names to URIs.
+	 *
+	 * @see TimeFormatter::OPT_CALENDARNAMES
+	 */
+	const OPT_CALENDAR_MODEL_URIS = 'calendar-model-uris';
+
+	/**
+	 * @deprecated Do not use.
+	 *
 	 * Regex pattern constant matching the parable calendar models
 	 * should be used as an insensitive to match all cases
+	 *
+	 * TODO: How crucial is it that this regex is in sync with the list below?
 	 */
 	const MODEL_PATTERN = '(Gregorian|Julian|)';
 
-	protected function stringParse( $value ) {
-		$rawValue = $value;
+	/**
+	 * @param ParserOptions|null $options
+	 */
+	public function __construct( ParserOptions $options = null ) {
+		parent::__construct( $options );
 
-		$value = strtolower( $value );
+		$this->defaultOption( self::OPT_CALENDAR_MODEL_URIS, array() );
+	}
+
+	/**
+	 * @param string $value
+	 *
+	 * @throws ParseException
+	 * @return string
+	 */
+	protected function stringParse( $value ) {
+		$uris = $this->getOption( self::OPT_CALENDAR_MODEL_URIS );
+		if ( array_key_exists( $value, $uris ) ) {
+			return $uris[$value];
+		}
 
 		switch ( $value ) {
+			case TimeFormatter::CALENDAR_GREGORIAN:
+				return TimeFormatter::CALENDAR_GREGORIAN;
+			case TimeFormatter::CALENDAR_JULIAN:
+				return TimeFormatter::CALENDAR_JULIAN;
+		}
+
+		return $this->getCalendarModelUriFromKey( $value );
+	}
+
+	/**
+	 * @param string $value
+	 *
+	 * @throws ParseException
+	 * @return string|null
+	 */
+	private function getCalendarModelUriFromKey( $value ) {
+		$key = strtolower( trim( $value ) );
+
+		// TODO: What about abbreviations, e.g. "greg"?
+		switch ( $key ) {
 			case '':
 			case 'gregorian':
+			case 'western':
+			case 'christian':
 				return TimeFormatter::CALENDAR_GREGORIAN;
 			case 'julian':
 				return TimeFormatter::CALENDAR_JULIAN;
 		}
 
-		throw new ParseException( 'Cannot parse calendar model', $rawValue, self::FORMAT_NAME );
+		throw new ParseException( 'Cannot parse calendar model', $value, self::FORMAT_NAME );
 	}
+
 }
