@@ -2,6 +2,7 @@
 
 namespace DataValues\Tests;
 
+use DataValues\IllegalValueException;
 use DataValues\TimeValue;
 
 /**
@@ -29,143 +30,167 @@ class TimeValueTest extends DataValueTest {
 
 	public function validConstructorArgumentsProvider() {
 		return array(
-			array(
+			'1 January' => array(
 				'+2013-01-01T00:00:00Z',
 				0, 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
+			'Maximum timezone' => array(
 				'+2013-01-01T00:00:00Z',
 				7200, 9001, 9001,
 				TimeValue::PRECISION_Ga,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
+			'Minimum timezone' => array(
 				'+2013-01-01T00:00:00Z',
 				-7200, 0, 42,
 				TimeValue::PRECISION_YEAR,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
-				'+2013-01-01T00:00:00Z',
-				0, 0, 0,
-				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
-			),
-			array(
+			'Negative year' => array(
 				'-0005-01-01T00:00:00Z',
 				0, 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
-			)
+				'http://nyan.cat/original.php'
+			),
+			'Zero' => array(
+				'+0000-00-00T00:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php'
+			),
+			'Minimum timestamp' => array(
+				'-9999999999999999-12-31T23:59:62Z',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php'
+			),
+			'Maximum timestamp' => array(
+				'+9999999999999999-12-31T23:59:62Z',
+				0, 0, 0,
+				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php'
+			),
+			'Leap year' => array(
+				'+2000-02-29T00:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_DAY,
+				'http://nyan.cat/original.php'
+			),
+			'Non-leap year 29 February' => array(
+				'+2015-02-29T00:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_DAY,
+				'http://nyan.cat/original.php'
+			),
+			'31 November' => array(
+				'+2015-11-31T00:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_DAY,
+				'http://nyan.cat/original.php'
+			),
 		);
 	}
 
 	public function invalidConstructorArgumentsProvider() {
 		return array(
-			array(
+			'String timezone' => array(
 				'+00000002013-01-01T00:00:00Z',
 				'0', 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
+			'Float timezone' => array(
 				'+00000002013-01-01T00:00:00Z',
 				4.2, 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
+			'Timezone out of range' => array(
 				'+00000002013-01-01T00:00:00Z',
 				-20 * 3600, 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
+			'Precision out of range' => array(
 				'+00000002013-01-01T00:00:00Z',
 				0, 0, 0,
-				333,
-				'http://nyan.cat/original.php',
+				15,
+				'http://nyan.cat/original.php'
 			),
-			array(
-				'+00000002013-01-01T00:00:00Z',
-				0, 0, 0,
-				9001,
-				'http://nyan.cat/original.php',
-			),
-			array(
+			'Integer timestamp' => array(
 				42,
 				0, 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
+			'Float before' => array(
 				'+00000002013-01-01T00:00:00Z',
 				0, 4.2, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
+			'Negative after' => array(
 				'+00000002013-01-01T00:00:00Z',
 				0, 0, -1,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
+			'Non-ISO timestamp' => array(
 				'bla',
 				0, 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
+			'Invalid separators' => array(
 				'+00000002013/01/01 00:00:00',
 				0, 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
-				'+00000002013-22-01T00:00:00Z',
+			'Month out of range' => array(
+				'+00000002013-13-01T00:00:00Z',
 				0, 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
-				'+00000002013-01-35T00:00:00Z',
+			'Day out of range' => array(
+				'+00000002013-01-32T00:00:00Z',
 				0, 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
-				'+00000002013-01-01T27:00:00Z',
+			'Hour out of range' => array(
+				'+00000002013-01-01T24:00:00Z',
 				0, 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
-				'+00000002013-01-01T00:66:00Z',
+			'Minute out of range' => array(
+				'+00000002013-01-01T00:60:00Z',
 				0, 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
-				'+00000002013-01-01T00:00:66Z',
+			'Second out of range' => array(
+				'+00000002013-01-01T00:00:63Z',
 				0, 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
+			'Invalid timezone' => array(
 				'+00000002013-01-01T00:00:00+60',
 				0, 0, 0,
 				TimeValue::PRECISION_SECOND,
-				'http://nyan.cat/original.php',
+				'http://nyan.cat/original.php'
 			),
-			array(
+			'Year to long' => array(
 				'+00000000000000001-01-01T00:00:00Z',
 				0, 0, 0,
 				TimeValue::PRECISION_DAY,
-				'http://nyan.cat/original.php',
-			)
+				'http://nyan.cat/original.php'
+			),
 		);
 	}
 

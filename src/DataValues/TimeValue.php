@@ -87,7 +87,7 @@ class TimeValue extends DataValueObject {
 	/**
 	 * @since 0.1
 	 *
-	 * @param string $timestamp Timestamp in a format depending on the calendar model.
+	 * @param string $timestamp Timestamp in a format resembling ISO 8601.
 	 * @param int $timezone Time zone offset from UTC in minutes.
 	 * @param int $before Number of units given by the precision.
 	 * @param int $after Number of units given by the precision.
@@ -97,24 +97,9 @@ class TimeValue extends DataValueObject {
 	 * @throws IllegalValueException
 	 */
 	public function __construct( $timestamp, $timezone, $before, $after, $precision, $calendarModel ) {
-		if ( !is_string( $timestamp ) || $timestamp === '' ) {
-			throw new IllegalValueException( '$timestamp must be a non-empty string' );
-		}
-
-		// Leap seconds are a valid concept
-		if ( !preg_match(
-			'/^([-+])(\d{1,16})(-(?:0\d|1[012])-(?:[012]\d|3[01])T(?:[01]\d|2[0-3]):[0-5]\d:(?:[0-5]\d|6[012])Z)$/',
-			$timestamp,
-			$matches
-		) ) {
-			throw new IllegalValueException( '$timestamp must be a YMD string resembling ISO 8601, given ' . $timestamp );
-		}
-
 		if ( !is_int( $timezone ) ) {
 			throw new IllegalValueException( '$timezone must be an integer' );
-		}
-
-		if ( $timezone < -12 * 3600 || $timezone > 14 * 3600 ) {
+		} elseif ( $timezone < -12 * 3600 || $timezone > 14 * 3600 ) {
 			throw new IllegalValueException( '$timezone out of allowed bounds' );
 		}
 
@@ -128,9 +113,7 @@ class TimeValue extends DataValueObject {
 
 		if ( !is_int( $precision ) ) {
 			throw new IllegalValueException( '$precision must be an integer' );
-		}
-
-		if ( $precision < self::PRECISION_Ga || $precision > self::PRECISION_SECOND ) {
+		} elseif ( $precision < self::PRECISION_Ga || $precision > self::PRECISION_SECOND ) {
 			throw new IllegalValueException( '$precision out of allowed bounds' );
 		}
 
@@ -139,16 +122,43 @@ class TimeValue extends DataValueObject {
 			throw new IllegalValueException( '$calendarModel must be a non-empty string' );
 		}
 
-		$year = $matches[2];
-		$year = ltrim( $year, '0' );
-		$year = str_pad( $year, 4, '0', STR_PAD_LEFT );
-
-		$this->timestamp = $matches[1] . $year . $matches[3];
+		$this->timestamp = $this->validateIsoTimestamp( $timestamp );
 		$this->timezone = $timezone;
 		$this->before = $before;
 		$this->after = $after;
 		$this->precision = $precision;
 		$this->calendarModel = $calendarModel;
+	}
+
+	/**
+	 * @param string $timestamp
+	 *
+	 * @throws IllegalValueException
+	 * @return string
+	 */
+	private function validateIsoTimestamp( $timestamp ) {
+		if ( !is_string( $timestamp ) || $timestamp === '' ) {
+			throw new IllegalValueException( '$timestamp must be a non-empty string' );
+		} elseif ( !preg_match(
+			'/^([-+])(\d{1,16})-(\d\d)-(\d\d)(T(?:[01]\d|2[0-3]):[0-5]\d:(?:[0-5]\d|6[012])Z)$/',
+			$timestamp,
+			$matches
+		) ) {
+			throw new IllegalValueException( '$timestamp must resemble ISO 8601, given ' . $timestamp );
+		}
+
+		list( , $sign, $year, $month, $day, $time ) = $matches;
+
+		if ( $month > 12 ) {
+			throw new IllegalValueException( 'Month out of allowed bounds' );
+		} elseif ( $day > 31 ) {
+			throw new IllegalValueException( 'Day out of allowed bounds' );
+		}
+
+		$year = ltrim( $year, '0' );
+		$year = str_pad( $year, 4, '0', STR_PAD_LEFT );
+
+		return $sign . $year . '-' . $month . '-' . $day . $time;
 	}
 
 	/**
