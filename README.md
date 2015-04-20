@@ -52,19 +52,24 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.7.0 (2015-04-17)
+### 0.7.0 (2015-04-20)
 
+#### Breaking changes
+* Renamed `TimeParser` to `IsoTimestampParser`
+* Empty strings are now detected as invalid calendar models in the `TimeValue` constructor
+
+#### Additions
 * Added `MonthNameUnlocalizer`
 * Added `PhpDateTimeParser`
-* The year in `TimeValue`s is now padded to 4 digits, and additional leading zeros are trimmed
-* Empty strings are now detected as invalid calendar models in the `TimeValue` constructor
-* Major update of the `TimeValue` documentation
-* Renamed `TimeParser` to `IsoTimestampParser`
 * `IsoTimestampParser` can now parse various YMD ordered timestamp strings resembling ISO 8601
+* `CalendarModelParser` now accepts URIs and localized calendar names given via options
+
+#### Other changes
+* The year in `TimeValue`s is now padded to 4 digits, and additional leading zeros are trimmed
+* Major update of the `TimeValue` documentation
 * Constructor arguments in `IsoTimestampParser` and `TimeFormatter` are optional now
 * Fixed `TimeFormatter` delegating to an ISO timestamp formatter given via option
-* `TimeFormatter` is now aware of the precision and formats time values accordingly
-* `CalendarModelParser` now accepts URIs and localized calendar names given via options
+* `TimeFormatter` does not output the calendar model any more
 
 ### 0.6.1 (2014-10-09)
 
