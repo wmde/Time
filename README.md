@@ -52,22 +52,30 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.7.0 (dev)
+### 0.7.0 (2015-04-20)
 
+#### Breaking changes
+* Renamed `TimeParser` to `IsoTimestampParser`
+* Empty strings are now detected as invalid calendar models in the `TimeValue` constructor
+
+#### Additions
 * Added `MonthNameUnlocalizer`
 * Added `PhpDateTimeParser`
-* The year in Gregorian and Julian `TimeValue`s is now padded to at least 4 digits
-* Empty strings are now detected as invalid calendar models in the `TimeValue` constructor
+* `IsoTimestampParser` can now parse various YMD ordered timestamp strings resembling ISO 8601
+* `CalendarModelParser` now accepts URIs and localized calendar names given via options
+
+#### Other changes
+* The year in `TimeValue`s is now padded to 4 digits, and additional leading zeros are trimmed
 * Major update of the `TimeValue` documentation
-* Renamed `TimeParser` to `IsoTimestampParser`
-* Constructor arguments in `IsoTimestampParser` are optional now
+* Constructor arguments in `IsoTimestampParser` and `TimeFormatter` are optional now
 * Fixed `TimeFormatter` delegating to an ISO timestamp formatter given via option
+* `TimeFormatter` does not output the calendar model any more
 
 ### 0.6.1 (2014-10-09)
 
 * Made component installable with DataValues 1.x
 
-### 0.6 (2014-06-05)
+### 0.6.0 (2014-06-05)
 
 * Added TimeValueCalculator
 * Removed TimeIsoFormatter interface
@@ -83,29 +91,29 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 * Fix composer version of DataValues/Common
 
-### 0.5 (2014-03-21)
+### 0.5.0 (2014-03-21)
 
 * Removed TimeParser::SIGN_PATTERN constant
 * Removed TimeParser::TIME_PATTERN constant
 * Fixed [bug 62730](https://bugzilla.wikimedia.org/show_bug.cgi?id=62730). The TimeParser now returns the correct precision when only month and year or year is given
 
-### 0.4 (2014-03-14)
+### 0.4.0 (2014-03-14)
 
 * Corrected spelling errors calender/calander -> calendar
 
-### 0.3 (2014-03-13)
+### 0.3.0 (2014-03-13)
 
 * Renamed CalenderModelParser to CalendarModelParser
 * Added Calandar and Precision options to TimeParser
 
-### 0.2 (2014-02-11)
+### 0.2.0 (2014-02-11)
 
 Added features:
 
 * TimeParser
 * CalenderModelParser
 
-### 0.1 (2013-11-17)
+### 0.1.0 (2013-11-17)
 
 Initial release with these features:
 

@@ -16,7 +16,7 @@ use InvalidArgumentException;
  * The parser refuses to parse strings that can be parsed differently by other, locale-aware
  * parsers, e.g. 01-02-03 can be in YMD, DMY or MDY order depending on the language.
  *
- * @since 0.7
+ * @since 0.7 renamed from TimeParser to IsoTimestampParser.
  *
  * @licence GNU GPL v2+
  * @author Adam Shorland
