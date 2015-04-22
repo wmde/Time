@@ -54,6 +54,7 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ### 0.7.1 (alpha)
 
+* `PhpDateTimeParser` now accepts comma separated dates
 * Added `TimeValue::CALENDAR_GREGORIAN` and `TimeValue::CALENDAR_JULIAN`
 * Deprecated `TimeFormatter::CALENDAR_GREGORIAN` and `TimeFormatter::CALENDAR_JULIAN`
 * Deprecated `IsoTimestampParser::CALENDAR_GREGORIAN` and `IsoTimestampParser::CALENDAR_JULIAN`
