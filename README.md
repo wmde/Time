@@ -55,11 +55,9 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 ### 0.8.0 (alpha)
 
 * `IsoTimestampParser` auto-detects the calendar model and does not default to Gregorian any more
-* Leap second range changed from[0..62] to [0..61]
-* Colons in time are now optional, per ISO
-
-### 0.7.1 (alpha)
-
+* `IsoTimestampParser` now accepts time values with optional colons, per ISO
+* `PhpDateTimeParser` now accepts comma separated dates
+* `TimeValue`s leap second range changed from [0..62] to [0..61]
 * Added `TimeValue::CALENDAR_GREGORIAN` and `TimeValue::CALENDAR_JULIAN`
 * Deprecated `TimeFormatter::CALENDAR_GREGORIAN` and `TimeFormatter::CALENDAR_JULIAN`
 * Deprecated `IsoTimestampParser::CALENDAR_GREGORIAN` and `IsoTimestampParser::CALENDAR_JULIAN`
