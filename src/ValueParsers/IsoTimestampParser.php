@@ -125,15 +125,15 @@ class IsoTimestampParser extends StringValueParser {
 	 * @return int One of the TimeValue::PRECISION_... constants.
 	 */
 	private function getPrecision( array $timeParts ) {
-		if ( intval( $timeParts[6] ) > 0 ) {
+		if ( $timeParts[6] > 0 ) {
 			$precision = TimeValue::PRECISION_SECOND;
-		} elseif ( intval( $timeParts[5] ) > 0 ) {
+		} elseif ( $timeParts[5] > 0 ) {
 			$precision = TimeValue::PRECISION_MINUTE;
-		} elseif ( intval( $timeParts[4] ) > 0 ) {
+		} elseif ( $timeParts[4] > 0 ) {
 			$precision = TimeValue::PRECISION_HOUR;
-		} elseif ( intval( $timeParts[3] ) > 0 ) {
+		} elseif ( $timeParts[3] > 0 ) {
 			$precision = TimeValue::PRECISION_DAY;
-		} elseif ( intval( $timeParts[2] ) > 0 ) {
+		} elseif ( $timeParts[2] > 0 ) {
 			$precision = TimeValue::PRECISION_MONTH;
 		} else {
 			$precision = $this->getPrecisionFromYear( $timeParts[1] );
