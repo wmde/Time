@@ -122,7 +122,7 @@ class TimeValue extends DataValueObject {
 			throw new IllegalValueException( '$calendarModel must be a non-empty string' );
 		}
 
-		$this->timestamp = $this->validateIsoTimestamp( $timestamp );
+		$this->timestamp = $this->normalizeIsoTimestamp( $timestamp );
 		$this->timezone = $timezone;
 		$this->before = $before;
 		$this->after = $after;
@@ -136,29 +136,35 @@ class TimeValue extends DataValueObject {
 	 * @throws IllegalValueException
 	 * @return string
 	 */
-	private function validateIsoTimestamp( $timestamp ) {
+	private function normalizeIsoTimestamp( $timestamp ) {
 		if ( !is_string( $timestamp ) || $timestamp === '' ) {
 			throw new IllegalValueException( '$timestamp must be a non-empty string' );
 		} elseif ( !preg_match(
-			'/^([-+])(\d{1,16})-(\d\d)-(\d\d)(T(?:[01]\d|2[0-3]):[0-5]\d:(?:[0-5]\d|6[012])Z)$/',
+			'/^([-+])(\d{1,16})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)Z$/',
 			$timestamp,
 			$matches
 		) ) {
 			throw new IllegalValueException( '$timestamp must resemble ISO 8601, given ' . $timestamp );
 		}
 
-		list( , $sign, $year, $month, $day, $time ) = $matches;
+		list( , $sign, $year, $month, $day, $hour, $minute, $second ) = $matches;
 
 		if ( $month > 12 ) {
 			throw new IllegalValueException( 'Month out of allowed bounds' );
 		} elseif ( $day > 31 ) {
 			throw new IllegalValueException( 'Day out of allowed bounds' );
+		} elseif ( $hour > 23 ) {
+			throw new IllegalValueException( 'Hour out of allowed bounds' );
+		} elseif ( $minute > 59 ) {
+			throw new IllegalValueException( 'Minute out of allowed bounds' );
+		} elseif ( $second > 62 ) {
+			throw new IllegalValueException( 'Second out of allowed bounds' );
 		}
 
 		$year = ltrim( $year, '0' );
 		$year = str_pad( $year, 4, '0', STR_PAD_LEFT );
 
-		return $sign . $year . '-' . $month . '-' . $day . $time;
+		return $sign . $year . '-' . $month . '-' . $day . 'T' . $hour . ':' . $minute .':' . $second . 'Z';
 	}
 
 	/**
