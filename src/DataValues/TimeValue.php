@@ -31,6 +31,16 @@ class TimeValue extends DataValueObject {
 	const PRECISION_SECOND = 14;
 
 	/**
+	 * @since 0.7.1
+	 */
+	const CALENDAR_GREGORIAN = 'http://www.wikidata.org/entity/Q1985727';
+
+	/**
+	 * @since 0.7.1
+	 */
+	const CALENDAR_JULIAN = 'http://www.wikidata.org/entity/Q1985786';
+
+	/**
 	 * Timestamp describing a point in time. The actual format depends on the calendar model.
 	 *
 	 * Gregorian and Julian dates use the same YMD ordered format, resembling ISO 8601, e.g.

@@ -2,7 +2,7 @@
 
 namespace ValueParsers;
 
-use ValueFormatters\TimeFormatter;
+use DataValues\TimeValue;
 
 /**
  * ValueParser that parses the string representation of a calendar model.
@@ -57,10 +57,10 @@ class CalendarModelParser extends StringValueParser {
 		}
 
 		switch ( $value ) {
-			case TimeFormatter::CALENDAR_GREGORIAN:
-				return TimeFormatter::CALENDAR_GREGORIAN;
-			case TimeFormatter::CALENDAR_JULIAN:
-				return TimeFormatter::CALENDAR_JULIAN;
+			case TimeValue::CALENDAR_GREGORIAN:
+				return TimeValue::CALENDAR_GREGORIAN;
+			case TimeValue::CALENDAR_JULIAN:
+				return TimeValue::CALENDAR_JULIAN;
 		}
 
 		return $this->getCalendarModelUriFromKey( $value );
@@ -81,9 +81,9 @@ class CalendarModelParser extends StringValueParser {
 			case 'gregorian':
 			case 'western':
 			case 'christian':
-				return TimeFormatter::CALENDAR_GREGORIAN;
+				return TimeValue::CALENDAR_GREGORIAN;
 			case 'julian':
-				return TimeFormatter::CALENDAR_JULIAN;
+				return TimeValue::CALENDAR_JULIAN;
 		}
 
 		throw new ParseException( 'Cannot parse calendar model', $value, self::FORMAT_NAME );
