@@ -29,8 +29,16 @@ class IsoTimestampParser extends StringValueParser {
 	const OPT_PRECISION = 'precision';
 	const OPT_CALENDAR = 'calendar';
 
-	const CALENDAR_GREGORIAN = 'http://www.wikidata.org/entity/Q1985727';
-	const CALENDAR_JULIAN = 'http://www.wikidata.org/entity/Q1985786';
+	/**
+	 * @deprecated since 0.7.1, use TimeValue::CALENDAR_GREGORIAN instead
+	 */
+	const CALENDAR_GREGORIAN = TimeValue::CALENDAR_GREGORIAN;
+
+	/**
+	 * @deprecated since 0.7.1, use TimeValue::CALENDAR_JULIAN instead
+	 */
+	const CALENDAR_JULIAN = TimeValue::CALENDAR_JULIAN;
+
 	const PRECISION_NONE = 'noprecision';
 
 	/**
@@ -181,10 +189,10 @@ class IsoTimestampParser extends StringValueParser {
 
 		// The calendar model is an URI and URIs can't be case-insensitive
 		switch ( $this->getOption( self::OPT_CALENDAR ) ) {
-			case self::CALENDAR_JULIAN:
-				return self::CALENDAR_JULIAN;
+			case TimeValue::CALENDAR_JULIAN:
+				return TimeValue::CALENDAR_JULIAN;
 			default:
-				return self::CALENDAR_GREGORIAN;
+				return TimeValue::CALENDAR_GREGORIAN;
 		}
 	}
 

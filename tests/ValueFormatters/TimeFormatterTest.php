@@ -46,7 +46,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				0,
 				0,
 				11,
-				TimeFormatter::CALENDAR_GREGORIAN
+				TimeValue::CALENDAR_GREGORIAN
 			),
 			'+0000-01-01T00:00:00Z' => array(
 				'+00000000000-01-01T00:00:00Z',
@@ -54,7 +54,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				0,
 				0,
 				11,
-				TimeFormatter::CALENDAR_GREGORIAN
+				TimeValue::CALENDAR_GREGORIAN
 			),
 			'+0001-01-14T00:00:00Z' => array(
 				'+00000000001-01-14T00:00:00Z',
@@ -62,7 +62,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				0,
 				0,
 				11,
-				TimeFormatter::CALENDAR_JULIAN
+				TimeValue::CALENDAR_JULIAN
 			),
 			'+10000-01-01T00:00:00Z' => array(
 				'+00000010000-01-01T00:00:00Z',
@@ -70,7 +70,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				0,
 				0,
 				11,
-				TimeFormatter::CALENDAR_GREGORIAN
+				TimeValue::CALENDAR_GREGORIAN
 			),
 			'-0001-01-01T00:00:00Z' => array(
 				'-00000000001-01-01T00:00:00Z',
@@ -78,7 +78,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				0,
 				0,
 				11,
-				TimeFormatter::CALENDAR_GREGORIAN
+				TimeValue::CALENDAR_GREGORIAN
 			),
 			'+2013-07-17T00:00:00Z' => array(
 				'+00000002013-07-17T00:00:00Z',
@@ -86,7 +86,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				0,
 				0,
 				10,
-				TimeFormatter::CALENDAR_GREGORIAN
+				TimeValue::CALENDAR_GREGORIAN
 			),
 			'+2013-07-18T00:00:00Z' => array(
 				'+00000002013-07-18T00:00:00Z',
@@ -94,7 +94,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				0,
 				0,
 				9,
-				TimeFormatter::CALENDAR_GREGORIAN
+				TimeValue::CALENDAR_GREGORIAN
 			),
 			'+2013-07-19T00:00:00Z' => array(
 				'+00000002013-07-19T00:00:00Z',
@@ -102,7 +102,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 				0,
 				0,
 				8,
-				TimeFormatter::CALENDAR_GREGORIAN
+				TimeValue::CALENDAR_GREGORIAN
 			),
 		);
 
