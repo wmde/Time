@@ -3,6 +3,7 @@
 namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
+use ValueFormatters\TimeFormatter;
 use ValueParsers\CalendarModelParser;
 use ValueParsers\IsoTimestampParser;
 use ValueParsers\MonthNameUnlocalizer;
@@ -81,143 +82,143 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 		$valid = array(
 			// Normal/easy dates
 			'10/10/2010' =>
-				array( '+0000000000002010-10-10T00:00:00Z' ),
+				array( '+0000000000002010-10-10T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'10.10.2010' =>
-				array( '+0000000000002010-10-10T00:00:00Z' ),
+				array( '+0000000000002010-10-10T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'  10.  10.  2010  ' =>
-				array( '+0000000000002010-10-10T00:00:00Z' ),
+				array( '+0000000000002010-10-10T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'10 10 2010' =>
-				array( '+0000000000002010-10-10T00:00:00Z' ),
+				array( '+0000000000002010-10-10T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'10/10/0010' =>
-				array( '+0000000000000010-10-10T00:00:00Z' ),
+				array( '+0000000000000010-10-10T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'1 July 2013' =>
-				array( '+0000000000002013-07-01T00:00:00Z' ),
+				array( '+0000000000002013-07-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'1. July 2013' =>
-				array( '+0000000000002013-07-01T00:00:00Z' ),
+				array( '+0000000000002013-07-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'1 Jul 2013' =>
-				array( '+0000000000002013-07-01T00:00:00Z' ),
+				array( '+0000000000002013-07-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'January 9 1920' =>
-				array( '+0000000000001920-01-09T00:00:00Z' ),
+				array( '+0000000000001920-01-09T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'Feb 11 1930' =>
-				array( '+0000000000001930-02-11T00:00:00Z' ),
+				array( '+0000000000001930-02-11T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'1st July 2013' =>
-				array( '+0000000000002013-07-01T00:00:00Z' ),
+				array( '+0000000000002013-07-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'2nd July 2013' =>
-				array( '+0000000000002013-07-02T00:00:00Z' ),
+				array( '+0000000000002013-07-02T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'3rd July 2013' =>
-				array( '+0000000000002013-07-03T00:00:00Z' ),
+				array( '+0000000000002013-07-03T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'1th July 2013' =>
-				array( '+0000000000002013-07-01T00:00:00Z' ),
+				array( '+0000000000002013-07-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'2th July 2013' =>
-				array( '+0000000000002013-07-02T00:00:00Z' ),
+				array( '+0000000000002013-07-02T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'3th July 2013' =>
-				array( '+0000000000002013-07-03T00:00:00Z' ),
+				array( '+0000000000002013-07-03T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'4th July 2013' =>
-				array( '+0000000000002013-07-04T00:00:00Z' ),
+				array( '+0000000000002013-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 
 			// Year first dates
 			'2009-01-09' =>
-				array( '+0000000000002009-01-09T00:00:00Z' ),
+				array( '+0000000000002009-01-09T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'55-01-09' =>
-				array( '+0000000000000055-01-09T00:00:00Z' ),
+				array( '+0000000000000055-01-09T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'555-01-09' =>
-				array( '+0000000000000555-01-09T00:00:00Z' ),
+				array( '+0000000000000555-01-09T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'33300-1-1' =>
-				array( '+0000000000033300-01-01T00:00:00Z' ),
+				array( '+0000000000033300-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'3330002-1-1' =>
-				array( '+0000000003330002-01-01T00:00:00Z' ),
+				array( '+0000000003330002-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 
 			// Less than 4 digit years
 			'10/10/10' =>
-				array( '+0000000000000010-10-10T00:00:00Z' ),
+				array( '+0000000000000010-10-10T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'9 Jan 09' =>
-				array( '+0000000000000009-01-09T00:00:00Z' ),
+				array( '+0000000000000009-01-09T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'1/1/1' =>
-				array( '+0000000000000001-01-01T00:00:00Z' ),
+				array( '+0000000000000001-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'1-1-1' =>
-				array( '+0000000000000001-01-01T00:00:00Z' ),
+				array( '+0000000000000001-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'31-1-55' =>
-				array( '+0000000000000055-01-31T00:00:00Z' ),
+				array( '+0000000000000055-01-31T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'10-10-100' =>
-				array( '+0000000000000100-10-10T00:00:00Z' ),
+				array( '+0000000000000100-10-10T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'4th July 11' =>
-				array( '+0000000000000011-07-04T00:00:00Z' ),
+				array( '+0000000000000011-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'4th July 111' =>
-				array( '+0000000000000111-07-04T00:00:00Z' ),
+				array( '+0000000000000111-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'4th July 1' =>
-				array( '+0000000000000001-07-04T00:00:00Z' ),
+				array( '+0000000000000001-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'12.Jun.10x' =>
-				array( '+0000000000000010-06-12T00:00:00Z' ),
+				array( '+0000000000000010-06-12T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 
 			// More than 4 digit years
 			'4th July 10000' =>
-				array( '+0000000000010000-07-04T00:00:00Z' ),
+				array( '+0000000000010000-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'10/10/22000' =>
-				array( '+0000000000022000-10-10T00:00:00Z' ),
+				array( '+0000000000022000-10-10T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'1-1-33300' =>
-				array( '+0000000000033300-01-01T00:00:00Z' ),
+				array( '+0000000000033300-01-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'4th July 7214614279199781' =>
-				array( '+7214614279199781-07-04T00:00:00Z' ),
+				array( '+7214614279199781-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'-10100-02-29' =>
-				array( '-0000000000010100-03-01T00:00:00Z' ),
+				array( '-0000000000010100-03-01T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 
 			// Years with leading zeros
 			'009-08-07' =>
-				array( '+0000000000000009-08-07T00:00:00Z' ),
+				array( '+0000000000000009-08-07T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'000001-07-04' =>
-				array( '+0000000000000001-07-04T00:00:00Z' ),
+				array( '+0000000000000001-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'0000001-07-04' =>
-				array( '+0000000000000001-07-04T00:00:00Z' ),
+				array( '+0000000000000001-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'00000001-07-04' =>
-				array( '+0000000000000001-07-04T00:00:00Z' ),
+				array( '+0000000000000001-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'000000001-07-04' =>
-				array( '+0000000000000001-07-04T00:00:00Z' ),
+				array( '+0000000000000001-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'00000000000-07-04' =>
-				array( '+0000000000000000-07-04T00:00:00Z' ),
+				array( '+0000000000000000-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_JULIAN ),
 			'4th July 00000002015' =>
-				array( '+0000000000002015-07-04T00:00:00Z' ),
+				array( '+0000000000002015-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'00000002015-07-04' =>
-				array( '+0000000000002015-07-04T00:00:00Z' ),
+				array( '+0000000000002015-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'4th July 00000092015' =>
-				array( '+0000000000092015-07-04T00:00:00Z' ),
+				array( '+0000000000092015-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'00000092015-07-04' =>
-				array( '+0000000000092015-07-04T00:00:00Z' ),
+				array( '+0000000000092015-07-04T00:00:00Z', 0, 0, 0, TimeValue::PRECISION_DAY, IsoTimestampParser::CALENDAR_GREGORIAN ),
 
 			// Hour, minute and second precision
 			'4 July 2015 23:59' =>
-				array( '+0000000000002015-07-04T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE ),
+				array( '+0000000000002015-07-04T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'4 July 100 23:59' =>
-				array( '+0000000000000100-07-04T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE ),
+				array( '+0000000000000100-07-04T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE, IsoTimestampParser::CALENDAR_JULIAN ),
 			'4 July 015 23:59' =>
-				array( '+0000000000000015-07-04T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE ),
+				array( '+0000000000000015-07-04T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE, IsoTimestampParser::CALENDAR_JULIAN ),
 			'4 July 15 23:59' =>
-				array( '+0000000000000015-07-04T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE ),
+				array( '+0000000000000015-07-04T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE, IsoTimestampParser::CALENDAR_JULIAN ),
 			'4.7.015 23:59' =>
-				array( '+0000000000000015-07-04T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE ),
+				array( '+0000000000000015-07-04T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE, IsoTimestampParser::CALENDAR_JULIAN ),
 			'4.7.15 23:59' =>
-				array( '+0000000000000015-07-04T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE ),
+				array( '+0000000000000015-07-04T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE, IsoTimestampParser::CALENDAR_JULIAN ),
 			'4/7/015 23:59' =>
-				array( '+0000000000000015-04-07T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE ),
+				array( '+0000000000000015-04-07T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE, IsoTimestampParser::CALENDAR_JULIAN ),
 			'4/7/15 23:59' =>
-				array( '+0000000000000015-04-07T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE ),
+				array( '+0000000000000015-04-07T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE, IsoTimestampParser::CALENDAR_JULIAN ),
 			'4th July 2015 12:00' =>
-				array( '+0000000000002015-07-04T12:00:00Z', 0, 0, 0, TimeValue::PRECISION_HOUR ),
+				array( '+0000000000002015-07-04T12:00:00Z', 0, 0, 0, TimeValue::PRECISION_HOUR, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'2015-07-04 12:00' =>
-				array( '+0000000000002015-07-04T12:00:00Z', 0, 0, 0, TimeValue::PRECISION_HOUR ),
+				array( '+0000000000002015-07-04T12:00:00Z', 0, 0, 0, TimeValue::PRECISION_HOUR, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'2015-07-04 12:30' =>
-				array( '+0000000000002015-07-04T12:30:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE ),
+				array( '+0000000000002015-07-04T12:30:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'2015-07-04 12:30:29' =>
-				array( '+0000000000002015-07-04T12:30:29Z', 0, 0, 0, TimeValue::PRECISION_SECOND ),
+				array( '+0000000000002015-07-04T12:30:29Z', 0, 0, 0, TimeValue::PRECISION_SECOND, IsoTimestampParser::CALENDAR_GREGORIAN ),
 			'15.07.04 23:59' =>
-				array( '+0000000000000004-07-15T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE ),
+				array( '+0000000000000004-07-15T23:59:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE, IsoTimestampParser::CALENDAR_JULIAN ),
 			'15.07.04 00:01' =>
-				array( '+0000000000000004-07-15T00:01:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE ),
+				array( '+0000000000000004-07-15T00:01:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE, IsoTimestampParser::CALENDAR_JULIAN ),
 			'15-07-01 12:37:00' =>
-				array( '+0000000000000001-07-15T12:37:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE ),
+				array( '+0000000000000001-07-15T12:37:00Z', 0, 0, 0, TimeValue::PRECISION_MINUTE, IsoTimestampParser::CALENDAR_JULIAN ),
 			'4th July 15 12:00' =>
-				array( '+0000000000000015-07-04T12:00:00Z', 0, 0, 0, TimeValue::PRECISION_HOUR ),
+				array( '+0000000000000015-07-04T12:00:00Z', 0, 0, 0, TimeValue::PRECISION_HOUR, IsoTimestampParser::CALENDAR_JULIAN ),
 			'July 4th 15 12:00' =>
-				array( '+0000000000000015-07-04T12:00:00Z', 0, 0, 0, TimeValue::PRECISION_HOUR ),
+				array( '+0000000000000015-07-04T12:00:00Z', 0, 0, 0, TimeValue::PRECISION_HOUR, IsoTimestampParser::CALENDAR_JULIAN ),
 
 			// Testing leap year stuff
 			'10000-02-29' =>

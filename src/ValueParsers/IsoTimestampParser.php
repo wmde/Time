@@ -5,6 +5,7 @@ namespace ValueParsers;
 use DataValues\IllegalValueException;
 use DataValues\TimeValue;
 use InvalidArgumentException;
+use ValueFormatters\TimeFormatter;
 
 /**
  * ValueParser that parses various string representations of time values, in YMD ordered formats
@@ -48,7 +49,7 @@ class IsoTimestampParser extends StringValueParser {
 	) {
 		parent::__construct( $options );
 
-		$this->defaultOption( self::OPT_CALENDAR, self::CALENDAR_GREGORIAN );
+		$this->defaultOption( self::OPT_CALENDAR, null );
 		$this->defaultOption( self::OPT_PRECISION, self::PRECISION_NONE );
 
 		$this->calendarModelParser = $calendarModelParser ?: new CalendarModelParser( $this->options );
@@ -70,7 +71,7 @@ class IsoTimestampParser extends StringValueParser {
 		// Pad sign with 1 plus, year with 16 zeros and hour, minute and second with 2 zeros
 		$time = vsprintf( '%\'+1s%016s-%s-%sT%02s:%02s:%02sZ', $timeParts );
 		$precision = $this->getPrecision( $timeParts );
-		$calendarModel = $this->getCalendarModel( $timeParts[7] );
+		$calendarModel = $this->getCalendarModel( $timeParts );
 
 		try {
 			return new TimeValue( $time, 0, 0, 0, $precision, $calendarModel );
@@ -170,22 +171,50 @@ class IsoTimestampParser extends StringValueParser {
 	}
 
 	/**
-	 * @param string $calendarModelName
+	 * Determines the calendar model. The calendar model is determined as follows:
 	 *
-	 * @return string
+	 * - if $timeParts[7] is set, use $this->calendarModelParser to parse it into a URI.
+	 * - otherwise, if $this->getOption( self::OPT_CALENDAR ) is set not null, return
+	 *   self::CALENDAR_JULIAN if the option is self::CALENDAR_JULIAN, and self::CALENDAR_GREGORIAN
+	 *   otherwise.
+	 * - otherwise, use self::CALENDAR_JULIAN for dates before 1582, and self::CALENDAR_GREGORIAN
+	 *   for later dates.
+	 *
+	 * @param string[] $timeParts as returned by splitTimeString()
+	 *
+	 * @return string URI
 	 */
-	private function getCalendarModel( $calendarModelName ) {
+	private function getCalendarModel( array $timeParts ) {
+		$calendarModelName = $timeParts[7];
+
 		if ( !empty( $calendarModelName ) ) {
 			return $this->calendarModelParser->parse( $calendarModelName );
 		}
 
-		// The calendar model is an URI and URIs can't be case-insensitive
-		switch ( $this->getOption( self::OPT_CALENDAR ) ) {
-			case self::CALENDAR_JULIAN:
-				return self::CALENDAR_JULIAN;
-			default:
-				return self::CALENDAR_GREGORIAN;
+		// Use the calendar given in the option, if given
+		if ( $this->getOption( self::OPT_CALENDAR ) !== null ) {
+			// The calendar model is an URI and URIs can't be case-insensitive
+			switch ( $this->getOption( self::OPT_CALENDAR ) ) {
+				case self::CALENDAR_JULIAN:
+					return self::CALENDAR_JULIAN;
+				default:
+					return self::CALENDAR_GREGORIAN;
+			}
 		}
+
+		// Try to guess from the year.
+		$sign = $timeParts[0] ?: '+';
+		$year = $sign . ltrim( $timeParts[1], '0' );
+
+		// For large year values, avoid conversion to integer
+		if ( strlen( $year ) > 5 ) {
+			return $sign === '+' ? self::CALENDAR_GREGORIAN : self::CALENDAR_JULIAN;
+		}
+
+		// The Gregorian calendar was introduced in 1582,
+		// so we'll default to Julian for all years before that.
+		$year = $year === '' ? 0 : (int)$year;
+		return $year >= 1582 ? self::CALENDAR_GREGORIAN : self::CALENDAR_JULIAN;
 	}
 
 }

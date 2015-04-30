@@ -73,6 +73,7 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			'+0000000000000000-00-00T00:00:00Z' => array(
 				'+0000000000000000-00-00T00:00:00Z',
 				TimeValue::PRECISION_YEAR,
+				$julian
 			),
 			'+0000000000002000-00-00T00:00:00Z' => array(
 				'+0000000000002000-00-00T00:00:00Z',
@@ -130,6 +131,11 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				'+2000000000000000-00-00T00:00:00Z',
 				TimeValue::PRECISION_Ga,
 			),
+			'-2000000000000000-00-00T00:00:00Z' => array(
+				'-2000000000000000-00-00T00:00:00Z',
+				TimeValue::PRECISION_Ga,
+				$julian
+			),
 			'+0000000000002013-07-16T00:00:00Z (Gregorian)' => array(
 				'+0000000000002013-07-16T00:00:00Z',
 				TimeValue::PRECISION_DAY,
@@ -139,8 +145,8 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				TimeValue::PRECISION_DAY,
 
 			),
-			'+0000000000000001-01-14T00:00:00Z (Julian)' => array(
-				'+0000000000000001-01-14T00:00:00Z',
+			'+0000000000002001-01-14T00:00:00Z (Julian)' => array(
+				'+0000000000002001-01-14T00:00:00Z',
 				TimeValue::PRECISION_DAY,
 				$julian,
 			),
@@ -151,18 +157,29 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			'-0000000000000001-01-01T00:00:00Z (Gregorian)' => array(
 				'-0000000000000001-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY,
+				$gregorian
 			),
-			'-00000000001-01-01T00:00:00Z (Gregorian)' => array(
+			'+00000002001-01-01T00:00:00Z (Gregorian)' => array(
+				'+0000000000002001-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
+				$gregorian,
+				$julianOpts // overridden by explicit calendar in input string
+			),
+			'-00000000001-01-01T00:00:00Z (Julian)' => array(
 				'-0000000000000001-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY,
+				$julian,
+				$gregorianOpts // overridden by explicit calendar in input string
 			),
 			'-000001-01-01T00:00:00Z (Gregorian)' => array(
 				'-0000000000000001-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY,
+				$gregorian
 			),
 			'-1-01-01T00:00:00Z (Gregorian)' => array(
 				'-0000000000000001-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY,
+				$gregorian
 			),
 
 			// Tests with different options
@@ -172,8 +189,8 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				$gregorian,
 				$gregorianOpts,
 			),
-			'-1-01-03T00:00:00Z' => array(
-				'-0000000000000001-01-03T00:00:00Z',
+			'+2001-01-03T00:00:00Z' => array(
+				'+0000000000002001-01-03T00:00:00Z',
 				TimeValue::PRECISION_DAY,
 				$julian,
 				$julianOpts,
@@ -181,13 +198,13 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			'-1-01-04T00:00:00Z' => array(
 				'-0000000000000001-01-04T00:00:00Z',
 				TimeValue::PRECISION_10a,
-				$gregorian,
+				$julian,
 				$prec10aOpts,
 			),
 			'-1-01-05T00:00:00Z' => array(
 				'-0000000000000001-01-05T00:00:00Z',
 				TimeValue::PRECISION_DAY,
-				$gregorian,
+				$julian,
 				$noPrecOpts,
 			),
 
@@ -220,6 +237,7 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			"\xE2\x88\x922015-01-01T00:00:00" => array(
 				'-0000000000002015-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY,
+				$julian
 			),
 
 			// Optional second
@@ -236,17 +254,19 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			'60-01-01' => array(
 				'+0000000000000060-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY,
+				$julian
 			),
 
 			// Years < 60 require either the time part or a year with more than 2 digits
 			'1-01-01T00:00' => array(
 				'+0000000000000001-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY,
+				$julian
 			),
 			'001-01-01' => array(
 				'+0000000000000001-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY,
-
+				$julian
 			),
 
 			// Day zero
@@ -272,10 +292,23 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			'+0000000000000012-12-00T00:00:00Z' => array(
 				'+0000000000000012-12-00T00:00:00Z',
 				TimeValue::PRECISION_MONTH,
-				$gregorian,
+				$julian,
 				$precDayOpts,
 			),
 
+			// Test Julian/Gregorian switch in 1582
+			'1582-01-01' => array(
+				'+0000000000001582-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
+				$gregorian
+			),
+
+			// Test Julian/Gregorian switch in 1582.
+			'1581-08-01' => array(
+				'+0000000000001581-08-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
+				$julian
+			),
 		);
 
 		$argLists = array();
