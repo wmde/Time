@@ -159,8 +159,8 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				TimeValue::PRECISION_DAY,
 				$gregorian
 			),
-			'+00000002001-01-01T00:00:00Z (Gregorian)' => array(
-				'+0000000000002001-01-01T00:00:00Z',
+			'-00000000001-01-01T00:00:00Z (Gregorian)' => array(
+				'-0000000000000001-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY,
 				$gregorian,
 				$julianOpts // overridden by explicit calendar in input string

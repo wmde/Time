@@ -5,7 +5,6 @@ namespace ValueParsers;
 use DataValues\IllegalValueException;
 use DataValues\TimeValue;
 use InvalidArgumentException;
-use ValueFormatters\TimeFormatter;
 
 /**
  * ValueParser that parses various string representations of time values, in YMD ordered formats
@@ -204,7 +203,8 @@ class IsoTimestampParser extends StringValueParser {
 
 		// Try to guess from the year.
 		$sign = $timeParts[0] ?: '+';
-		$year = $sign . ltrim( $timeParts[1], '0' );
+		$year = ltrim( $timeParts[1], '0' );
+		$year = $year === '' ? '+0' : ( $sign . $year );
 
 		// For large year values, avoid conversion to integer
 		if ( strlen( $year ) > 5 ) {
@@ -213,7 +213,6 @@ class IsoTimestampParser extends StringValueParser {
 
 		// The Gregorian calendar was introduced in 1582,
 		// so we'll default to Julian for all years before that.
-		$year = $year === '' ? 0 : (int)$year;
 		return $year >= 1582 ? self::CALENDAR_GREGORIAN : self::CALENDAR_JULIAN;
 	}
 
