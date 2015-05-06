@@ -312,16 +312,17 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 		);
 
 		$argLists = array();
+
 		foreach ( $valid as $key => $value ) {
 			$timestamp = $value[0];
 			$precision = isset( $value[1] ) ? $value[1] : TimeValue::PRECISION_DAY;
-			$calendareModel = isset( $value[2] ) ? $value[2] : $gregorian;
+			$calendarModel = isset( $value[2] ) ? $value[2] : $gregorian;
 			$options = isset( $value[3] ) ? $value[3] : null;
 
 			$argLists[] = array(
 				// Because PHP magically turns numeric keys into ints/floats
 				(string)$key,
-				new TimeValue( $timestamp, 0, 0, 0, $precision, $calendareModel ),
+				new TimeValue( $timestamp, 0, 0, 0, $precision, $calendarModel ),
 				new IsoTimestampParser( new CalendarModelParser( $options ), $options )
 			);
 		}
