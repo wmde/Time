@@ -21,6 +21,7 @@ use InvalidArgumentException;
  * @licence GNU GPL v2+
  * @author Adam Shorland
  * @author Thiemo Mättig
+ * @author Daniel Kinzler
  */
 class IsoTimestampParser extends StringValueParser {
 
@@ -178,6 +179,8 @@ class IsoTimestampParser extends StringValueParser {
 	 *   otherwise.
 	 * - otherwise, use self::CALENDAR_JULIAN for dates before 1583, and self::CALENDAR_GREGORIAN
 	 *   for later dates.
+	 *
+	 * @note Keep this in sync with HtmlTimeFormatter::getDefaultCalendar().
 	 *
 	 * @param string[] $timeParts as returned by splitTimeString()
 	 *
