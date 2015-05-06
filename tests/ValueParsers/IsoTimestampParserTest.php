@@ -296,16 +296,16 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				$precDayOpts,
 			),
 
-			// Test Julian/Gregorian switch in 1582
-			'1582-01-01' => array(
-				'+0000000000001582-01-01T00:00:00Z',
+			// Test Julian/Gregorian switch in October 1582.
+			'1583-01-01' => array(
+				'+0000000000001583-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY,
 				$gregorian
 			),
 
-			// Test Julian/Gregorian switch in 1582.
-			'1581-08-01' => array(
-				'+0000000000001581-08-01T00:00:00Z',
+			// Test Julian/Gregorian switch in October 1582.
+			'1582-08-01' => array(
+				'+0000000000001582-08-01T00:00:00Z',
 				TimeValue::PRECISION_DAY,
 				$julian
 			),
