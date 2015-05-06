@@ -67,8 +67,8 @@ class IsoTimestampParser extends StringValueParser {
 		}
 
 		$timeParts = $this->splitTimeString( $value );
-		// Pad sign with 1 plus, year with 16 zeros and hour, minute and second with 2 zeros
-		$time = vsprintf( '%\'+1s%016s-%s-%sT%02s:%02s:%02sZ', $timeParts );
+		// Pad sign with 1 plus, year with 4 zeros and hour, minute and second with 2 zeros
+		$time = vsprintf( '%\'+1s%04s-%s-%sT%02s:%02s:%02sZ', $timeParts );
 		$precision = $this->getPrecision( $timeParts );
 		$calendarModel = $this->getCalendarModel( $timeParts[7] );
 
@@ -90,7 +90,7 @@ class IsoTimestampParser extends StringValueParser {
 		$pattern = '@^\s*'                                                //leading spaces
 			. "([-+\xE2\x88\x92]?)\\s*"                                   //sign
 			. '(\d{1,16})-(\d{2})-(\d{2})'                                //year, month and day
-			. '(?:T(\d{2}):(\d{2})(?::(\d{2}))?)?'                        //hour, minute and second
+			. '(?:T(\d{2}):?(\d{2})(?::?(\d{2}))?)?'                      //hour, minute and second
 			. 'Z?'                                                        //time zone
 			. '\s*\(?\s*' . CalendarModelParser::MODEL_PATTERN . '\s*\)?' //calendar model
 			. '\s*$@iu';                                                  //trailing spaces
@@ -108,7 +108,7 @@ class IsoTimestampParser extends StringValueParser {
 			throw new ParseException( 'Hour out of range', $value, self::FORMAT_NAME );
 		} elseif ( $matches[6] > 59 ) {
 			throw new ParseException( 'Minute out of range', $value, self::FORMAT_NAME );
-		} elseif ( $matches[7] > 62 ) {
+		} elseif ( $matches[7] > 61 ) {
 			throw new ParseException( 'Second out of range', $value, self::FORMAT_NAME );
 		}
 

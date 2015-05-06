@@ -222,6 +222,16 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				TimeValue::PRECISION_DAY,
 			),
 
+			// Optional colons
+			'2015-01-01T161718' => array(
+				'+0000000000002015-01-01T16:17:18Z',
+				TimeValue::PRECISION_SECOND,
+			),
+			'2015-01-01T1617' => array(
+				'+0000000000002015-01-01T16:17:00Z',
+				TimeValue::PRECISION_MINUTE,
+			),
+
 			// Optional second
 			'2015-01-01T00:00' => array(
 				'+0000000000002015-01-01T00:00:00Z',
@@ -262,8 +272,8 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			),
 
 			// Leap seconds are a valid concept
-			'+2015-01-01T00:00:60Z' => array(
-				'+0000000000002015-01-01T00:00:60Z',
+			'+2015-01-01T00:00:61Z' => array(
+				'+0000000000002015-01-01T00:00:61Z',
 				TimeValue::PRECISION_SECOND,
 			),
 
@@ -279,16 +289,17 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 		);
 
 		$argLists = array();
+
 		foreach ( $valid as $key => $value ) {
 			$timestamp = $value[0];
 			$precision = isset( $value[1] ) ? $value[1] : TimeValue::PRECISION_DAY;
-			$calendareModel = isset( $value[2] ) ? $value[2] : $gregorian;
+			$calendarModel = isset( $value[2] ) ? $value[2] : $gregorian;
 			$options = isset( $value[3] ) ? $value[3] : null;
 
 			$argLists[] = array(
 				// Because PHP magically turns numeric keys into ints/floats
 				(string)$key,
-				new TimeValue( $timestamp, 0, 0, 0, $precision, $calendareModel ),
+				new TimeValue( $timestamp, 0, 0, 0, $precision, $calendarModel ),
 				new IsoTimestampParser( new CalendarModelParser( $options ), $options )
 			);
 		}
@@ -311,11 +322,13 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			'1 June 2014',
 			'59-01-01',
 			'+59-01-01',
+			'+2015-12-31T23',
+			'+2015-12-31T23Z',
 			'+2015-13-01T00:00:00Z',
 			'+2015-01-32T00:00:00Z',
 			'+2015-01-01T24:00:00Z',
 			'+2015-01-01T00:60:00Z',
-			'+2015-01-01T00:00:63Z',
+			'+2015-01-01T00:00:62Z',
 			'1234567890873',
 			2134567890
 		);
