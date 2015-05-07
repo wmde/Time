@@ -40,8 +40,6 @@ class IsoTimestampParser extends StringValueParser {
 	 */
 	const CALENDAR_JULIAN = TimeValue::CALENDAR_JULIAN;
 
-	const PRECISION_NONE = 'noprecision';
-
 	/**
 	 * @var CalendarModelParser
 	 */
@@ -58,7 +56,7 @@ class IsoTimestampParser extends StringValueParser {
 		parent::__construct( $options );
 
 		$this->defaultOption( self::OPT_CALENDAR, null );
-		$this->defaultOption( self::OPT_PRECISION, self::PRECISION_NONE );
+		$this->defaultOption( self::OPT_PRECISION, null );
 
 		$this->calendarModelParser = $calendarModelParser ?: new CalendarModelParser( $this->options );
 	}
@@ -150,8 +148,11 @@ class IsoTimestampParser extends StringValueParser {
 
 		$option = $this->getOption( self::OPT_PRECISION );
 
-		// It's impossible to increase precision via option, e.g. to month if no month is given
-		if ( is_int( $option ) && $option <= $precision ) {
+		// It's impossible to increase the detected precision via option, e.g. from year to month if
+		// no month is given. If a day is given it can be increased, relevant for midnight.
+		if ( is_int( $option )
+			&& ( $option <= $precision || $precision >= TimeValue::PRECISION_DAY )
+		) {
 			return $option;
 		}
 
