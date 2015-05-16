@@ -151,17 +151,17 @@ class IsoTimestampParser extends StringValueParser {
 	}
 
 	/**
-	 * @param string $year
+	 * @param string $unsignedYear
 	 *
 	 * @return int One of the TimeValue::PRECISION_... constants.
 	 */
-	private function getPrecisionFromYear( $year ) {
+	private function getPrecisionFromYear( $unsignedYear ) {
 		// default to year precision for range 4000 BC to 4000
-		if ( $year >= -4000 && $year <= 4000 ) {
+		if ( $unsignedYear <= 4000 ) {
 			return TimeValue::PRECISION_YEAR;
 		}
 
-		$rightZeros = strlen( $year ) - strlen( rtrim( $year, '0' ) );
+		$rightZeros = strlen( $unsignedYear ) - strlen( rtrim( $unsignedYear, '0' ) );
 		$precision = TimeValue::PRECISION_YEAR - $rightZeros;
 		if ( $precision < TimeValue::PRECISION_Ga ) {
 			$precision = TimeValue::PRECISION_Ga;
@@ -187,16 +187,18 @@ class IsoTimestampParser extends StringValueParser {
 	 * @return string URI
 	 */
 	private function getCalendarModel( array $timeParts ) {
-		$calendarModelName = $timeParts[7];
+		list( $sign, $unsignedYear, , , , , , $calendarModel ) = $timeParts;
 
-		if ( !empty( $calendarModelName ) ) {
-			return $this->calendarModelParser->parse( $calendarModelName );
+		if ( !empty( $calendarModel ) ) {
+			return $this->calendarModelParser->parse( $calendarModel );
 		}
 
+		$option = $this->getOption( self::OPT_CALENDAR );
+
 		// Use the calendar given in the option, if given
-		if ( $this->getOption( self::OPT_CALENDAR ) !== null ) {
+		if ( $option !== null ) {
 			// The calendar model is an URI and URIs can't be case-insensitive
-			switch ( $this->getOption( self::OPT_CALENDAR ) ) {
+			switch ( $option ) {
 				case self::CALENDAR_JULIAN:
 					return self::CALENDAR_JULIAN;
 				default:
@@ -204,19 +206,11 @@ class IsoTimestampParser extends StringValueParser {
 			}
 		}
 
-		// Try to guess from the year.
-		$sign = $timeParts[0] ?: '+';
-		$year = ltrim( $timeParts[1], '0' );
-		$year = $year === '' ? '+0' : ( $sign . $year );
-
-		// For large year values, avoid conversion to integer
-		if ( strlen( $year ) > 5 ) {
-			return $sign === '+' ? self::CALENDAR_GREGORIAN : self::CALENDAR_JULIAN;
-		}
-
 		// The Gregorian calendar was introduced in October 1582,
 		// so we'll default to Julian for all years before that.
-		return $year < 1583 ? self::CALENDAR_JULIAN : self::CALENDAR_GREGORIAN;
+		return $sign === '-' || $unsignedYear <= 1582
+			? self::CALENDAR_JULIAN
+			: self::CALENDAR_GREGORIAN;
 	}
 
 }
