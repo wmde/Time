@@ -1,41 +1,27 @@
 <?php
 
-namespace Wikibase\Lib\Parsers;
-
-use ValueParsers\ParseException;
-use ValueParsers\StringValueParser;
+namespace ValueParsers;
 
 /**
- * @since 0.5
+ * @since 0.8
  *
  * @licence GNU GPL v2+
  * @author Adam Shorland
- *
- * @todo move me to DataValues-time
+ * @author Thiemo Mättig
  */
 class EraParser extends StringValueParser {
 
 	const FORMAT_NAME = 'era';
 
 	/**
-	 * @since 0.5
+	 * @since 0.8
 	 */
-	const BEFORE_CURRENT_ERA = '-';
+	const BEFORE_COMMON_ERA = '-';
 
 	/**
-	 * @since 0.5
+	 * @since 0.8
 	 */
-	const CURRENT_ERA = '+';
-
-	/**
-	 * @var string regex snippet matching BEFORE_CURRENT_ERA
-	 */
-	private $BCEregex = '(B\.?\s*C\.?(\s*E\.?)?|Before\s+(Christ|Common\s+Era))';
-
-	/**
-	 * @var string regex snippet matching CURRENT_ERA
-	 */
-	private $CEregex = '(C\.?\s*E\.?|A\.?\s*D\.?|Common\s+Era|After\s+Christ|Anno\s+Domini)';
+	const COMMON_ERA = '+';
 
 	/**
 	 * Parses the provided string and returns the era
@@ -48,17 +34,10 @@ class EraParser extends StringValueParser {
 	protected function stringParse( $value ) {
 		$value = trim( $value );
 
-		$char1 = substr( $value, 0, 1 );
-		if( $char1 === self::BEFORE_CURRENT_ERA || $char1 === self::CURRENT_ERA ) {
-			$eraFromSign = $char1;
-		}
-		if( preg_match( '/' . $this->BCEregex . '$/i', $value ) ) {
-			$eraFromString = self::BEFORE_CURRENT_ERA;
-		} elseif( preg_match( '/' . $this->CEregex . '$/i', $value ) ) {
-			$eraFromString = self::CURRENT_ERA;
-		}
+		$eraFromSign = $this->parseEraFromSign( $value );
+		$eraFromSuffix = $this->parseEraFromSuffix( $value );
 
-		if( isset( $eraFromSign ) && isset( $eraFromString ) ) {
+		if ( $eraFromSign && $eraFromSuffix ) {
 			throw new ParseException(
 				'Parsed two eras from the same string',
 				$value,
@@ -66,32 +45,51 @@ class EraParser extends StringValueParser {
 			);
 		}
 
-		$cleanValue = $this->cleanValue( $value );
-		if( isset( $eraFromString ) ) {
-			return array( $eraFromString, $cleanValue );
-		}
-		if( isset( $eraFromSign ) ) {
-			return array( $eraFromSign, $cleanValue );
-		}
 		// Default to CE
-		return array( self::CURRENT_ERA, $cleanValue );
+		return array( $eraFromSign ?: $eraFromSuffix ?: self::COMMON_ERA, $value );
 	}
 
 	/**
-	 * Removes any parse-able Era information from the given string value
+	 * @param string &$value
 	 *
-	 * @param string $value
-	 *
-	 * @return string
+	 * @return string|null
 	 */
-	private function cleanValue( $value ) {
-		$char1 = substr( $value, 0, 1 );
-		if( $char1 === self::BEFORE_CURRENT_ERA || $char1 === self::CURRENT_ERA ) {
+	private function parseEraFromSign( &$value ) {
+		$sign = substr( $value, 0, 1 );
+
+		if ( $sign === self::BEFORE_COMMON_ERA || $sign === self::COMMON_ERA ) {
 			$value = substr( $value, 1 );
+			return $sign;
 		}
 
-		return preg_replace( '/\s*(' . $this->BCEregex . '|' .  $this->CEregex . ')$/i', '',
-			$value );
+		return null;
+	}
+
+	/**
+	 * @param string &$value
+	 *
+	 * @return string|null
+	 */
+	private function parseEraFromSuffix( &$value ) {
+		if ( preg_match(
+			'/(?:B\.?\s*C\.?(?:\s*E\.?)?|Before\s+C(?:hrist|(?:ommon|urrent|hristian)\s+Era))$/i',
+			$value,
+			$matches,
+			PREG_OFFSET_CAPTURE )
+		) {
+			$value = rtrim( substr( $value, 0, $matches[0][1] ) );
+			return self::BEFORE_COMMON_ERA;
+		} elseif ( preg_match(
+			'/(?:C\.?\s*E\.?|A\.?\s*D\.?|C(?:ommon|urrent|hristian)\s+Era|After\s+Christ|Anno\s+Domini)$/i',
+			$value,
+			$matches,
+			PREG_OFFSET_CAPTURE
+		) ) {
+			$value = rtrim( substr( $value, 0, $matches[0][1] ) );
+			return self::COMMON_ERA;
+		}
+
+		return null;
 	}
 
 }

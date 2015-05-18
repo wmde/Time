@@ -1,12 +1,11 @@
 <?php
 
-namespace Wikibase\Lib\Parsers\Test;
+namespace ValueParsers\Test;
 
-use ValueParsers\Test\StringValueParserTest;
-use Wikibase\Lib\Parsers\EraParser;
+use ValueParsers\EraParser;
 
 /**
- * @covers Wikibase\Lib\Parsers\EraParser
+ * @covers ValueParsers\EraParser
  *
  * @group ValueParsers
  * @group WikibaseLib
@@ -15,6 +14,7 @@ use Wikibase\Lib\Parsers\EraParser;
  *
  * @licence GNU GPL v2+
  * @author Adam Shorland
+ * @author Thiemo Mättig
  */
 class EraParserTest extends StringValueParserTest {
 
@@ -48,6 +48,12 @@ class EraParserTest extends StringValueParserTest {
 	 */
 	public function validInputProvider() {
 		return array(
+			// Strings with no explicit era should be echoed
+			array( '1', array( '+', '1' ) ),
+			array( '1 000 000', array( '+', '1 000 000' ) ),
+			array( 'non-matching string', array( '+', 'non-matching string' ) ),
+
+			// Strings with an era that should be split of
 			array( '+100', array( '+', '100' ) ),
 			array( '-100', array( '-', '100' ) ),
 			array( '   -100', array( '-', '100' ) ),
@@ -62,15 +68,18 @@ class EraParserTest extends StringValueParserTest {
 			array( '100CE', array( '+', '100' ) ),
 			array( '+100', array( '+', '100' ) ),
 			array( '100 Common Era', array( '+', '100' ) ),
+			array( '100 Current Era', array( '+', '100' ) ),
+			array( '100 Christian Era', array( '+', '100' ) ),
 			array( '100Common Era', array( '+', '100' ) ),
 			array( '100 Before Common Era', array( '-', '100' ) ),
+			array( '100 Before Current Era', array( '-', '100' ) ),
+			array( '100 Before Christian Era', array( '-', '100' ) ),
 			array( '1 July 2013 Before Common Era', array( '-', '1 July 2013' ) ),
 			array( 'June 2013 Before Common Era', array( '-', 'June 2013' ) ),
 			array( '10-10-10 Before Common Era', array( '-', '10-10-10' ) ),
 			array( 'FooBefore Common Era', array( '-', 'Foo' ) ),
 			array( 'Foo Before Common Era', array( '-', 'Foo' ) ),
 			array( '-1 000 000', array( '-', '1 000 000' ) ),
-			array( '1 000 000', array( '+', '1 000 000' ) ),
 			array( '1 000 000 B.C.', array( '-', '1 000 000' ) ),
 		);
 	}
@@ -80,6 +89,7 @@ class EraParserTest extends StringValueParserTest {
 	 */
 	public function invalidInputProvider() {
 		return array(
+			// Reject strings with two eras, no matter if conflicting or not
 			array( '-100BC' ),
 			array( '-100AD' ),
 			array( '-100CE' ),
