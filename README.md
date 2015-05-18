@@ -54,6 +54,7 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ### 0.8.0 (alpha)
 
+* Added `EraParser`
 * `IsoTimestampParser` auto-detects the calendar model and does not default to Gregorian any more
 * `IsoTimestampParser` now accepts time values with optional colons, per ISO
 * `PhpDateTimeParser` now accepts comma separated dates
