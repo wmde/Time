@@ -2,7 +2,7 @@
 
 namespace ValueParsers\Test;
 
-use ValueFormatters\TimeFormatter;
+use DataValues\TimeValue;
 use ValueParsers\CalendarModelParser;
 use ValueParsers\ParserOptions;
 
@@ -53,27 +53,27 @@ class CalendarModelParserTest extends ValueParserTestBase {
 	 */
 	public function validInputProvider() {
 		return array(
-			array( '', TimeFormatter::CALENDAR_GREGORIAN ),
-			array( 'Gregorian', TimeFormatter::CALENDAR_GREGORIAN ),
-			array( 'Julian', TimeFormatter::CALENDAR_JULIAN ),
+			array( '', TimeValue::CALENDAR_GREGORIAN ),
+			array( 'Gregorian', TimeValue::CALENDAR_GREGORIAN ),
+			array( 'Julian', TimeValue::CALENDAR_JULIAN ),
 
 			// White space
-			array( ' ', TimeFormatter::CALENDAR_GREGORIAN ),
-			array( ' Gregorian ', TimeFormatter::CALENDAR_GREGORIAN ),
-			array( ' Julian ', TimeFormatter::CALENDAR_JULIAN ),
+			array( ' ', TimeValue::CALENDAR_GREGORIAN ),
+			array( ' Gregorian ', TimeValue::CALENDAR_GREGORIAN ),
+			array( ' Julian ', TimeValue::CALENDAR_JULIAN ),
 
 			// Capitalization
-			array( 'GreGOrIAN', TimeFormatter::CALENDAR_GREGORIAN ),
-			array( 'julian', TimeFormatter::CALENDAR_JULIAN ),
-			array( 'JULIAN', TimeFormatter::CALENDAR_JULIAN ),
+			array( 'GreGOrIAN', TimeValue::CALENDAR_GREGORIAN ),
+			array( 'julian', TimeValue::CALENDAR_JULIAN ),
+			array( 'JULIAN', TimeValue::CALENDAR_JULIAN ),
 
 			// See https://en.wikipedia.org/wiki/Gregorian_calendar
-			array( 'Western', TimeFormatter::CALENDAR_GREGORIAN ),
-			array( 'Christian', TimeFormatter::CALENDAR_GREGORIAN ),
+			array( 'Western', TimeValue::CALENDAR_GREGORIAN ),
+			array( 'Christian', TimeValue::CALENDAR_GREGORIAN ),
 
 			// URIs
-			array( 'http://www.wikidata.org/entity/Q1985727', TimeFormatter::CALENDAR_GREGORIAN ),
-			array( 'http://www.wikidata.org/entity/Q1985786', TimeFormatter::CALENDAR_JULIAN ),
+			array( 'http://www.wikidata.org/entity/Q1985727', TimeValue::CALENDAR_GREGORIAN ),
+			array( 'http://www.wikidata.org/entity/Q1985786', TimeValue::CALENDAR_JULIAN ),
 
 			// Via OPT_CALENDAR_MODEL_URIS
 			array( 'Localized', 'Unlocalized' ),

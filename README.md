@@ -56,6 +56,12 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 * `IsoTimestampParser` auto-detects the calendar model and does not default to Gregorian any more
 
+### 0.7.1 (alpha)
+
+* Added `TimeValue::CALENDAR_GREGORIAN` and `TimeValue::CALENDAR_JULIAN`
+* Deprecated `TimeFormatter::CALENDAR_GREGORIAN` and `TimeFormatter::CALENDAR_JULIAN`
+* Deprecated `IsoTimestampParser::CALENDAR_GREGORIAN` and `IsoTimestampParser::CALENDAR_JULIAN`
+
 ### 0.7.0 (2015-04-20)
 
 #### Breaking changes

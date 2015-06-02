@@ -18,8 +18,15 @@ use InvalidArgumentException;
  */
 class TimeFormatter extends ValueFormatterBase {
 
-	const CALENDAR_GREGORIAN = 'http://www.wikidata.org/entity/Q1985727';
-	const CALENDAR_JULIAN = 'http://www.wikidata.org/entity/Q1985786';
+	/**
+	 * @deprecated since 0.7.1, use TimeValue::CALENDAR_GREGORIAN instead
+	 */
+	const CALENDAR_GREGORIAN = TimeValue::CALENDAR_GREGORIAN;
+
+	/**
+	 * @deprecated since 0.7.1, use TimeValue::CALENDAR_JULIAN instead
+	 */
+	const CALENDAR_JULIAN = TimeValue::CALENDAR_JULIAN;
 
 	const OPT_CALENDARNAMES = 'calendars';
 
