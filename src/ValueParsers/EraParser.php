@@ -24,12 +24,10 @@ class EraParser extends StringValueParser {
 	const COMMON_ERA = '+';
 
 	/**
-	 * Parses the provided string and returns the era
-	 *
 	 * @param string $value
 	 *
 	 * @throws ParseException
-	 * @return array( 0 => parsed era constant, 1 => $value with no era data )
+	 * @return string[] Array of the parsed era constant and the value with the era stripped.
 	 */
 	protected function stringParse( $value ) {
 		$value = trim( $value );
@@ -46,47 +44,55 @@ class EraParser extends StringValueParser {
 		}
 
 		// Default to CE
-		return array( $eraFromSign ?: $eraFromSuffix ?: self::COMMON_ERA, $value );
+		return $eraFromSign ?: $eraFromSuffix ?: array( self::COMMON_ERA, $value );
 	}
 
 	/**
-	 * @param string &$value
+	 * @param string $value
 	 *
-	 * @return string|null
+	 * @return string[]|null Array of the era constant and the value with the era stripped, or null
+	 * if not successfull.
 	 */
-	private function parseEraFromSign( &$value ) {
+	private function parseEraFromSign( $value ) {
 		$sign = substr( $value, 0, 1 );
 
 		if ( $sign === self::BEFORE_COMMON_ERA || $sign === self::COMMON_ERA ) {
-			$value = substr( $value, 1 );
-			return $sign;
+			return array(
+				$sign,
+				substr( $value, 1 )
+			);
 		}
 
 		return null;
 	}
 
 	/**
-	 * @param string &$value
+	 * @param string $value
 	 *
-	 * @return string|null
+	 * @return string[]|null Array of the era constant and the value with the era stripped, or null
+	 * if not successfull.
 	 */
-	private function parseEraFromSuffix( &$value ) {
+	private function parseEraFromSuffix( $value ) {
 		if ( preg_match(
 			'/(?:B\.?\s*C\.?(?:\s*E\.?)?|Before\s+C(?:hrist|(?:ommon|urrent|hristian)\s+Era))$/i',
 			$value,
 			$matches,
 			PREG_OFFSET_CAPTURE )
 		) {
-			$value = rtrim( substr( $value, 0, $matches[0][1] ) );
-			return self::BEFORE_COMMON_ERA;
+			return array(
+				self::BEFORE_COMMON_ERA,
+				rtrim( substr( $value, 0, $matches[0][1] ) )
+			);
 		} elseif ( preg_match(
 			'/(?:C\.?\s*E\.?|A\.?\s*D\.?|C(?:ommon|urrent|hristian)\s+Era|After\s+Christ|Anno\s+Domini)$/i',
 			$value,
 			$matches,
 			PREG_OFFSET_CAPTURE
 		) ) {
-			$value = rtrim( substr( $value, 0, $matches[0][1] ) );
-			return self::COMMON_ERA;
+			return array(
+				self::COMMON_ERA,
+				rtrim( substr( $value, 0, $matches[0][1] ) )
+			);
 		}
 
 		return null;
