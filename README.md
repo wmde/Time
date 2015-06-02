@@ -56,6 +56,7 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 * `IsoTimestampParser` auto-detects the calendar model and does not default to Gregorian any more
 * Leap second range changed from[0..62] to [0..61]
+* Colons in time are now optional, per ISO
 
 ### 0.7.1 (alpha)
 
