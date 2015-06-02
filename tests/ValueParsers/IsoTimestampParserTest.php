@@ -240,6 +240,16 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				$julian
 			),
 
+			// Optional colons
+			'2015-01-01T161718' => array(
+				'+0000000000002015-01-01T16:17:18Z',
+				TimeValue::PRECISION_SECOND,
+			),
+			'2015-01-01T1617' => array(
+				'+0000000000002015-01-01T16:17:00Z',
+				TimeValue::PRECISION_MINUTE,
+			),
+
 			// Optional second
 			'2015-01-01T00:00' => array(
 				'+0000000000002015-01-01T00:00:00Z',
@@ -282,8 +292,8 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			),
 
 			// Leap seconds are a valid concept
-			'+2015-01-01T00:00:60Z' => array(
-				'+0000000000002015-01-01T00:00:60Z',
+			'+2015-01-01T00:00:61Z' => array(
+				'+0000000000002015-01-01T00:00:61Z',
 				TimeValue::PRECISION_SECOND,
 			),
 
@@ -345,11 +355,13 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			'1 June 2014',
 			'59-01-01',
 			'+59-01-01',
+			'+2015-12-31T23',
+			'+2015-12-31T23Z',
 			'+2015-13-01T00:00:00Z',
 			'+2015-01-32T00:00:00Z',
 			'+2015-01-01T24:00:00Z',
 			'+2015-01-01T00:60:00Z',
-			'+2015-01-01T00:00:63Z',
+			'+2015-01-01T00:00:62Z',
 			'1234567890873',
 			2134567890
 		);
