@@ -107,6 +107,10 @@ class TimeValue extends DataValueObject {
 	 * @throws IllegalValueException
 	 */
 	public function __construct( $timestamp, $timezone, $before, $after, $precision, $calendarModel ) {
+		if ( !is_string( $timestamp ) || $timestamp === '' ) {
+			throw new IllegalValueException( '$timestamp must be a non-empty string' );
+		}
+
 		if ( !is_int( $timezone ) ) {
 			throw new IllegalValueException( '$timezone must be an integer' );
 		} elseif ( $timezone < -12 * 3600 || $timezone > 14 * 3600 ) {
@@ -147,9 +151,7 @@ class TimeValue extends DataValueObject {
 	 * @return string
 	 */
 	private function normalizeIsoTimestamp( $timestamp ) {
-		if ( !is_string( $timestamp ) || $timestamp === '' ) {
-			throw new IllegalValueException( '$timestamp must be a non-empty string' );
-		} elseif ( !preg_match(
+		if ( !preg_match(
 			'/^([-+])(\d{1,16})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)Z$/',
 			$timestamp,
 			$matches
@@ -167,10 +169,11 @@ class TimeValue extends DataValueObject {
 			throw new IllegalValueException( 'Hour out of allowed bounds' );
 		} elseif ( $minute > 59 ) {
 			throw new IllegalValueException( 'Minute out of allowed bounds' );
-		} elseif ( $second > 62 ) {
+		} elseif ( $second > 61 ) {
 			throw new IllegalValueException( 'Second out of allowed bounds' );
 		}
 
+		// Warning, never cast the year to integer to not run into 32-bit integer overflows!
 		$year = ltrim( $year, '0' );
 		$year = str_pad( $year, 4, '0', STR_PAD_LEFT );
 
