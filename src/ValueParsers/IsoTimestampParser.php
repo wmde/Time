@@ -77,12 +77,12 @@ class IsoTimestampParser extends StringValueParser {
 
 		$timeParts = $this->splitTimeString( $value );
 		// Pad sign with 1 plus, year with 4 zeros and hour, minute and second with 2 zeros
-		$time = vsprintf( '%\'+1s%04s-%s-%sT%02s:%02s:%02sZ', $timeParts );
+		$timestamp = vsprintf( '%\'+1s%04s-%s-%sT%02s:%02s:%02sZ', $timeParts );
 		$precision = $this->getPrecision( $timeParts );
 		$calendarModel = $this->getCalendarModel( $timeParts );
 
 		try {
-			return new TimeValue( $time, 0, 0, 0, $precision, $calendarModel );
+			return new TimeValue( $timestamp, 0, 0, 0, $precision, $calendarModel );
 		} catch ( IllegalValueException $ex ) {
 			throw new ParseException( $ex->getMessage(), $value, self::FORMAT_NAME );
 		}
