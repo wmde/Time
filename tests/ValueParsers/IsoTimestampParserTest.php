@@ -53,8 +53,8 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 		$precDayOpts = new ParserOptions();
 		$precDayOpts->setOption( IsoTimestampParser::OPT_PRECISION, TimeValue::PRECISION_DAY );
 
-		$noPrecOpts = new ParserOptions();
-		$noPrecOpts->setOption( IsoTimestampParser::OPT_PRECISION, IsoTimestampParser::PRECISION_NONE );
+		$precSecondOpts = new ParserOptions();
+		$precSecondOpts->setOption( IsoTimestampParser::OPT_PRECISION, TimeValue::PRECISION_SECOND );
 
 		$valid = array(
 			// Empty options tests
@@ -205,7 +205,6 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				'-0001-01-05T00:00:00Z',
 				TimeValue::PRECISION_DAY,
 				$julian,
-				$noPrecOpts,
 			),
 
 			'+1999-00-00T00:00:00Z' => array(
@@ -304,6 +303,12 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				TimeValue::PRECISION_MONTH,
 				$julian,
 				$precDayOpts,
+			),
+			'+2015-01-01T00:00:00Z' => array(
+				'+2015-01-01T00:00:00Z',
+				TimeValue::PRECISION_SECOND,
+				$gregorian,
+				$precSecondOpts,
 			),
 
 			// Test Julian/Gregorian switch in October 1582.
