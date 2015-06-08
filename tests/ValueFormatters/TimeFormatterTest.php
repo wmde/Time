@@ -71,7 +71,7 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 			),
 			'+2013-07-19T00:00:00Z' => array(
 				'+00000002013-07-19T00:00:00Z',
-				TimeValue::PRECISION_10a,
+				TimeValue::PRECISION_YEAR10,
 			),
 		);
 

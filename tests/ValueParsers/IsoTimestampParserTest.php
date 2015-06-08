@@ -48,7 +48,7 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 		$gregorianOpts->setOption( IsoTimestampParser::OPT_CALENDAR, $gregorian );
 
 		$prec10aOpts = new ParserOptions();
-		$prec10aOpts->setOption( IsoTimestampParser::OPT_PRECISION, TimeValue::PRECISION_10a );
+		$prec10aOpts->setOption( IsoTimestampParser::OPT_PRECISION, TimeValue::PRECISION_YEAR10 );
 
 		$precDayOpts = new ParserOptions();
 		$precDayOpts->setOption( IsoTimestampParser::OPT_PRECISION, TimeValue::PRECISION_DAY );
@@ -81,59 +81,59 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			),
 			'+0000000000008000-00-00T00:00:00Z' => array(
 				'+8000-00-00T00:00:00Z',
-				TimeValue::PRECISION_ka,
+				TimeValue::PRECISION_YEAR1K,
 			),
 			'+0000000000020000-00-00T00:00:00Z' => array(
 				'+20000-00-00T00:00:00Z',
-				TimeValue::PRECISION_10ka,
+				TimeValue::PRECISION_YEAR10K,
 			),
 			'+0000000000200000-00-00T00:00:00Z' => array(
 				'+200000-00-00T00:00:00Z',
-				TimeValue::PRECISION_100ka,
+				TimeValue::PRECISION_YEAR100K,
 			),
 			'+0000000002000000-00-00T00:00:00Z' => array(
 				'+2000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_Ma,
+				TimeValue::PRECISION_YEAR1M,
 			),
 			'+0000000020000000-00-00T00:00:00Z' => array(
 				'+20000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_10Ma,
+				TimeValue::PRECISION_YEAR10M,
 			),
 			'+0000000200000000-00-00T00:00:00Z' => array(
 				'+200000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_100Ma,
+				TimeValue::PRECISION_YEAR100M,
 			),
 			'+0000002000000000-00-00T00:00:00Z' => array(
 				'+2000000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_Ga,
+				TimeValue::PRECISION_YEAR1G,
 			),
 			'+0000020000000000-00-00T00:00:00Z' => array(
 				'+20000000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_Ga,
+				TimeValue::PRECISION_YEAR1G,
 			),
 			'+0000200000000000-00-00T00:00:00Z' => array(
 				'+200000000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_Ga,
+				TimeValue::PRECISION_YEAR1G,
 			),
 			'+0002000000000000-00-00T00:00:00Z' => array(
 				'+2000000000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_Ga,
+				TimeValue::PRECISION_YEAR1G,
 			),
 			'+0020000000000000-00-00T00:00:00Z' => array(
 				'+20000000000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_Ga,
+				TimeValue::PRECISION_YEAR1G,
 			),
 			'+0200000000000000-00-00T00:00:00Z' => array(
 				'+200000000000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_Ga,
+				TimeValue::PRECISION_YEAR1G,
 			),
 			'+2000000000000000-00-00T00:00:00Z' => array(
 				'+2000000000000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_Ga,
+				TimeValue::PRECISION_YEAR1G,
 			),
 			'-2000000000000000-00-00T00:00:00Z' => array(
 				'-2000000000000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_Ga,
+				TimeValue::PRECISION_YEAR1G,
 				$julian
 			),
 			'+0000000000002013-07-16T00:00:00Z (Gregorian)' => array(
@@ -197,7 +197,7 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			),
 			'-1-01-04T00:00:00Z' => array(
 				'-0001-01-04T00:00:00Z',
-				TimeValue::PRECISION_10a,
+				TimeValue::PRECISION_YEAR10,
 				$julian,
 				$prec10aOpts,
 			),

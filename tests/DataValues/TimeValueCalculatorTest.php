@@ -207,8 +207,8 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 			array( TimeValue::PRECISION_DAY, $secondsPerDay ),
 			array( TimeValue::PRECISION_MONTH, $secondsPerDay * $daysPerGregorianYear / 12 ),
 			array( TimeValue::PRECISION_YEAR, $secondsPerDay * $daysPerGregorianYear ),
-			array( TimeValue::PRECISION_10a, $secondsPerDay * $daysPerGregorianYear * 1e1 ),
-			array( TimeValue::PRECISION_Ga, $secondsPerDay * $daysPerGregorianYear * 1e9 ),
+			array( TimeValue::PRECISION_YEAR10, $secondsPerDay * $daysPerGregorianYear * 1e1 ),
+			array( TimeValue::PRECISION_YEAR1G, $secondsPerDay * $daysPerGregorianYear * 1e9 ),
 		);
 	}
 
