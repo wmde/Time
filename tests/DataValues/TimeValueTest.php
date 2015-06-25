@@ -2,7 +2,6 @@
 
 namespace DataValues\Tests;
 
-use DataValues\IllegalValueException;
 use DataValues\TimeValue;
 
 /**
