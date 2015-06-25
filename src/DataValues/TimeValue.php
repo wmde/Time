@@ -14,15 +14,96 @@ namespace DataValues;
  */
 class TimeValue extends DataValueObject {
 
+	/**
+	 * @deprecated since 0.8, use PRECISION_YEAR1G instead
+	 */
+	const PRECISION_Ga = TimeValue::PRECISION_YEAR1G;
+
+	/**
+	 * @deprecated since 0.8, use PRECISION_YEAR100M instead
+	 */
+	const PRECISION_100Ma = TimeValue::PRECISION_YEAR100M;
+
+	/**
+	 * @deprecated since 0.8, use PRECISION_YEAR10M instead
+	 */
+	const PRECISION_10Ma = TimeValue::PRECISION_YEAR10M;
+
+	/**
+	 * @deprecated since 0.8, use PRECISION_YEAR1M instead
+	 */
+	const PRECISION_Ma = TimeValue::PRECISION_YEAR1M;
+
+	/**
+	 * @deprecated since 0.8, use PRECISION_YEAR100K instead
+	 */
+	const PRECISION_100ka = TimeValue::PRECISION_YEAR100K;
+
+	/**
+	 * @deprecated since 0.8, use PRECISION_YEAR10K instead
+	 */
+	const PRECISION_10ka = TimeValue::PRECISION_YEAR10K;
+
+	/**
+	 * @deprecated since 0.8, use PRECISION_YEAR1K instead
+	 */
+	const PRECISION_ka = TimeValue::PRECISION_YEAR1K;
+
+	/**
+	 * @deprecated since 0.8, use PRECISION_YEAR100 instead
+	 */
+	const PRECISION_100a = TimeValue::PRECISION_YEAR100;
+
+	/**
+	 * @deprecated since 0.8, use PRECISION_YEAR10 instead
+	 */
+	const PRECISION_10a = TimeValue::PRECISION_YEAR10;
+
+	/**
+	 * @since 0.8
+	 */
 	const PRECISION_YEAR1G = 0;
+
+	/**
+	 * @since 0.8
+	 */
 	const PRECISION_YEAR100M = 1;
+
+	/**
+	 * @since 0.8
+	 */
 	const PRECISION_YEAR10M = 2;
+
+	/**
+	 * @since 0.8
+	 */
 	const PRECISION_YEAR1M = 3;
+
+	/**
+	 * @since 0.8
+	 */
 	const PRECISION_YEAR100K = 4;
+
+	/**
+	 * @since 0.8
+	 */
 	const PRECISION_YEAR10K = 5;
+
+	/**
+	 * @since 0.8
+	 */
 	const PRECISION_YEAR1K = 6;
+
+	/**
+	 * @since 0.8
+	 */
 	const PRECISION_YEAR100 = 7;
+
+	/**
+	 * @since 0.8
+	 */
 	const PRECISION_YEAR10 = 8;
+
 	const PRECISION_YEAR = 9;
 	const PRECISION_MONTH = 10;
 	const PRECISION_DAY = 11;
