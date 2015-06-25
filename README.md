@@ -52,7 +52,7 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.8.0 (2015-06-24)
+### 0.8.0 (2015-06-25)
 
 #### Breaking changes
 * `IsoTimestampParser` auto-detects the calendar model and does not default to Gregorian any more
