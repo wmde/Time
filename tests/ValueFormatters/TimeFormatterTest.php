@@ -43,47 +43,53 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 		$gregorian = 'http://www.wikidata.org/entity/Q1985727';
 		$julian = 'http://www.wikidata.org/entity/Q1985786';
 
+		$baseOptions = new FormatterOptions();
+
 		$tests = array(
 			'+2013-07-16T00:00:00Z' => array(
-				'+00000002013-07-16T00:00:00Z',
+				'+2013-07-16T00:00:00Z',
 			),
 			'+0000-01-01T00:00:00Z' => array(
-				'+00000000000-01-01T00:00:00Z',
+				'+0000-01-01T00:00:00Z',
 			),
+
+			// Different calendar models
 			'+0001-01-14T00:00:00Z' => array(
-				'+00000000001-01-14T00:00:00Z',
+				'+0001-01-14T00:00:00Z',
 				TimeValue::PRECISION_DAY,
 				$julian
 			),
+
+			// Different years
 			'+10000-01-01T00:00:00Z' => array(
-				'+00000010000-01-01T00:00:00Z',
+				'+10000-01-01T00:00:00Z',
 			),
 			'-0001-01-01T00:00:00Z' => array(
-				'-00000000001-01-01T00:00:00Z',
+				'-0001-01-01T00:00:00Z',
 			),
+
+			// Different precisions
 			'+2013-07-17T00:00:00Z' => array(
-				'+00000002013-07-17T00:00:00Z',
+				'+2013-07-17T00:00:00Z',
 				TimeValue::PRECISION_MONTH,
 			),
 			'+2013-07-18T00:00:00Z' => array(
-				'+00000002013-07-18T00:00:00Z',
+				'+2013-07-18T00:00:00Z',
 				TimeValue::PRECISION_YEAR,
 			),
 			'+2013-07-19T00:00:00Z' => array(
-				'+00000002013-07-19T00:00:00Z',
+				'+2013-07-19T00:00:00Z',
 				TimeValue::PRECISION_YEAR10,
 			),
 		);
 
 		$argLists = array();
 
-		// TODO: Test with different parser options.
-		$options = new FormatterOptions();
-
 		foreach ( $tests as $expected => $args ) {
 			$timestamp = $args[0];
 			$precision = isset( $args[1] ) ? $args[1] : TimeValue::PRECISION_DAY;
 			$calendarModel = isset( $args[2] ) ? $args[2] : $gregorian;
+			$options = isset( $args[3] ) ? $args[3] : $baseOptions;
 
 			$argLists[] = array(
 				new TimeValue( $timestamp, 0, 0, 0, $precision, $calendarModel ),

@@ -6,10 +6,8 @@ use DataValues\TimeValue;
 use InvalidArgumentException;
 
 /**
- * Time formatter.
- *
- * Some code in this class has been borrowed from the
- * MapsCoordinateParser class of the Maps extension for MediaWiki.
+ * Basic plain text formatter for TimeValue objects that either delegates formatting to an other
+ * formatter given via OPT_TIME_ISO_FORMATTER or outputs the timestamp as it is.
  *
  * @since 0.1
  *
@@ -28,12 +26,21 @@ class TimeFormatter extends ValueFormatterBase {
 	 */
 	const CALENDAR_JULIAN = TimeValue::CALENDAR_JULIAN;
 
+	/**
+	 * Option to localize calendar models. Must contain an array mapping known calendar model URIs
+	 * to localized calendar model names.
+	 */
 	const OPT_CALENDARNAMES = 'calendars';
 
+	/**
+	 * Option for a custom timestamp formatter. Must contain an instance of a ValueFormatter
+	 * subclass, capable of formatting TimeValue objects. The output of the custom formatter is
+	 * threaded as plain text and passed through.
+	 */
 	const OPT_TIME_ISO_FORMATTER = 'time iso formatter';
 
 	/**
-	 * @since 0.1
+	 * @see ValueFormatterBase::__construct
 	 *
 	 * @param FormatterOptions|null $options
 	 */
@@ -47,17 +54,14 @@ class TimeFormatter extends ValueFormatterBase {
 	/**
 	 * @see ValueFormatter::format
 	 *
-	 * @since 0.1
+	 * @param TimeValue $value
 	 *
-	 * @param TimeValue $value The value to format
-	 *
-	 * @return string
 	 * @throws InvalidArgumentException
+	 * @return string Plain text
 	 */
 	public function format( $value ) {
 		if ( !( $value instanceof TimeValue ) ) {
-			throw new InvalidArgumentException( 'ValueFormatters\TimeFormatter can only format '
-				. 'instances of DataValues\TimeValue' );
+			throw new InvalidArgumentException( 'Data value type mismatch. Expected a TimeValue.' );
 		}
 
 		$formatted = $value->getTime();
