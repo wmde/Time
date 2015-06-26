@@ -218,8 +218,8 @@ class IsoTimestampParser extends StringValueParser {
 		// The Gregorian calendar was introduced in October 1582,
 		// so we'll default to Julian for all years before that.
 		return $sign === '-' || $unsignedYear <= 1582
-			? self::CALENDAR_JULIAN
-			: self::CALENDAR_GREGORIAN;
+			? TimeValue::CALENDAR_JULIAN
+			: TimeValue::CALENDAR_GREGORIAN;
 	}
 
 }
