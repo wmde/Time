@@ -82,7 +82,10 @@ class PhpDateTimeParser extends StringValueParser {
 			$value = trim( $value );
 			$value = $this->monthNameUnlocalizer->unlocalize( $value );
 			$year = $this->fetchAndNormalizeYear( $value );
-			$value = $this->getValueWithFixedSeparators( $value );
+
+			$isIsoLike = preg_match( '/^\D*' . $year . '\D+\d+\D+\d+\D*$/', $value );
+			$separator = $isIsoLike ? '-' : '.';
+			$value = $this->getValueWithFixedSeparators( $value, $separator );
 
 			$this->validateDateTimeInput( $value );
 
@@ -92,6 +95,13 @@ class PhpDateTimeParser extends StringValueParser {
 			// Fail if the DateTime object does calculations like changing 2015-00-00 to 2014-12-30.
 			if ( $year !== null && $dateTime->format( 'Y' ) !== substr( $year, -4 ) ) {
 				throw new ParseException( $value . ' is not a valid date.' );
+			}
+
+			if ( $dateTime->format( 'H:i:s' ) !== '00:00:00' ) {
+				// Input was three numbers? Where the heck does a time come from?
+				if ( preg_match( '/^\D*\d+\D+\d+\D+\d+\D*$/', $value ) ) {
+					throw new ParseException( $value . ' is not a valid date.' );
+				}
 			}
 
 			if ( $year !== null && strlen( $year ) > 4 ) {
@@ -134,10 +144,10 @@ class PhpDateTimeParser extends StringValueParser {
 	 *
 	 * @return mixed
 	 */
-	private function getValueWithFixedSeparators( $value ) {
+	private function getValueWithFixedSeparators( $value, $separator = '.' ) {
 		// Meant to match separator characters after day and month. \p{L} matches letters outside
 		// the ASCII range.
-		return preg_replace( '/(?<=[\d\p{L}])[.,\s]\s*/', '.', $value );
+		return preg_replace( '/(?<=[\d\p{L}])[.,\s]\s*/', $separator, $value );
 	}
 
 	/**
