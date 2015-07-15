@@ -234,6 +234,19 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 				array( '+0000000000010100-03-01T00:00:00Z' ),
 			'10400-02-29' =>
 				array( '+0000000000010400-02-29T00:00:00Z' ),
+
+			'Jan1 1991' =>
+				array( '+1991-01-01T00:00:00Z' ),
+			'1991-1-1' =>
+				array( '+1991-01-01T00:00:00Z' ),
+			'1991/1/1' =>
+				array( '+1991-01-01T00:00:00Z' ),
+			'1991 1 1' =>
+				array( '+1991-01-01T00:00:00Z' ),
+			'1991.1.1' =>
+				array( '+1991-01-01T00:00:00Z' ),
+			'1991.01.01' =>
+				array( '+1991-01-01T00:00:00Z' ),
 		);
 
 		foreach ( $valid as $value => $args ) {
@@ -286,7 +299,8 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 			'x',
 			'x x x',
 			'zz',
-			'America/New_York'
+			'America/New_York',
+			'1991 2',
 		);
 
 		foreach ( $invalid as $value ) {
