@@ -83,9 +83,7 @@ class PhpDateTimeParser extends StringValueParser {
 			$value = $this->monthNameUnlocalizer->unlocalize( $value );
 			$year = $this->fetchAndNormalizeYear( $value );
 
-			$isIsoLike = preg_match( '/^\D*' . $year . '\D+\d+\D+\d+\D*$/', $value );
-			$separator = $isIsoLike ? '-' : '.';
-			$value = $this->getValueWithFixedSeparators( $value, $separator );
+			$value = $this->getValueWithFixedSeparators( $value, $year );
 
 			$this->validateDateTimeInput( $value );
 
@@ -97,11 +95,11 @@ class PhpDateTimeParser extends StringValueParser {
 				throw new ParseException( $value . ' is not a valid date.' );
 			}
 
-			if ( $dateTime->format( 'H:i:s' ) !== '00:00:00' ) {
-				// Input was three numbers? Where the heck does a time come from?
-				if ( preg_match( '/^\D*\d+\D+\d+\D+\d+\D*$/', $value ) ) {
-					throw new ParseException( $value . ' is not a valid date.' );
-				}
+			// Input was three numbers? Where the heck does a time come from?
+			if ( $dateTime->format( 'H:i:s' ) !== '00:00:00'
+				&& preg_match( '/^\D*\d+\D+\d+\D+\d+\D*$/', $value )
+			) {
+				throw new ParseException( $value . ' is not a valid date.' );
 			}
 
 			if ( $year !== null && strlen( $year ) > 4 ) {
@@ -125,7 +123,7 @@ class PhpDateTimeParser extends StringValueParser {
 	private function validateDateTimeInput( $value ) {
 		// we don't support input of non-digits only, such as 'x'.
 		if ( !preg_match( '/\d/', $value ) ) {
-			throw new ParseException( $value . ' is not a valid date.' );
+			throw new ParseException( $value . ' does not contain a digit.' );
 		}
 
 		// @todo i18n support for these exceptions
@@ -141,10 +139,13 @@ class PhpDateTimeParser extends StringValueParser {
 	 * See http://de1.php.net/manual/en/datetime.formats.date.php
 	 *
 	 * @param string $value
+	 * @param string|null $year
 	 *
-	 * @return mixed
+	 * @return string
 	 */
-	private function getValueWithFixedSeparators( $value, $separator = '.' ) {
+	private function getValueWithFixedSeparators( $value, $year = null ) {
+		$isYmd = $year !== null && preg_match( '/^\D*' . $year . '\D+\d+\D+\d+\D*$/', $value );
+		$separator = $isYmd ? '-' : '.';
 		// Meant to match separator characters after day and month. \p{L} matches letters outside
 		// the ASCII range.
 		return preg_replace( '/(?<=[\d\p{L}])[.,\s]\s*/', $separator, $value );
