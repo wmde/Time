@@ -52,6 +52,12 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.8.1 (dev)
+
+#### Additions
+* Added `YearMonthDayTimeParser`
+* `PhpDateTimeParser` now accepts space-separated dates in YMD order
+
 ### 0.8.0 (2015-06-26)
 
 #### Breaking changes
