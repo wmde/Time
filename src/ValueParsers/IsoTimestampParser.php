@@ -73,7 +73,12 @@ class IsoTimestampParser extends StringValueParser {
 			throw new InvalidArgumentException( '$value must be a string' );
 		}
 
-		$timeParts = $this->splitTimeString( $value );
+		try {
+			$timeParts = $this->splitTimeString( $value );
+		} catch ( ParseException $ex ) {
+			throw new ParseException( $ex->getMessage(), $value, self::FORMAT_NAME );
+		}
+
 		// Pad sign with 1 plus, year with 4 zeros and hour, minute and second with 2 zeros
 		$timestamp = vsprintf( '%\'+1s%04s-%s-%sT%02s:%02s:%02sZ', $timeParts );
 		$precision = $this->getPrecision( $timeParts );
@@ -103,22 +108,24 @@ class IsoTimestampParser extends StringValueParser {
 			. '\s*$@iu';                                                  //trailing spaces
 
 		if ( !preg_match( $pattern, $value, $matches ) ) {
-			throw new ParseException( 'Malformed time', $value, self::FORMAT_NAME );
-		} elseif ( strlen( $matches[2] ) < 3 && $matches[2] < 60 && $matches[5] === '' ) {
-			throw new ParseException( 'Not enough information to decide if the format is YMD',
-				$value, self::FORMAT_NAME );
+			throw new ParseException( 'Malformed time' );
+		} elseif ( $matches[1] === ''
+			&& strlen( $matches[2] ) < 3
+			&& $matches[2] < 32
+			&& $matches[5] === ''
+		) {
+			throw new ParseException( 'Not enough information to decide if the format is YMD' );
 		} elseif ( $matches[3] > 12 ) {
-			throw new ParseException( 'Month out of range', $value, self::FORMAT_NAME );
+			throw new ParseException( 'Month out of range' );
 		} elseif ( $matches[4] > 31 ) {
-			throw new ParseException( 'Day out of range', $value, self::FORMAT_NAME );
+			throw new ParseException( 'Day out of range' );
 		} elseif ( $matches[5] > 23 ) {
-			throw new ParseException( 'Hour out of range', $value, self::FORMAT_NAME );
+			throw new ParseException( 'Hour out of range' );
 		} elseif ( $matches[6] > 59 ) {
-			throw new ParseException( 'Minute out of range', $value, self::FORMAT_NAME );
+			throw new ParseException( 'Minute out of range' );
 		} elseif ( $matches[7] > 61 ) {
-			throw new ParseException( 'Second out of range', $value, self::FORMAT_NAME );
+			throw new ParseException( 'Second out of range' );
 		}
-
 
 		$matches = array_slice( $matches, 1 );
 		$matches[0] = str_replace( "\xE2\x88\x92", '-', $matches[0] );

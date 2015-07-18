@@ -265,8 +265,15 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				TimeValue::PRECISION_DAY,
 				$julian
 			),
+			// 32 can not be confused with anything. Can't be day or month. Can't be minute or
+			// second because a time can not start with minute or second.
+			'32-01-01' => array(
+				'+0032-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
+				$julian
+			),
 
-			// Years < 60 require either the time part or a year with more than 2 digits
+			// Years <= 31 require either the time part or a year with more than 2 digits
 			'1-01-01T00:00' => array(
 				'+0001-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY,
@@ -274,6 +281,17 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			),
 			'001-01-01' => array(
 				'+0001-01-01T00:00:00Z',
+				TimeValue::PRECISION_DAY,
+				$julian
+			),
+			// 00-00-00 to 24-00-00 can be confused with a time, but not if it is signed.
+			'-01-02-03' => array(
+				'-0001-02-03T00:00:00Z',
+				TimeValue::PRECISION_DAY,
+				$julian
+			),
+			'+01-02-03' => array(
+				'+0001-02-03T00:00:00Z',
 				TimeValue::PRECISION_DAY,
 				$julian
 			),
@@ -352,21 +370,31 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 		$argLists = array();
 
 		$invalid = array(
+			// Stuff that's not even a string
 			true,
 			false,
 			null,
 			array(),
 			'foooooooooo',
 			'1 June 2014',
-			'59-01-01',
-			'+59-01-01',
+			// Can be confused with a time (HMS), DMY or MDY
+			'00-00-00',
+			'12-01-01',
+			'24-00-00',
+			'31-01-01',
+			// Month and day must be two digits
+			'2015-12-1',
+			'2015-1-31',
+			// Time and seconds are optional, but hour without minutes is not allowed
 			'+2015-12-31T23',
 			'+2015-12-31T23Z',
+			// Elements out of allowed bounds
 			'+2015-13-01T00:00:00Z',
 			'+2015-01-32T00:00:00Z',
 			'+2015-01-01T24:00:00Z',
 			'+2015-01-01T00:60:00Z',
 			'+2015-01-01T00:00:62Z',
+			// This parser should not replace the year parser
 			'1234567890873',
 			2134567890
 		);
