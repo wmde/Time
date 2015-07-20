@@ -76,6 +76,10 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 			'2015-12-31 BC' => array( '-2015-12-31T00:00:00Z', $julian ),
 			'31 12 2015 BC' => array( '-2015-12-31T00:00:00Z', $julian ),
 			'12/31/2015 BC' => array( '-2015-12-31T00:00:00Z', $julian ),
+
+			// A negative number must be the year.
+			'year -3-2-13' => array( '-0003-02-13T00:00:00Z', $julian ),
+			'13. 2. -3' => array( '-0003-02-13T00:00:00Z', $julian ),
 		);
 
 		$cases = array();

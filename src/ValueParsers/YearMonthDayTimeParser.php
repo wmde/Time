@@ -59,6 +59,7 @@ class YearMonthDayTimeParser extends StringValueParser {
 	/**
 	 * @param string $value
 	 *
+	 * @throws ParseException
 	 * @return string[]
 	 */
 	private function parseYearMonthDay( $value ) {
@@ -66,7 +67,7 @@ class YearMonthDayTimeParser extends StringValueParser {
 			throw new ParseException( 'Can not find three numbers' );
 		}
 
-		if ( abs( $matches[1] ) > 31 ) {
+		if ( $matches[1] < 1 || $matches[1] > 31 ) {
 			// A format YDM does not exist.
 			if ( $matches[2] > 12 ) {
 				throw new ParseException( 'Can not accept YDM' );
@@ -74,7 +75,7 @@ class YearMonthDayTimeParser extends StringValueParser {
 
 			// Since a format YDM does not exist, this must be YMD.
 			list( , $signedYear, $month, $day ) = $matches;
-		} elseif ( abs( $matches[3] ) > 31 ) {
+		} elseif ( $matches[3] < 1 || $matches[3] > 31 ) {
 			if ( $matches[1] > 12 ) {
 				list( , $day, $month, $signedYear ) = $matches;
 			} elseif ( $matches[2] > 12 ) {
@@ -91,14 +92,14 @@ class YearMonthDayTimeParser extends StringValueParser {
 	}
 
 	/**
-	 * @param string $unsignedYear
+	 * @param string $signedYear
 	 * @param string $month
 	 * @param string $day
 	 *
 	 * @throws ParseException
 	 * @return TimeValue
 	 */
-	private function newTimeValue( $unsignedYear, $month, $day ) {
+	private function newTimeValue( $signedYear, $month, $day ) {
 		if ( $month < 1 || $month > 12 ) {
 			throw new ParseException( 'Month out of range' );
 		} elseif ( $day < 1 || $day > 31 ) {
@@ -107,12 +108,12 @@ class YearMonthDayTimeParser extends StringValueParser {
 
 		try {
 			return new TimeValue(
-				$unsignedYear . '-' . $month . '-' . $day . 'T00:00:00Z',
+				sprintf( '%s-%02s-%02sT00:00:00Z', $signedYear, $month, $day ),
 				0,
 				0,
 				0,
 				TimeValue::PRECISION_DAY,
-				$this->getCalendarModel( $unsignedYear )
+				$this->getCalendarModel( $signedYear )
 			);
 		} catch ( IllegalValueException $ex ) {
 			throw new ParseException( $ex->getMessage() );
