@@ -66,7 +66,7 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 			// Julian
 			'32-12-31' => array( '+0032-12-31T00:00:00Z', $julian ),
 			'31.12.32' => array( '+0032-12-31T00:00:00Z', $julian ),
-			'12/31/32' => array( '+0032-12-31T00:00:00Z', $julian ),
+			'12/31/60' => array( '+0060-12-31T00:00:00Z', $julian ),
 
 			// Negative years
 			'-2015-12-31' => array( '-2015-12-31T00:00:00Z', $julian ),
@@ -112,6 +112,12 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 			'31.12.2015 23',
 			'31.12.2015 23:59',
 			'+2015-12-31T00:00:00Z',
+
+			// Can be confused with a time (HMS)
+			'12:31:59',
+			'12:59:59',
+			'23:12:59',
+			'23:12:31',
 
 			// No year can be identified if all numbers are smaller than 32.
 			'12 12 12',
