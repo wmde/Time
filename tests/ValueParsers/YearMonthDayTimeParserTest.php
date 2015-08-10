@@ -151,6 +151,10 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 			// Zeros.
 			'2015-12-00',
 			'0. 12. 2015',
+
+			// To long.
+			'2015-12-031',
+			'2015-012-31',
 		);
 
 		$cases = parent::invalidInputProvider();
