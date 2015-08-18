@@ -52,10 +52,11 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.8.2 (2015-08-28)
+### 0.8.2 (2015-09-15)
 
 * Fixed `IsoTimestampParser` and `TimeValue` accepting days with no month.
 * Fixed `YearMonthDayTimeParser` rejecting YDM dates.
+* `YearMonthDayTimeParser` accepts some more dates where month and day are the same anyway.
 
 ### 0.8.1 (2015-08-14)
 
