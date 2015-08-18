@@ -68,6 +68,14 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 			'2015.31.12' => array( '+2015-12-31T00:00:00Z' ),
 			'2015 13 1' => array( '+2015-01-13T00:00:00Z' ),
 
+			// Month and day are the same, does not matter if DMY or MDY
+			'01 1 2015' => array( '+2015-01-01T00:00:00Z' ),
+			'12 12 2015' => array( '+2015-12-12T00:00:00Z' ),
+
+			// Month and day are the same, does not matter if YMD or YDM
+			'2015 01 1' => array( '+2015-01-01T00:00:00Z' ),
+			'2015 12 12' => array( '+2015-12-12T00:00:00Z' ),
+
 			// Julian
 			'32-12-31' => array( '+0032-12-31T00:00:00Z', $julian ),
 			'31.12.32' => array( '+0032-12-31T00:00:00Z', $julian ),
@@ -144,9 +152,9 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 			'32 32 32',
 
 			// Year can be identified, but month and day can not be distinguished.
-			'32 12 12',
+			'32 2 1',
 			'2015-12-11',
-			'12 12 32',
+			'1 2 32',
 			'11.12.2015',
 
 			// Formats DYM and MYD do not exist and should not be parsed.
