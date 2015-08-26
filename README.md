@@ -52,6 +52,10 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.8.2 (2015-08-18)
+
+* Fixed `YearMonthDayTimeParser` rejecting YDM dates
+
 ### 0.8.1 (2015-08-14)
 
 #### Additions

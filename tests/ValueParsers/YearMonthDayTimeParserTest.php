@@ -45,10 +45,10 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 		$julian = 'http://www.wikidata.org/entity/Q1985786';
 
 		$valid = array(
-			// YMD
+			// YMD, typically used in ISO 8601
 			'2015-12-31' => array( '+2015-12-31T00:00:00Z' ),
 			'2015 12 31' => array( '+2015-12-31T00:00:00Z' ),
-			'2015 12 11' => array( '+2015-12-11T00:00:00Z' ),
+			'2015 1 13' => array( '+2015-01-13T00:00:00Z' ),
 
 			// DMY
 			'31.12.2015' => array( '+2015-12-31T00:00:00Z' ),
@@ -58,10 +58,15 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 			'31th 12th 2015' => array( '+2015-12-31T00:00:00Z' ),
 			'day 31, month 12, year 2015' => array( '+2015-12-31T00:00:00Z' ),
 
-			// MDY
+			// MDY, almost exclusively used in the United States
 			'12/31/2015' => array( '+2015-12-31T00:00:00Z' ),
 			'12-31-2015' => array( '+2015-12-31T00:00:00Z' ),
 			'12 31 2015' => array( '+2015-12-31T00:00:00Z' ),
+
+			// YDM, exclusively used in Kazakhstan
+			// https://en.wikipedia.org/wiki/Calendar_date#Gregorian.2C_year-day-month_.28YDM.29
+			'2015.31.12' => array( '+2015-12-31T00:00:00Z' ),
+			'2015 13 1' => array( '+2015-01-13T00:00:00Z' ),
 
 			// Julian
 			'32-12-31' => array( '+0032-12-31T00:00:00Z', $julian ),
@@ -80,6 +85,7 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 			// A negative number must be the year.
 			'year -3-2-13' => array( '-0003-02-13T00:00:00Z', $julian ),
 			'13. 2. -3' => array( '-0003-02-13T00:00:00Z', $julian ),
+			'23:12:-59' => array( '-0059-12-23T00:00:00Z', $julian ),
 		);
 
 		$cases = array();
@@ -118,6 +124,8 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 			'12:59:59',
 			'23:12:59',
 			'23:12:31',
+			'-23:12:31',
+			'-24:00:00',
 
 			// No year can be identified if all numbers are smaller than 32.
 			'12 12 12',
@@ -129,18 +137,21 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 			'12 31 31',
 			'31 31 31',
 
-			// Year can be identified, but month and day can not be distinguished.
-			'12 32 12',
+			// Two or more candidates for the year.
 			'32 32 12',
-			'12 12 32',
 			'32 12 32',
 			'12 32 32',
 			'32 32 32',
 
-			// A YDM format does really exist and should not be parsed.
-			'2015 31 12',
+			// Year can be identified, but month and day can not be distinguished.
+			'32 12 12',
+			'2015-12-11',
+			'12 12 32',
+			'11.12.2015',
 
 			// Formats DYM and MYD do not exist and should not be parsed.
+			'12 -1 12',
+			'12 32 12',
 			'12 2015 31',
 			'31 2015 12',
 

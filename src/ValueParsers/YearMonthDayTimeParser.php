@@ -69,17 +69,17 @@ class YearMonthDayTimeParser extends StringValueParser {
 
 		// A 32 in the first spot can not be confused with anything.
 		if ( $matches[1] < 1 || $matches[1] > 31 ) {
-			// A format YDM does not exist.
 			if ( $matches[2] > 12 ) {
-				throw new ParseException( 'Can not accept YDM' );
+				list( , $signedYear, $day, $month ) = $matches;
+			} elseif ( $matches[3] > 12 ) {
+				list( , $signedYear, $month, $day ) = $matches;
+			} else {
+				throw new ParseException( 'Can not distinguish YDM and YMD' );
 			}
-
-			// Since a format YDM does not exist, this must be YMD.
-			list( , $signedYear, $month, $day ) = $matches;
 		} elseif ( $matches[3] < 1 || $matches[3] > 59
 			// A 59 in the third spot may be a second, but can not if the first number is > 24.
-			// A 31 in the last spot may be the day.
-			|| ( abs( $matches[1] ) > 24 && abs( $matches[3] ) > 31 )
+			// A 31 in the last spot may be the day, but can not if it's negative.
+			|| ( abs( $matches[1] ) > 24 && $matches[3] > 31 )
 		) {
 			if ( $matches[1] > 12 ) {
 				list( , $day, $month, $signedYear ) = $matches;
