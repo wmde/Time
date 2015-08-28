@@ -109,28 +109,33 @@ class IsoTimestampParser extends StringValueParser {
 
 		if ( !preg_match( $pattern, $value, $matches ) ) {
 			throw new ParseException( 'Malformed time' );
-		} elseif ( $matches[1] === ''
-			&& strlen( $matches[2] ) < 3
-			&& $matches[2] < 32
-			&& $matches[5] === ''
+		}
+
+		list( , $sign, $year, $month, $day, $hour, $minute, $second, $calendarModel ) = $matches;
+
+		if ( $sign === ''
+			&& strlen( $year ) < 3
+			&& $year < 32
+			&& $hour === ''
 		) {
 			throw new ParseException( 'Not enough information to decide if the format is YMD' );
-		} elseif ( $matches[3] > 12 ) {
+		} elseif ( $month > 12 ) {
 			throw new ParseException( 'Month out of range' );
-		} elseif ( $matches[4] > 31 ) {
+		} elseif ( $day > 0 && $month < 1 ) {
+			throw new ParseException( 'Can not have a day with no month' );
+		} elseif ( $day > 31 ) {
 			throw new ParseException( 'Day out of range' );
-		} elseif ( $matches[5] > 23 ) {
+		} elseif ( $hour > 23 ) {
 			throw new ParseException( 'Hour out of range' );
-		} elseif ( $matches[6] > 59 ) {
+		} elseif ( $minute > 59 ) {
 			throw new ParseException( 'Minute out of range' );
-		} elseif ( $matches[7] > 61 ) {
+		} elseif ( $second > 61 ) {
 			throw new ParseException( 'Second out of range' );
 		}
 
-		$matches = array_slice( $matches, 1 );
-		$matches[0] = str_replace( "\xE2\x88\x92", '-', $matches[0] );
+		$sign = str_replace( "\xE2\x88\x92", '-', $sign );
 
-		return $matches;
+		return array( $sign, $year, $month, $day, $hour, $minute, $second, $calendarModel );
 	}
 
 	/**
@@ -145,7 +150,10 @@ class IsoTimestampParser extends StringValueParser {
 			$precision = TimeValue::PRECISION_MINUTE;
 		} elseif ( $timeParts[4] > 0 ) {
 			$precision = TimeValue::PRECISION_HOUR;
-		} elseif ( $timeParts[3] > 0 ) {
+		} elseif ( $timeParts[3] > 0
+			// Can not have a day with no month, fall back to year precision.
+			&& $timeParts[2] > 0
+		) {
 			$precision = TimeValue::PRECISION_DAY;
 		} elseif ( $timeParts[2] > 0 ) {
 			$precision = TimeValue::PRECISION_MONTH;

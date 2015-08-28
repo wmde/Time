@@ -52,19 +52,20 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.8.2 (2015-08-18)
+### 0.8.2 (2015-08-28)
 
-* Fixed `YearMonthDayTimeParser` rejecting YDM dates
+* Fixed `IsoTimestampParser` and `TimeValue` accepting days with no month.
+* Fixed `YearMonthDayTimeParser` rejecting YDM dates.
 
 ### 0.8.1 (2015-08-14)
 
 #### Additions
-* Added `YearMonthDayTimeParser`
-* `PhpDateTimeParser` now accepts space-separated dates in YMD order
+* Added `YearMonthDayTimeParser`.
+* `PhpDateTimeParser` now accepts space-separated dates in YMD order.
 
 #### Other changes
-* The component can now be installed together with DataValues Interfaces 0.2.x
-* The component can now be installed together with DataValues Common 0.3.x
+* The component can now be installed together with DataValues Interfaces 0.2.x.
+* The component can now be installed together with DataValues Common 0.3.x.
 
 ### 0.8.0 (2015-06-26)
 
