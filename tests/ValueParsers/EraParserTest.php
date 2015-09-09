@@ -7,10 +7,10 @@ use ValueParsers\EraParser;
 /**
  * @covers ValueParsers\EraParser
  *
- * @group ValueParsers
- * @group WikibaseLib
- * @group Wikibase
+ * @group DataValue
+ * @group DataValueExtensions
  * @group TimeParsers
+ * @group ValueParsers
  *
  * @licence GNU GPL v2+
  * @author Adam Shorland

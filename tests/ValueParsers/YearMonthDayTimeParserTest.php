@@ -9,10 +9,10 @@ use ValueParsers\YearMonthDayTimeParser;
 /**
  * @covers ValueParsers\YearMonthDayTimeParser
  *
- * @group ValueParsers
- * @group WikibaseLib
- * @group Wikibase
+ * @group DataValue
+ * @group DataValueExtensions
  * @group TimeParsers
+ * @group ValueParsers
  *
  * @licence GNU GPL v2+
  * @author Thiemo Mättig
