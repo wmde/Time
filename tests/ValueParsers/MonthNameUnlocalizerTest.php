@@ -8,9 +8,9 @@ use ValueParsers\MonthNameUnlocalizer;
 /**
  * @covers ValueParsers\MonthNameUnlocalizer
  *
+ * @group DataValue
+ * @group DataValueExtensions
  * @group ValueParsers
- * @group WikibaseLib
- * @group Wikibase
  *
  * @licence GNU GPL v2+
  * @author Adam Shorland
