@@ -53,6 +53,18 @@ class TimeValueTest extends DataValueTest {
 				TimeValue::PRECISION_SECOND,
 				'http://nyan.cat/original.php'
 			),
+			'No day' => array(
+				'+2015-01-00T00:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_YEAR,
+				'http://nyan.cat/original.php'
+			),
+			'No day and month' => array(
+				'+2015-00-00T00:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_YEAR,
+				'http://nyan.cat/original.php'
+			),
 			'Zero' => array(
 				'+0000-00-00T00:00:00Z',
 				0, 0, 0,
@@ -146,6 +158,12 @@ class TimeValueTest extends DataValueTest {
 				'+00000002013/01/01 00:00:00',
 				0, 0, 0,
 				TimeValue::PRECISION_SECOND,
+				'http://nyan.cat/original.php'
+			),
+			'No month' => array(
+				'+2015-00-01T00:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_DAY,
 				'http://nyan.cat/original.php'
 			),
 			'Month out of range' => array(

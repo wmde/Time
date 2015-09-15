@@ -246,6 +246,8 @@ class TimeValue extends DataValueObject {
 			throw new IllegalValueException( 'Month out of allowed bounds' );
 		} elseif ( $day > 31 ) {
 			throw new IllegalValueException( 'Day out of allowed bounds' );
+		} elseif ( $day > 0 && $month < 1 ) {
+			throw new IllegalValueException( 'Can not have a day with no month' );
 		} elseif ( $hour > 23 ) {
 			throw new IllegalValueException( 'Hour out of allowed bounds' );
 		} elseif ( $minute > 59 ) {
