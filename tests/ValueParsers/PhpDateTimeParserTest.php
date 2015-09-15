@@ -50,9 +50,7 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 	 * @return ValueParser
 	 */
 	private function getEraParser() {
-		$mock = $this->getMockBuilder( 'ValueParsers\ValueParser' )
-			->disableOriginalConstructor()
-			->getMock();
+		$mock = $this->getMock( 'ValueParsers\ValueParser' );
 
 		$mock->expects( $this->any() )
 			->method( 'parse' )
@@ -271,7 +269,6 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 		$argLists = parent::invalidInputProvider();
 
 		$invalid = array(
-			// These are just wrong!
 			'June June June',
 			'111 111 111',
 			'101st July 2015',
@@ -287,11 +284,11 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 			'92015-00-00',
 			'Jann 2014',
 			'1980x',
-			'1980s', // supported by MWTimeIsoParser
+			'1980s',
 			'1980',
 			'1980ss',
 			'1980er',
-			'1980UTC', // we don't support year + timezone here
+			'1980UTC',
 			'1980America/New_York',
 			'1980 America/New_York',
 			'1980+3',
