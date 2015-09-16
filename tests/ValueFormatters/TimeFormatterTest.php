@@ -69,16 +69,16 @@ class TimeFormatterTest extends ValueFormatterTestBase {
 			),
 
 			// Different precisions
-			'+2013-07-17T00:00:00Z' => array(
-				'+2013-07-17T00:00:00Z',
+			'+2013-07-00T00:00:00Z' => array(
+				'+2013-07-00T00:00:00Z',
 				TimeValue::PRECISION_MONTH,
 			),
-			'+2013-07-18T00:00:00Z' => array(
-				'+2013-07-18T00:00:00Z',
+			'+2013-00-00T00:00:00Z' => array(
+				'+2013-00-00T00:00:00Z',
 				TimeValue::PRECISION_YEAR,
 			),
-			'+2013-07-19T00:00:00Z' => array(
-				'+2013-07-19T00:00:00Z',
+			'+2013-00-00T00:00:00Z' => array(
+				'+2013-00-00T00:00:00Z',
 				TimeValue::PRECISION_YEAR10,
 			),
 		);
