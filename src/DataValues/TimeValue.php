@@ -217,7 +217,7 @@ class TimeValue extends DataValueObject {
 			throw new IllegalValueException( '$calendarModel must be a non-empty string' );
 		}
 
-		$this->timestamp = $this->normalizeIsoTimestamp( $timestamp );
+		$this->timestamp = $this->normalizeIsoTimestamp( $timestamp, $precision );
 		$this->timezone = $timezone;
 		$this->before = $before;
 		$this->after = $after;
@@ -227,11 +227,12 @@ class TimeValue extends DataValueObject {
 
 	/**
 	 * @param string $timestamp
+	 * @param int $precision
 	 *
 	 * @throws IllegalValueException
 	 * @return string
 	 */
-	private function normalizeIsoTimestamp( $timestamp ) {
+	private function normalizeIsoTimestamp( $timestamp, $precision ) {
 		if ( !preg_match(
 			'/^([-+])(\d{1,16})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)Z$/',
 			$timestamp,
@@ -259,6 +260,22 @@ class TimeValue extends DataValueObject {
 		// Warning, never cast the year to integer to not run into 32-bit integer overflows!
 		$year = ltrim( $year, '0' );
 		$year = str_pad( $year, 4, '0', STR_PAD_LEFT );
+
+		if ( $precision < self::PRECISION_MONTH ) {
+			$month = '00';
+		}
+		if ( $precision < self::PRECISION_DAY ) {
+			$day = '00';
+		}
+		if ( $precision < self::PRECISION_HOUR ) {
+			$hour = '00';
+		}
+		if ( $precision < self::PRECISION_MINUTE ) {
+			$minute = '00';
+		}
+		if ( $precision < self::PRECISION_SECOND ) {
+			$second = '00';
+		}
 
 		return $sign . $year . '-' . $month . '-' . $day . 'T' . $hour . ':' . $minute .':' . $second . 'Z';
 	}
