@@ -23,6 +23,11 @@ class YearMonthDayTimeParser extends StringValueParser {
 	private $eraParser;
 
 	/**
+	 * @var int[]
+	 */
+	private $months;
+
+	/**
 	 * @var ValueParser
 	 */
 	private $isoTimestampParser;
@@ -30,12 +35,19 @@ class YearMonthDayTimeParser extends StringValueParser {
 	/**
 	 * @param ValueParser|null $eraParser String parser that detects signs, "BC" suffixes and such and
 	 * returns an array with the detected sign character and the remaining value.
+	 * @param int[] $months Array mapping localized month names (possibly including full month
+	 * names, genitive names and abbreviations) to the numbers 1 to 12.
 	 * @param ParserOptions|null $options
 	 */
-	public function __construct( ValueParser $eraParser = null, ParserOptions $options = null ) {
+	public function __construct(
+		ValueParser $eraParser = null,
+		array $months = [],
+		ParserOptions $options = null
+	) {
 		parent::__construct( $options );
 
 		$this->eraParser = $eraParser ?: new EraParser();
+		$this->months = $months;
 		$this->isoTimestampParser = new IsoTimestampParser( null, $this->options );
 	}
 
@@ -69,8 +81,26 @@ class YearMonthDayTimeParser extends StringValueParser {
 	 * @return string[]
 	 */
 	private function parseYearMonthDay( $value ) {
-		if ( !preg_match( '/^\D*?(-?\d+)\D+(\d+)\D+?(-?\d+)\D*$/', $value, $matches ) ) {
+		$monthPattern = '(?:\d+|'
+			. implode( '|', array_map( 'preg_quote', array_keys( $this->months ) ) )
+			. ')';
+		if ( !preg_match(
+			'<^\D*?(-?' . $monthPattern . ')\D+(' . $monthPattern . ')\D+?(-?' . $monthPattern . ')\D*$>',
+			$value,
+			$matches
+		) ) {
 			throw new ParseException( 'Can not find three numbers' );
+		}
+
+		$monthAt = null;
+		foreach ( $matches as $i => &$match ) {
+			if ( isset( $this->months[$match] ) ) {
+				if ( $monthAt !== null ) {
+					throw new ParseException( 'Two months found' );
+				}
+				$match = $this->months[$match];
+				$monthAt = $i;
+			}
 		}
 
 		// A 32 in the first spot can not be confused with anything.

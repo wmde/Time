@@ -34,7 +34,16 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 	 * @return YearMonthDayTimeParser
 	 */
 	protected function getInstance() {
-		return new YearMonthDayTimeParser();
+		return $this->getYearMonthDayTimeParser();
+	}
+
+	/**
+	 * @param int[] $months
+	 *
+	 * @return YearMonthDayTimeParser
+	 */
+	private function getYearMonthDayTimeParser( array $months = [] ) {
+		return new YearMonthDayTimeParser( null, $months );
 	}
 
 	/**
@@ -196,6 +205,62 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 	}
 
 	/**
+	 * @dataProvider monthNamesProvider
+	 */
+	public function testMonthNameParsing( $value, array $months, TimeValue $expected ) {
+		$parser = $this->getYearMonthDayTimeParser( $months );
+		$this->assertTrue( $expected->equals( $parser->parse( $value ) ) );
+	}
+
+	public function monthNamesProvider() {
+		$gregorian = 'http://www.wikidata.org/entity/Q1985727';
+
+		$valid = [
+			'13.12.1999' => [
+				[],
+				'+1999-12-13T00:00:00Z',
+			],
+			'13. February 1999' => [
+				[ 'February' => 2 ],
+				'+1999-02-13T00:00:00Z',
+			],
+		];
+
+		$cases = [];
+
+		foreach ( $valid as $value => $args ) {
+			$months = $args[0];
+			$timestamp = $args[1];
+			$calendarModel = isset( $args[2] ) ? $args[2] : $gregorian;
+
+			$cases[] = [
+				(string)$value,
+				$months,
+				new TimeValue( $timestamp, 0, 0, 0, TimeValue::PRECISION_DAY, $calendarModel )
+			];
+		}
+
+		return $cases;
+	}
+
+	/**
+	 * @dataProvider invalidMonthNamesProvider
+	 */
+	public function testInvalidMonthNameParsing( $value, array $months ) {
+		$parser = $this->getYearMonthDayTimeParser( $months );
+		$this->setExpectedException( 'ValueParsers\ParseException' );
+		$parser->parse( $value );
+	}
+
+	public function invalidMonthNamesProvider() {
+		return [
+			[ '13. February 1999', [] ],
+			[ 'February. February 1999', [ 'February' => 2 ] ],
+			[ '13. Feb 1999', [ 'February' => 2 ] ],
+		];
+	}
+
+	/**
 	 * @dataProvider optionsProvider
 	 */
 	public function testOptions(
@@ -205,7 +270,7 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 		$calendarModel,
 		$precision = TimeValue::PRECISION_DAY
 	) {
-		$parser = new YearMonthDayTimeParser( null, new ParserOptions( $options ) );
+		$parser = new YearMonthDayTimeParser( null, [], new ParserOptions( $options ) );
 		$this->assertEquals(
 			new TimeValue( $timestamp, 0, 0, 0, $precision, $calendarModel ),
 			$parser->parse( $value )
@@ -276,7 +341,7 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 	 * @dataProvider invalidOptionsProvider
 	 */
 	public function testInvalidOptions( array $options ) {
-		$parser = new YearMonthDayTimeParser( null, new ParserOptions( $options ) );
+		$parser = new YearMonthDayTimeParser( null, [], new ParserOptions( $options ) );
 		$this->setExpectedException( ParseException::class );
 		$parser->parse( '2016-01-31' );
 	}
