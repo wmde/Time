@@ -3,6 +3,7 @@
 namespace DataValues;
 
 use InvalidArgumentException;
+use ValueFormatters\TimeFormatter;
 
 /**
  * @since 0.6
@@ -90,6 +91,59 @@ class TimeValueCalculator {
 	public function getNumberOfLeapYears( $year ) {
 		$year = $year < 0 ? ceil( $year ) + 1 : floor( $year );
 		return floor( $year / 4 ) - floor( $year / 100 ) + floor( $year / 400 );
+	}
+
+	/**
+	 * This returns a TimeValue from a Unix timestamp similar to PHP's date() or strftime(),
+	 * but without any range limitation.
+	 *
+	 * @param float $timestamp Seconds since 1970-01-01T00:00:00Z
+	 * @param int $timezone Offset from UTC in minutes
+	 * @param int $before Number of units given by the precision
+	 * @param int $after Number of units given by the precision
+	 * @param int $precision One of the TimeValue::PRECISION_... constants
+	 * @param string $calendarModel An URI identifying the calendar model
+	 *
+	 * @return TimeValue
+	 */
+	public function getTimeValue(
+		$timestamp,
+		$timezone = 0,
+		$before = 0,
+		$after = 0,
+		$precision = TimeValue::PRECISION_YEAR,
+		$calendarModel = TimeFormatter::CALENDAR_GREGORIAN
+	) {
+		$timestamp += $timezone * 60;
+
+		if ( $timestamp >= 0 && $timestamp <= PHP_INT_MAX ) {
+			$defaultTimezone = date_default_timezone_get();
+			date_default_timezone_set( 'UTC' );
+			$time = date( '+Y-m-d\TH:i:s\Z', $timestamp );
+			date_default_timezone_set( $defaultTimezone );
+		} else {
+//			$year = ( $timestamp + 1970 * self::SECONDS_PER_GREGORIAN_YEAR ) / self::SECONDS_PER_GREGORIAN_YEAR;
+//			$time = sprintf( '%+d-00-00T00:00:00Z', $year );
+//			$precision = min( $precision, TimeValue::PRECISION_YEAR );
+
+			if ( $timestamp < 0 ) {
+				$year = 1970;
+				while ( $timestamp < 0 ) {
+					$timestamp += ( $this->isLeapYear( $year ) ? 366 : 365 ) * 86400;
+					$year--;
+				}
+				$time = sprintf( '%+d-%sZ', $year, date( 'm-d\TH:i:s', $timestamp ) );
+			} else {
+				$year = 1970;
+				while ( $timestamp >= self::SECONDS_PER_GREGORIAN_YEAR ) {
+					$timestamp -= ( $this->isLeapYear( $year ) ? 366 : 365 ) * 86400;
+					$year++;
+				}
+				$time = sprintf( '%+d-%sZ', $year, date( 'm-d\TH:i:s', $timestamp ) );
+			}
+		}
+
+		return new TimeValue( $time, $timezone, $before, $after, $precision, $calendarModel );
 	}
 
 	/**
