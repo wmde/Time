@@ -32,9 +32,7 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 	 * @return YearMonthDayTimeParser
 	 */
 	protected function getInstance() {
-		return new YearMonthDayTimeParser(
-			new EraParser()
-		);
+		return new YearMonthDayTimeParser();
 	}
 
 	/**
@@ -168,7 +166,13 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 			'31.12.-2015 BC',
 
 			// Zeros.
+			'-2015-00-00',
+			'0000-00-00',
+			'2015-00-00',
 			'2015-12-00',
+			'0. 0. -2015',
+			'0. 0. 0',
+			'0. 0. 2015',
 			'0. 12. 2015',
 
 			// To long.
