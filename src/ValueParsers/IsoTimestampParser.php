@@ -25,7 +25,7 @@ use InvalidArgumentException;
  */
 class IsoTimestampParser extends StringValueParser {
 
-	const FORMAT_NAME = 'time';
+	const FORMAT_NAME = 'iso-timestamp';
 
 	const OPT_PRECISION = 'precision';
 	const OPT_CALENDAR = 'calendar';
