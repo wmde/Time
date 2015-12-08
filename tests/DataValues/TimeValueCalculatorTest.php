@@ -108,10 +108,6 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider timestampProvider
-	 *
-	 * @param string $time an ISO 8601 date and time
-	 * @param float $expectedTimestamp
-	 * @param int $timezone offset from UTC in minutes
 	 */
 	public function testGetTimestamp( $time, $expectedTimestamp = 0.0, $timezone = 0 ) {
 		$timeValue = $this->getTimeValueMock( $time, $timezone );
@@ -172,10 +168,6 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider yearProvider
-	 *
-	 * @param float $year
-	 * @param float $numberOfLeapYears Unused in this test
-	 * @param bool $expected
 	 */
 	public function testIsLeapYear( $year, $numberOfLeapYears = 0.0, $expected = false ) {
 		$isLeapYear = $this->calculator->isLeapYear( $year );
@@ -185,10 +177,6 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider yearProvider
-	 *
-	 * @param float $year
-	 * @param float $expected
-	 * @param bool $isLeapYear Unused in this test
 	 */
 	public function testGetNumberOfLeapYears( $year, $expected = 0.0, $isLeapYear = false ) {
 		$numberOfLeapYears = $this->calculator->getNumberOfLeapYears( $year );
@@ -214,9 +202,6 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @dataProvider precisionProvider
-	 *
-	 * @param int $precision
-	 * @param float $expected
 	 */
 	public function testGetSecondsForPrecision( $precision, $expected ) {
 		$seconds = $this->calculator->getSecondsForPrecision( $precision );
