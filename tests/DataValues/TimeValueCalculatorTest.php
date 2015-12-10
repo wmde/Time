@@ -186,7 +186,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 
 	public function precisionProvider() {
 		$secondsPerDay = 60 * 60 * 24;
-		$daysPerGregorianYear = 365 + 1/4 - 1/100 + 1/400;
+		$daysPerGregorianYear = 365 + 1 / 4 - 1 / 100 + 1 / 400;
 
 		return array(
 			array( TimeValue::PRECISION_SECOND, 1 ),
