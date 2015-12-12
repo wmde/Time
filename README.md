@@ -28,7 +28,7 @@ version 1.0 of this package:
 ```js
     {
         "require": {
-            "data-values/time": "1.0.*"
+            "data-values/time": "0.8.*"
         }
     }
 ```
