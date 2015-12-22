@@ -3,7 +3,6 @@
 namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
-use ValueParsers\EraParser;
 use ValueParsers\YearMonthDayTimeParser;
 
 /**
