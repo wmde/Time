@@ -19,8 +19,6 @@ class TimeValueTest extends DataValueTest {
 	/**
 	 * @see DataValueTest::getClass
 	 *
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public function getClass() {
