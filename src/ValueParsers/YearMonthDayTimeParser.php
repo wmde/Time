@@ -24,7 +24,7 @@ class YearMonthDayTimeParser extends StringValueParser {
 	private $eraParser;
 
 	/**
-	 * @param ValueParser $eraParser String parser that detects signs, "BC" suffixes and such and
+	 * @param ValueParser|null $eraParser String parser that detects signs, "BC" suffixes and such and
 	 * returns an array with the detected sign character and the remaining value.
 	 */
 	public function __construct( ValueParser $eraParser = null ) {

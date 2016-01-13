@@ -5,6 +5,9 @@ namespace DataValues;
 use InvalidArgumentException;
 
 /**
+ * Logical and mathematical helper functions for calculations with and conversions from TimeValue
+ * objects.
+ *
  * @since 0.6
  *
  * @licence GNU GPL v2+
