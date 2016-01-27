@@ -13,7 +13,7 @@ use ValueParsers\EraParser;
  * @group ValueParsers
  *
  * @licence GNU GPL v2+
- * @author Adam Shorland
+ * @author Addshore
  * @author Thiemo Mättig
  */
 class EraParserTest extends StringValueParserTest {

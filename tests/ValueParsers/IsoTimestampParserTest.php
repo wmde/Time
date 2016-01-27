@@ -13,7 +13,7 @@ use ValueParsers\ParserOptions;
  * @group DataValue
  * @group DataValueExtensions
  *
- * @author Adam Shorland
+ * @author Addshore
  * @author Thiemo Mättig
  */
 class IsoTimestampParserTest extends ValueParserTestBase {

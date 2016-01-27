@@ -13,7 +13,7 @@ use ValueParsers\MonthNameUnlocalizer;
  * @group ValueParsers
  *
  * @licence GNU GPL v2+
- * @author Adam Shorland
+ * @author Addshore
  * @author Thiemo Mättig
  */
 class MonthNameUnlocalizerTest extends PHPUnit_Framework_TestCase {

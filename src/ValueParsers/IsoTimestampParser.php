@@ -19,7 +19,7 @@ use InvalidArgumentException;
  * @since 0.7 renamed from TimeParser to IsoTimestampParser.
  *
  * @licence GNU GPL v2+
- * @author Adam Shorland
+ * @author Addshore
  * @author Thiemo Mättig
  * @author Daniel Kinzler
  */

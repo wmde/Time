@@ -19,7 +19,7 @@ use ValueParsers\ValueParser;
  * @group ValueParsers
  *
  * @licence GNU GPL v2+
- * @author Adam Shorland
+ * @author Addshore
  * @author Thiemo Mättig
  */
 class PhpDateTimeParserTest extends StringValueParserTest {

@@ -24,7 +24,7 @@ use Exception;
  * @since 0.7
  *
  * @licence GNU GPL v2+
- * @author Adam Shorland
+ * @author Addshore
  * @author Thiemo Mättig
  */
 class PhpDateTimeParser extends StringValueParser {

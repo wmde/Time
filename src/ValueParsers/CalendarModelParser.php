@@ -10,7 +10,7 @@ use DataValues\TimeValue;
  * @since 0.2
  *
  * @licence GNU GPL v2+
- * @author Adam Shorland
+ * @author Addshore
  * @author Thiemo Mättig
  */
 class CalendarModelParser extends StringValueParser {
