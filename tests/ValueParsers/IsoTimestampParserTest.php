@@ -407,4 +407,113 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 		return $argLists;
 	}
 
+	/**
+	 * @dataProvider optionsProvider
+	 */
+	public function testOptions(
+		$value,
+		array $options,
+		$timestamp,
+		$calendarModel,
+		$precision = TimeValue::PRECISION_DAY
+	) {
+		$parser = new IsoTimestampParser( null, new ParserOptions( $options ) );
+		$this->assertEquals(
+			new TimeValue( $timestamp, 0, 0, 0, $precision, $calendarModel ),
+			$parser->parse( $value )
+		);
+	}
+
+	public function optionsProvider() {
+		$gregorian = 'http://www.wikidata.org/entity/Q1985727';
+		$julian = 'http://www.wikidata.org/entity/Q1985786';
+
+		return array(
+			'Auto-detected Gregorian' => array(
+				'1583-01-31',
+				array(),
+				'+1583-01-31T00:00:00Z',
+				$gregorian
+			),
+			'Option overrides auto-detected Gregorian' => array(
+				'1583-01-31',
+				array( IsoTimestampParser::OPT_CALENDAR => $julian ),
+				'+1583-01-31T00:00:00Z',
+				$julian
+			),
+			'Auto-detected Julian' => array(
+				'1582-01-31',
+				array(),
+				'+1582-01-31T00:00:00Z',
+				$julian
+			),
+			'Option overrides auto-detected Julian' => array(
+				'1582-01-31',
+				array( IsoTimestampParser::OPT_CALENDAR => $gregorian ),
+				'+1582-01-31T00:00:00Z',
+				$gregorian
+			),
+			'Option can decrease precision' => array(
+				'2016-01-31',
+				array( IsoTimestampParser::OPT_PRECISION => TimeValue::PRECISION_MONTH ),
+				'+2016-01-31T00:00:00Z',
+				$gregorian,
+				TimeValue::PRECISION_MONTH
+			),
+			'Option can set minimal precision' => array(
+				'2016-01-31',
+				array( IsoTimestampParser::OPT_PRECISION => TimeValue::PRECISION_YEAR1G ),
+				'+2016-01-31T00:00:00Z',
+				$gregorian,
+				TimeValue::PRECISION_YEAR1G
+			),
+			'Option can not increase year precision' => array(
+				'2016-00-00',
+				array( IsoTimestampParser::OPT_PRECISION => TimeValue::PRECISION_MONTH ),
+				'+2016-00-00T00:00:00Z',
+				$gregorian,
+				TimeValue::PRECISION_YEAR
+			),
+			'Option can not increase month precision' => array(
+				'2016-01-00',
+				array( IsoTimestampParser::OPT_PRECISION => TimeValue::PRECISION_DAY ),
+				'+2016-01-00T00:00:00Z',
+				$gregorian,
+				TimeValue::PRECISION_MONTH
+			),
+			'Option can increase day precision' => array(
+				'2016-01-31',
+				array( IsoTimestampParser::OPT_PRECISION => TimeValue::PRECISION_HOUR ),
+				'+2016-01-31T00:00:00Z',
+				$gregorian,
+				TimeValue::PRECISION_HOUR
+			),
+			'Precision option accepts strings' => array(
+				'2016-01-31',
+				array( IsoTimestampParser::OPT_PRECISION => '10' ),
+				'+2016-01-31T00:00:00Z',
+				$gregorian,
+				TimeValue::PRECISION_MONTH
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider invalidOptionsProvider
+	 */
+	public function testInvalidOptions( array $options ) {
+		$parser = new IsoTimestampParser( null, new ParserOptions( $options ) );
+		$this->setExpectedException( 'ValueParsers\ParseException' );
+		$parser->parse( '2016-01-31' );
+	}
+
+	public function invalidOptionsProvider() {
+		return array(
+			array( array( IsoTimestampParser::OPT_PRECISION => -1 ) ),
+			array( array( IsoTimestampParser::OPT_PRECISION => 1.5 ) ),
+			array( array( IsoTimestampParser::OPT_PRECISION => 1000 ) ),
+			array( array( IsoTimestampParser::OPT_PRECISION => 'invalid' ) ),
+		);
+	}
+
 }
