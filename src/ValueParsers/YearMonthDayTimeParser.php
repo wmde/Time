@@ -2,7 +2,6 @@
 
 namespace ValueParsers;
 
-use DataValues\IllegalValueException;
 use DataValues\TimeValue;
 
 /**
@@ -24,13 +23,20 @@ class YearMonthDayTimeParser extends StringValueParser {
 	private $eraParser;
 
 	/**
+	 * @var ValueParser
+	 */
+	private $isoTimestampParser;
+
+	/**
 	 * @param ValueParser|null $eraParser String parser that detects signs, "BC" suffixes and such and
 	 * returns an array with the detected sign character and the remaining value.
+	 * @param ParserOptions|null $options
 	 */
-	public function __construct( ValueParser $eraParser = null ) {
-		parent::__construct();
+	public function __construct( ValueParser $eraParser = null, ParserOptions $options = null ) {
+		parent::__construct( $options );
 
 		$this->eraParser = $eraParser ?: new EraParser();
+		$this->isoTimestampParser = new IsoTimestampParser( null, $this->options );
 	}
 
 	/**
@@ -111,32 +117,9 @@ class YearMonthDayTimeParser extends StringValueParser {
 			throw new ParseException( 'Day out of range' );
 		}
 
-		try {
-			return new TimeValue(
-				sprintf( '%s-%02s-%02sT00:00:00Z', $signedYear, $month, $day ),
-				0,
-				0,
-				0,
-				TimeValue::PRECISION_DAY,
-				$this->getCalendarModel( $signedYear )
-			);
-		} catch ( IllegalValueException $ex ) {
-			throw new ParseException( $ex->getMessage() );
-		}
-	}
-
-	/**
-	 * @see IsoTimestampParser::getCalendarModel
-	 *
-	 * @param string $signedYear
-	 *
-	 * @return string URI
-	 */
-	private function getCalendarModel( $signedYear ) {
-		// The Gregorian calendar was introduced in October 1582.
-		return $signedYear <= 1582
-			? TimeValue::CALENDAR_JULIAN
-			: TimeValue::CALENDAR_GREGORIAN;
+		return $this->isoTimestampParser->parse(
+			sprintf( '%s-%02s-%02sT00:00:00Z', $signedYear, $month, $day )
+		);
 	}
 
 }
