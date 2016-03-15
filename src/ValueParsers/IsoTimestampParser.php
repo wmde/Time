@@ -27,7 +27,16 @@ class IsoTimestampParser extends StringValueParser {
 
 	const FORMAT_NAME = 'time';
 
+	/**
+	 * Option to override the precision auto-detection and set a specific precision. Should be an
+	 * integer or string containing one of the TimeValue::PRECISION_... constants.
+	 */
 	const OPT_PRECISION = 'precision';
+
+	/**
+	 * Option to override the calendar model auto-detection and set a specific calendar model URI.
+	 * Should be one of the TimeValue::CALENDAR_... constants.
+	 */
 	const OPT_CALENDAR = 'calendar';
 
 	/**
