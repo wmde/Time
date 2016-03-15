@@ -25,7 +25,7 @@ use InvalidArgumentException;
  */
 class IsoTimestampParser extends StringValueParser {
 
-	const FORMAT_NAME = 'time';
+	const FORMAT_NAME = 'iso-timestamp';
 
 	/**
 	 * Option to override the precision auto-detection and set a specific precision. Should be an
