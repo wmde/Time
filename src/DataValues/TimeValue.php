@@ -17,47 +17,47 @@ class TimeValue extends DataValueObject {
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR1G instead
 	 */
-	const PRECISION_Ga = TimeValue::PRECISION_YEAR1G;
+	const PRECISION_Ga = self::PRECISION_YEAR1G;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR100M instead
 	 */
-	const PRECISION_100Ma = TimeValue::PRECISION_YEAR100M;
+	const PRECISION_100Ma = self::PRECISION_YEAR100M;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR10M instead
 	 */
-	const PRECISION_10Ma = TimeValue::PRECISION_YEAR10M;
+	const PRECISION_10Ma = self::PRECISION_YEAR10M;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR1M instead
 	 */
-	const PRECISION_Ma = TimeValue::PRECISION_YEAR1M;
+	const PRECISION_Ma = self::PRECISION_YEAR1M;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR100K instead
 	 */
-	const PRECISION_100ka = TimeValue::PRECISION_YEAR100K;
+	const PRECISION_100ka = self::PRECISION_YEAR100K;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR10K instead
 	 */
-	const PRECISION_10ka = TimeValue::PRECISION_YEAR10K;
+	const PRECISION_10ka = self::PRECISION_YEAR10K;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR1K instead
 	 */
-	const PRECISION_ka = TimeValue::PRECISION_YEAR1K;
+	const PRECISION_ka = self::PRECISION_YEAR1K;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR100 instead
 	 */
-	const PRECISION_100a = TimeValue::PRECISION_YEAR100;
+	const PRECISION_100a = self::PRECISION_YEAR100;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR10 instead
 	 */
-	const PRECISION_10a = TimeValue::PRECISION_YEAR10;
+	const PRECISION_10a = self::PRECISION_YEAR10;
 
 	/**
 	 * @since 0.8
@@ -137,7 +137,7 @@ class TimeValue extends DataValueObject {
 	private $timestamp;
 
 	/**
-	 * Unit used for the getBefore() and getAfter() values. Use one of the TimeValue::PRECISION_...
+	 * Unit used for the getBefore() and getAfter() values. Use one of the self::PRECISION_...
 	 * constants.
 	 *
 	 * @var int
@@ -182,7 +182,7 @@ class TimeValue extends DataValueObject {
 	 * @param int $timezone Time zone offset from UTC in minutes.
 	 * @param int $before Number of units given by the precision.
 	 * @param int $after Number of units given by the precision.
-	 * @param int $precision One of the TimeValue::PRECISION_... constants.
+	 * @param int $precision One of the self::PRECISION_... constants.
 	 * @param string $calendarModel An URI identifying the calendar model.
 	 *
 	 * @throws IllegalValueException
@@ -312,7 +312,7 @@ class TimeValue extends DataValueObject {
 	 *
 	 * @since 0.1
 	 *
-	 * @return int one of the TimeValue::PRECISION_... constants
+	 * @return int one of the self::PRECISION_... constants
 	 */
 	public function getPrecision() {
 		return $this->precision;
