@@ -52,6 +52,12 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.8.3 (2016-03-16)
+* `YearMonthDayTimeParser` did not accept options. Now it forwards to IsoTimestampParser and uses its calendar model and precision detection.
+* `IsoTimestampParser` now also accepts strings as precision.
+* Fixed `IsoTimestampParser` not always throwing an `Exception` when the given precision is invalid.
+* Fixed `FORMAT_NAME` constants in parsers.
+
 ### 0.8.2 (2015-09-15)
 
 * Fixed `IsoTimestampParser` and `TimeValue` accepting days with no month.
