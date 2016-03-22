@@ -169,7 +169,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider yearProvider
 	 */
-	public function testIsLeapYear( $year, $numberOfLeapYears = 0.0, $expected = false ) {
+	public function testIsLeapYear( $year, $numberOfLeapYears, $expected = false ) {
 		$isLeapYear = $this->calculator->isLeapYear( $year );
 
 		$this->assertEquals( $expected, $isLeapYear );
@@ -178,7 +178,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider yearProvider
 	 */
-	public function testGetNumberOfLeapYears( $year, $expected = 0.0, $isLeapYear = false ) {
+	public function testGetNumberOfLeapYears( $year, $expected, $isLeapYear = false ) {
 		$numberOfLeapYears = $this->calculator->getNumberOfLeapYears( $year );
 
 		$this->assertEquals( $expected, $numberOfLeapYears );

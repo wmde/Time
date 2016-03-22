@@ -150,6 +150,7 @@ class IsoTimestampParser extends StringValueParser {
 	/**
 	 * @param string[] $timeParts Array with index 0 => sign, 1 => year, 2 => month, etc.
 	 *
+	 * @throws ParseException
 	 * @return int One of the TimeValue::PRECISION_... constants.
 	 */
 	private function getPrecision( array $timeParts ) {
