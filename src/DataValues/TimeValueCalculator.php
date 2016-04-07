@@ -10,7 +10,7 @@ use InvalidArgumentException;
  *
  * @since 0.6
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0+
  * @author Thiemo Mättig
  */
 class TimeValueCalculator {
