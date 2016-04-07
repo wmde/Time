@@ -18,7 +18,7 @@ use ValueParsers\ValueParser;
  * @group TimeParsers
  * @group ValueParsers
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0+
  * @author Addshore
  * @author Thiemo Mättig
  */

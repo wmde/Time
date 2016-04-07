@@ -8,7 +8,7 @@ namespace ValueParsers;
  *
  * @since 0.8
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0+
  * @author Addshore
  * @author Thiemo Mättig
  */
