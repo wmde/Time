@@ -14,6 +14,15 @@ before_script:
 script:
   - phpunit
 
+notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#wikidata-feed"
+    on_success: never
+    on_failure: always
+    template:
+      - "%{repository}/%{branch}/%{commit} : %{author} %{message} %{build_url}"
+
 cache:
   directories:
     - $HOME/.composer/cache
