@@ -52,6 +52,13 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.8.4 (2016-04-14)
+
+* Added `MonthNameProvider` interface.
+* Added `MonolingualMonthNameProvider`.
+* Added `YearMonthTimeParser`.
+* Added `YearTimeParser`.
+
 ### 0.8.3 (2016-03-16)
 
 * Added optional `ParserOptions` parameter to the `YearMonthDayTimeParser` constructor.
