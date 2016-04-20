@@ -54,10 +54,7 @@ class YearTimeParser extends StringValueParser {
 		);
 
 		$this->eraParser = $eraParser ?: new EraParser( $this->options );
-		$this->isoTimestampParser = new IsoTimestampParser(
-			new CalendarModelParser( $this->options ),
-			$this->options
-		);
+		$this->isoTimestampParser = new IsoTimestampParser( null, $this->options );
 	}
 
 	/**

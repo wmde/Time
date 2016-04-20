@@ -41,10 +41,7 @@ class YearMonthTimeParser extends StringValueParser {
 
 		$languageCode = $this->getOption( ValueParser::OPT_LANG );
 		$this->monthNumbers = $monthNameProvider->getMonthNumbers( $languageCode );
-		$this->isoTimestampParser = new IsoTimestampParser(
-			new CalendarModelParser( $this->options ),
-			$this->options
-		);
+		$this->isoTimestampParser = new IsoTimestampParser( null, $this->options );
 	}
 
 	/**
