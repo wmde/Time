@@ -10,7 +10,7 @@ use InvalidArgumentException;
  * ValueParser that parses various string representations of time values, in YMD ordered formats
  * resembling ISO 8601, e.g. +2013-01-01T00:00:00Z. While the parser tries to be relaxed, certain
  * aspects of the ISO norm are obligatory: The order must be YMD. All elements but the year must
- * have 2 digits. The seperation characters must be dashes (in the date part), "T" and colons (in
+ * have 2 digits. The separation characters must be dashes (in the date part), "T" and colons (in
  * the time part).
  *
  * The parser refuses to parse strings that can be parsed differently by other, locale-aware
