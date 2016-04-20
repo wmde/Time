@@ -3,7 +3,6 @@
 namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
-use ValueParsers\MonthNameProvider;
 use ValueParsers\YearMonthTimeParser;
 
 /**
@@ -43,6 +42,7 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 				'January' => 1,
 				'Jan' => 1,
 				'April' => 4,
+				'June' => 6,
 			) ) );
 
 		return new YearMonthTimeParser( $monthNameProvider );
@@ -59,10 +59,20 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 
 		$valid = array(
 			// leading zeros
-			'00001 1999' =>
+			'1 00001999' =>
 				array( '+1999-01-00T00:00:00Z' ),
-			'000000001 100001999' =>
+			'1 0000000100001999' =>
 				array( '+100001999-01-00T00:00:00Z' ),
+
+			// Negative years
+			'4 -1998' =>
+				array( '-1998-04-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
+			'April -1998' =>
+				array( '-1998-04-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
+			'-1998 4' =>
+				array( '-1998-04-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
+			'-1998 April' =>
+				array( '-1998-04-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 
 			// use string month names
 			'Jan/1999' =>
@@ -156,19 +166,37 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 		$invalid = array(
 			//These are just wrong!
 			'June June June',
+			'June June',
 			'111 111 111',
 			'Jann 2014',
 			'13/13',
 			'13,1999',
 			'1999,13',
+			"12 1950\n12",
+
+			// Months with signs or more than two digits are most probably not a month
+			'-0 1999',
+			'-4 1999',
+			'-4 -1999',
+			'-April 1998',
+			'000 1999',
+			'012 1999',
+			'00001 1999',
+			'000000001 100001999',
 
 			//Dont parse stuff with separators in the year
 			'june 200,000,000',
 			'june 200.000.000',
 
 			//Not within the scope of this parser
-			'1 July 20000',
+			'1 June 20000',
 			'20000',
+			'-1998',
+
+			// BCE is not supported yet
+			'April 1998 BCE',
+			'1998 April BCE',
+			'1998 BCE April',
 		);
 
 		foreach ( $invalid as $value ) {

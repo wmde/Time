@@ -57,33 +57,31 @@ class YearMonthTimeParser extends StringValueParser {
 	 */
 	protected function stringParse( $value ) {
 		//Matches Year and month separated by a separator, \p{L} matches letters outside the ASCII range
-		if ( !preg_match( '/^([\d\p{L}]+)\s*[\/\-\s.,]\s*([\d\p{L}]+)$/', trim( $value ), $matches ) ) {
+		if ( !preg_match( '/^(-?[\d\p{L}]+)\s*?[\/\-\s.,]\s*(-?[\d\p{L}]+)$/', trim( $value ), $matches ) ) {
 			throw new ParseException( 'Failed to parse year and month', $value, self::FORMAT_NAME );
 		}
 		list( , $a, $b ) = $matches;
 
-		$aIsInt = preg_match( '/^\d+$/', $a );
-		$bIsInt = preg_match( '/^\d+$/', $b );
+		$aIsInt = preg_match( '/^-?\d+$/', $a );
+		$bIsInt = preg_match( '/^-?\d+$/', $b );
 
 		if ( $aIsInt && $bIsInt ) {
-			$parsed = $this->parseYearMonthTwoInts( $a, $b );
-			if ( $parsed ) {
-				return $parsed;
+			if ( $this->canBeMonth( $a ) ) {
+				return $this->getTimeFromYearMonth( $b, $a );
+			} elseif ( $this->canBeMonth( $b ) ) {
+				return $this->getTimeFromYearMonth( $a, $b );
 			}
-		}
+		} elseif ( $aIsInt ) {
+			$month = $this->parseMonth( $b );
 
-		if ( $aIsInt || $bIsInt ) {
-			if ( $aIsInt ) {
-				$year = $a;
-				$month = trim( $b );
-			} else {
-				$year = $b;
-				$month = trim( $a );
+			if ( $month ) {
+				return $this->getTimeFromYearMonth( $a, $month );
 			}
+		} elseif ( $bIsInt ) {
+			$month = $this->parseMonth( $a );
 
-			$parsed = $this->parseYearMonth( $year, $month );
-			if ( $parsed ) {
-				return $parsed;
+			if ( $month ) {
+				return $this->getTimeFromYearMonth( $b, $month );
 			}
 		}
 
@@ -91,59 +89,36 @@ class YearMonthTimeParser extends StringValueParser {
 	}
 
 	/**
-	 * If we have 2 integers parse the date assuming that the larger is the year
-	 * unless the smaller is not a 'legal' month value
-	 *
-	 * @param string|int $a
-	 * @param string|int $b
-	 *
-	 * @return TimeValue|bool
-	 */
-	private function parseYearMonthTwoInts( $a, $b ) {
-		if ( !preg_match( '/^\d+$/', $a ) || !preg_match( '/^\d+$/', $b ) ) {
-			return false;
-		}
-
-		if ( !$this->canBeMonth( $a ) && $this->canBeMonth( $b ) ) {
-			return $this->getTimeFromYearMonth( $a, $b );
-		} elseif ( $this->canBeMonth( $a ) ) {
-			return $this->getTimeFromYearMonth( $b, $a );
-		}
-
-		return false;
-	}
-
-	/**
-	 * If we have 1 int and 1 string then try to parse the int as the year and month as the string
-	 * Check for both the full name and abbreviations
-	 *
-	 * @param string|int $year
 	 * @param string $month
 	 *
-	 * @return TimeValue|bool
+	 * @return int|null
 	 */
-	private function parseYearMonth( $year, $month ) {
+	private function parseMonth( $month ) {
 		foreach ( $this->monthNumbers as $monthName => $i ) {
 			if ( strcasecmp( $monthName, $month ) === 0 ) {
-				return $this->getTimeFromYearMonth( $year, $i );
+				return $i;
 			}
 		}
 
-		return false;
+		return null;
 	}
 
 	/**
 	 * @param string $year
-	 * @param string $month
+	 * @param string $month as a canonical month number
 	 *
 	 * @return TimeValue
 	 */
 	private function getTimeFromYearMonth( $year, $month ) {
-		return $this->isoTimestampParser->parse( sprintf( '+%d-%02d-00T00:00:00Z', $year, $month ) );
+		if ( $year[0] !== '-' ) {
+			$year = '+' . $year;
+		}
+
+		return $this->isoTimestampParser->parse( sprintf( '%s-%02s-00T00:00:00Z', $year, $month ) );
 	}
 
 	/**
-	 * @param string|int $value
+	 * @param string $value
 	 *
 	 * @return bool can the given value be a month?
 	 */
