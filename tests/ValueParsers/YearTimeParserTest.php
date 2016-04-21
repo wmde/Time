@@ -131,6 +131,9 @@ class YearTimeParserTest extends StringValueParserTest {
 		$argLists = parent::invalidInputProvider();
 
 		$invalid = array(
+			// This should fail with an era parser that does no trimming
+			"2016\n",
+
 			//These are just wrong!
 			'June June June',
 			'111 111 111',

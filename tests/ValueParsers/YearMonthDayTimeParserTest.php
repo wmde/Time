@@ -44,6 +44,10 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 		$julian = 'http://www.wikidata.org/entity/Q1985786';
 
 		$valid = array(
+			// Whitespace
+			"2016-01-01\n" => array( '+2016-01-01T00:00:00Z' ),
+			' 2016-01-01 ' => array( '+2016-01-01T00:00:00Z' ),
+
 			// YMD, typically used in ISO 8601
 			'2015-12-31' => array( '+2015-12-31T00:00:00Z' ),
 			'2015 12 31' => array( '+2015-12-31T00:00:00Z' ),
