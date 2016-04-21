@@ -3,7 +3,6 @@
 namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
-use ValueParsers\CalendarModelParser;
 use ValueParsers\IsoTimestampParser;
 use ValueParsers\MonthNameUnlocalizer;
 use ValueParsers\ParserOptions;
@@ -42,7 +41,7 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 		return new PhpDateTimeParser(
 			new MonthNameUnlocalizer( array() ),
 			$this->getEraParser(),
-			new IsoTimestampParser( new CalendarModelParser( $options ), $options )
+			new IsoTimestampParser( null, $options )
 		);
 	}
 
