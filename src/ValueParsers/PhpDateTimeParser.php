@@ -51,7 +51,7 @@ class PhpDateTimeParser extends StringValueParser {
 	 * the language PHP's DateTime parser understands.
 	 * @param ValueParser $eraParser String parser that detects signs, "BC" suffixes and such and
 	 * returns an array with the detected sign character and the remaining value.
-	 * @param ValueParser $isoTimestampParser String parser that gets a language independend
+	 * @param ValueParser $isoTimestampParser String parser that gets a language independent
 	 * YMD-ordered timestamp and returns a TimeValue object. Used for precision detection.
 	 */
 	public function __construct(

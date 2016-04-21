@@ -42,6 +42,8 @@ class YearTimeParser extends StringValueParser {
 	private $isoTimestampParser;
 
 	/**
+	 * @see StringValueParser::__construct
+	 *
 	 * @param ValueParser|null $eraParser
 	 * @param ParserOptions|null $options
 	 */
@@ -61,7 +63,7 @@ class YearTimeParser extends StringValueParser {
 	}
 
 	/**
-	 * Parses the provided string and returns the result.
+	 * @see StringValueParser::stringParse
 	 *
 	 * @param string $value
 	 *

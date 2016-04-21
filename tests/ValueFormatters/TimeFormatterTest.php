@@ -19,7 +19,7 @@ use ValueFormatters\TimeFormatter;
 class TimeFormatterTest extends ValueFormatterTestBase {
 
 	/**
-	 * @deprecated since 0.2, just use getInstance.
+	 * @deprecated since DataValues Interfaces 0.2, just use getInstance.
 	 */
 	protected function getFormatterClass() {
 		throw new \LogicException( 'Should not be called, use getInstance' );
