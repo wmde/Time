@@ -81,7 +81,7 @@ class YearTimeParser extends StringValueParser {
 			);
 		}
 
-		if ( !preg_match( '/^\d+$/', $year ) ) {
+		if ( !preg_match( '/^\d+\z/', $year ) ) {
 			throw new ParseException( 'Failed to parse year', $value, self::FORMAT_NAME );
 		}
 

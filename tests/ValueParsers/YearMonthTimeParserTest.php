@@ -58,6 +58,12 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 		$argLists = array();
 
 		$valid = array(
+			// Whitespace
+			"January 2016\n" =>
+				array( '+2016-01-00T00:00:00Z' ),
+			' January 2016 ' =>
+				array( '+2016-01-00T00:00:00Z' ),
+
 			// leading zeros
 			'1 00001999' =>
 				array( '+1999-01-00T00:00:00Z' ),
