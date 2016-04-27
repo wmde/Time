@@ -78,11 +78,13 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 		$argList = array();
 
 		$valid = array(
+			// Whitespace
+			"10/10/2010\n" =>
+				array( '+0000000000002010-10-10T00:00:00Z' ),
+			' 10.10.2010 ' =>
+				array( '+0000000000002010-10-10T00:00:00Z' ),
+
 			// Normal/easy dates
-			'10/10/2010' =>
-				array( '+0000000000002010-10-10T00:00:00Z' ),
-			'10.10.2010' =>
-				array( '+0000000000002010-10-10T00:00:00Z' ),
 			'  10.  10.  2010  ' =>
 				array( '+0000000000002010-10-10T00:00:00Z' ),
 			'10,10,2010' =>

@@ -69,6 +69,7 @@ class YearTimeParser extends StringValueParser {
 	 */
 	protected function stringParse( $value ) {
 		list( $sign, $year ) = $this->eraParser->parse( $value );
+		$year = trim( $year );
 
 		// Negative dates usually don't have a month, assume non-digits are thousands separators
 		if ( $sign === '-' ) {

@@ -56,15 +56,17 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 		$precSecondOpts->setOption( IsoTimestampParser::OPT_PRECISION, TimeValue::PRECISION_SECOND );
 
 		$valid = array(
-			// Empty options tests
-			'+0000000000002013-07-16T00:00:00Z' => array(
+			// Whitespace
+			"+0000000000002013-07-16T00:00:00Z\n" => array(
 				'+2013-07-16T00:00:00Z',
 				TimeValue::PRECISION_DAY,
 			),
-			'+0000000000002013-07-00T00:00:00Z' => array(
+			' +0000000000002013-07-00T00:00:00Z ' => array(
 				'+2013-07-00T00:00:00Z',
 				TimeValue::PRECISION_MONTH,
 			),
+
+			// Empty options tests
 			'+0000000000002013-00-00T00:00:00Z' => array(
 				'+2013-00-00T00:00:00Z',
 				TimeValue::PRECISION_YEAR,
@@ -104,26 +106,6 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			),
 			'+0000002000000000-00-00T00:00:00Z' => array(
 				'+2000000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_YEAR1G,
-			),
-			'+0000020000000000-00-00T00:00:00Z' => array(
-				'+20000000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_YEAR1G,
-			),
-			'+0000200000000000-00-00T00:00:00Z' => array(
-				'+200000000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_YEAR1G,
-			),
-			'+0002000000000000-00-00T00:00:00Z' => array(
-				'+2000000000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_YEAR1G,
-			),
-			'+0020000000000000-00-00T00:00:00Z' => array(
-				'+20000000000000-00-00T00:00:00Z',
-				TimeValue::PRECISION_YEAR1G,
-			),
-			'+0200000000000000-00-00T00:00:00Z' => array(
-				'+200000000000000-00-00T00:00:00Z',
 				TimeValue::PRECISION_YEAR1G,
 			),
 			'+2000000000000000-00-00T00:00:00Z' => array(
