@@ -71,10 +71,12 @@ class YearTimeParserTest extends StringValueParserTest {
 		$argLists = array();
 
 		$valid = array(
-			'1999' =>
+			// Whitespace
+			"1999\n" =>
 				array( '+1999-00-00T00:00:00Z' ),
-			'2000' =>
+			' 2000 ' =>
 				array( '+2000-00-00T00:00:00Z' ),
+
 			'2010' =>
 				array( '+2010-00-00T00:00:00Z' ),
 			'2000000' =>
@@ -131,9 +133,6 @@ class YearTimeParserTest extends StringValueParserTest {
 		$argLists = parent::invalidInputProvider();
 
 		$invalid = array(
-			// This should fail with an era parser that does no trimming
-			"2016\n",
-
 			//These are just wrong!
 			'June June June',
 			'111 111 111',
