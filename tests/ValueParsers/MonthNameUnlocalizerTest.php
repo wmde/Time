@@ -74,6 +74,11 @@ class MonthNameUnlocalizerTest extends PHPUnit_Framework_TestCase {
 			array( 'jul', 'jul', array(
 				'Jul' => 'bad',
 			) ),
+
+			// Some translations (e.g. ko) just repeat the number of the month
+			array( '2000', '2000', array(
+				'2' => 'February',
+			) ),
 		);
 	}
 
