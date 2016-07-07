@@ -43,6 +43,10 @@ class MonthNameUnlocalizer {
 	 */
 	public function unlocalize( $date ) {
 		foreach ( $this->replacements as $search => $replace ) {
+			if ( !is_string( $search ) ) {
+				continue;
+			}
+
 			$unlocalized = str_replace( $search, $replace, $date, $count );
 
 			// Nothing happened, try the next.
