@@ -26,6 +26,9 @@
 		"data-values/interfaces": "~0.2.0|~0.1.5",
 		"data-values/common": "~0.3.0|~0.2.0"
 	},
+	"require-dev": {
+		"mediawiki/mediawiki-codesniffer": "~0.5"
+	},
 	"autoload": {
 		"files" : [
 			"Time.php"
@@ -40,5 +43,10 @@
 		"branch-alias": {
 			"dev-master": "0.8.x-dev"
 		}
+	},
+	"scripts": {
+		"phpcs": [
+			"vendor/bin/phpcs src/* tests/* --standard=phpcs.xml -sp"
+		]
 	}
 }
