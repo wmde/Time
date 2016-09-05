@@ -216,9 +216,8 @@ class IsoTimestampParser extends StringValueParser {
 	 * Determines the calendar model. The calendar model is determined as follows:
 	 *
 	 * - if $timeParts[7] is set, use $this->calendarModelParser to parse it into a URI.
-	 * - otherwise, if $this->getOption( self::OPT_CALENDAR ) is not null, return
-	 *   self::CALENDAR_JULIAN if the option is self::CALENDAR_JULIAN, and self::CALENDAR_GREGORIAN
-	 *   otherwise.
+	 * - otherwise, if $this->getOption( self::OPT_CALENDAR ) is not null, use
+	 *   $this->calendarModelParser to parse it into a URI.
 	 * - otherwise, use self::CALENDAR_JULIAN for dates before 1583, and self::CALENDAR_GREGORIAN
 	 *   for later dates.
 	 *
@@ -237,15 +236,8 @@ class IsoTimestampParser extends StringValueParser {
 
 		$option = $this->getOption( self::OPT_CALENDAR );
 
-		// Use the calendar given in the option, if given
 		if ( $option !== null ) {
-			// The calendar model is an URI and URIs can't be case-insensitive
-			switch ( $option ) {
-				case TimeValue::CALENDAR_JULIAN:
-					return TimeValue::CALENDAR_JULIAN;
-				default:
-					return TimeValue::CALENDAR_GREGORIAN;
-			}
+			return $this->calendarModelParser->parse( $option );
 		}
 
 		// The Gregorian calendar was introduced in October 1582,

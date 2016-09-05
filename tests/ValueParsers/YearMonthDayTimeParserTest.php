@@ -222,6 +222,12 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 				'+1583-01-31T00:00:00Z',
 				$julian
 			),
+			'Plain text option overrides auto-detected Gregorian' => array(
+				'1583-01-31',
+				array( IsoTimestampParser::OPT_CALENDAR => 'Julian' ),
+				'+1583-01-31T00:00:00Z',
+				$julian
+			),
 			'Auto-detected Julian' => array(
 				'1582-01-31',
 				array(),
@@ -276,6 +282,7 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 
 	public function invalidOptionsProvider() {
 		return array(
+			array( array( IsoTimestampParser::OPT_CALENDAR => 'invalid' ) ),
 			array( array( IsoTimestampParser::OPT_PRECISION => -1 ) ),
 			array( array( IsoTimestampParser::OPT_PRECISION => 1.5 ) ),
 			array( array( IsoTimestampParser::OPT_PRECISION => 1000 ) ),
