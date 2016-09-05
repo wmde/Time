@@ -43,6 +43,9 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 		$julianOpts = new ParserOptions();
 		$julianOpts->setOption( IsoTimestampParser::OPT_CALENDAR, $julian );
 
+		$julianTextOpts = new ParserOptions();
+		$julianTextOpts->setOption( IsoTimestampParser::OPT_CALENDAR, 'Julian' );
+
 		$gregorianOpts = new ParserOptions();
 		$gregorianOpts->setOption( IsoTimestampParser::OPT_CALENDAR, $gregorian );
 
@@ -175,6 +178,12 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				TimeValue::PRECISION_DAY,
 				$julian,
 				$julianOpts,
+			),
+			'+2001-01-04T00:00:00Z' => array(
+				'+2001-01-04T00:00:00Z',
+				TimeValue::PRECISION_DAY,
+				$julian,
+				$julianTextOpts,
 			),
 			'-1-01-04T00:00:00Z' => array(
 				'-0001-01-04T00:00:00Z',
@@ -493,6 +502,7 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 
 	public function invalidOptionsProvider() {
 		return array(
+			array( array( IsoTimestampParser::OPT_CALENDAR => 'invalid' ) ),
 			array( array( IsoTimestampParser::OPT_PRECISION => -1 ) ),
 			array( array( IsoTimestampParser::OPT_PRECISION => 1.5 ) ),
 			array( array( IsoTimestampParser::OPT_PRECISION => 1000 ) ),
