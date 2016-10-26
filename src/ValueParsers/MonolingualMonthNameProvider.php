@@ -20,7 +20,7 @@ class MonolingualMonthNameProvider implements MonthNameProvider {
 	/**
 	 * @param string[] $monthNames Array mapping month numbers (1 to 12) to localized month names.
 	 */
-	function __construct( array $monthNames ) {
+	public function __construct( array $monthNames ) {
 		$this->monthNames = $monthNames;
 	}
 
