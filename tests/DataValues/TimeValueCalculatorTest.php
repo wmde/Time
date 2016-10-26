@@ -129,13 +129,13 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 			array( 2100, 509 ),
 
 			// Extremes
-			array(          1,         0 ),
-			array(       9999,      2424 ),
+			array( 1, 0 ),
+			array( 9999, 2424 ),
 			array( 2147483647, 520764784 ),
 
 			// There is no year zero, assume -1
 			array( -1, 0, true ),
-			array(  0, 0, true ),
+			array( 0, 0, true ),
 
 			// Off by 1 for negative years because zero is skipped
 			array( -6, -2 ),
@@ -143,26 +143,26 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 			array( -4, -1 ),
 			array( -3, -1 ),
 			array( -2, -1 ),
-			array( -1,  0, true ),
-			array(  1,  0 ),
-			array(  2,  0 ),
-			array(  3,  0 ),
-			array(  4,  1, true ),
-			array(  5,  1 ),
+			array( -1, 0, true ),
+			array( 1, 0 ),
+			array( 2, 0 ),
+			array( 3, 0 ),
+			array( 4, 1, true ),
+			array( 5, 1 ),
 
 			// Because we can
-			array(   -6.9,    -2 ),
-			array(   -6.1,    -2 ),
-			array(   -5.501,  -1, true ),
-			array(   -5.499,  -1, true ),
-			array(   -4.6,    -1 ),
-			array(   -4.4,    -1 ),
-			array( 1995.01,  483 ),
-			array( 1995.09,  483 ),
+			array( -6.9, -2 ),
+			array( -6.1, -2 ),
+			array( -5.501, -1, true ),
+			array( -5.499, -1, true ),
+			array( -4.6, -1 ),
+			array( -4.4, -1 ),
+			array( 1995.01, 483 ),
+			array( 1995.09, 483 ),
 			array( 1996.001, 484, true ),
 			array( 1996.009, 484, true ),
-			array( 1997.1,   484 ),
-			array( 1997.9,   484 ),
+			array( 1997.1, 484 ),
+			array( 1997.9, 484 ),
 		);
 	}
 
