@@ -164,6 +164,24 @@ class TimeValueTest extends DataValueTest {
 				TimeValue::PRECISION_DAY,
 				'http://nyan.cat/original.php'
 			),
+			'No day but hour' => array(
+				'+2015-01-00T01:00:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_DAY,
+				'http://nyan.cat/original.php'
+			),
+			'No day but minute' => array(
+				'+2015-01-00T00:01:00Z',
+				0, 0, 0,
+				TimeValue::PRECISION_DAY,
+				'http://nyan.cat/original.php'
+			),
+			'No day but second' => array(
+				'+2015-01-00T00:00:01Z',
+				0, 0, 0,
+				TimeValue::PRECISION_DAY,
+				'http://nyan.cat/original.php'
+			),
 			'Month out of range' => array(
 				'+00000002013-13-01T00:00:00Z',
 				0, 0, 0,

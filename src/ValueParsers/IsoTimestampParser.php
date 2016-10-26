@@ -128,10 +128,10 @@ class IsoTimestampParser extends StringValueParser {
 			&& $hour === ''
 		) {
 			throw new ParseException( 'Not enough information to decide if the format is YMD' );
-		} elseif ( $month > 12 ) {
+		}
+
+		if ( $month > 12 ) {
 			throw new ParseException( 'Month out of range' );
-		} elseif ( $day > 0 && $month < 1 ) {
-			throw new ParseException( 'Can not have a day with no month' );
 		} elseif ( $day > 31 ) {
 			throw new ParseException( 'Day out of range' );
 		} elseif ( $hour > 23 ) {
@@ -140,6 +140,14 @@ class IsoTimestampParser extends StringValueParser {
 			throw new ParseException( 'Minute out of range' );
 		} elseif ( $second > 61 ) {
 			throw new ParseException( 'Second out of range' );
+		}
+
+		if ( $month < 1 && $day > 0 ) {
+			throw new ParseException( 'Can not have a day with no month' );
+		}
+
+		if ( $day < 1 && ( $hour > 0 || $minute > 0 || $second > 0 ) ) {
+			throw new ParseException( 'Can not have hour, minute or second with no day' );
 		}
 
 		$sign = str_replace( "\xE2\x88\x92", '-', $sign );

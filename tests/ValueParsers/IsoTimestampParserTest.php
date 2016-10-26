@@ -371,6 +371,9 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 			'+2015-12-31T23Z',
 			// Elements out of allowed bounds
 			'+2015-00-01T00:00:00Z',
+			'+2015-01-00T01:00:00Z',
+			'+2015-01-00T00:01:00Z',
+			'+2015-01-00T00:00:01Z',
 			'+2015-13-01T00:00:00Z',
 			'+2015-01-32T00:00:00Z',
 			'+2015-01-01T24:00:00Z',
