@@ -246,14 +246,20 @@ class TimeValue extends DataValueObject {
 			throw new IllegalValueException( 'Month out of allowed bounds' );
 		} elseif ( $day > 31 ) {
 			throw new IllegalValueException( 'Day out of allowed bounds' );
-		} elseif ( $day > 0 && $month < 1 ) {
-			throw new IllegalValueException( 'Can not have a day with no month' );
 		} elseif ( $hour > 23 ) {
 			throw new IllegalValueException( 'Hour out of allowed bounds' );
 		} elseif ( $minute > 59 ) {
 			throw new IllegalValueException( 'Minute out of allowed bounds' );
 		} elseif ( $second > 61 ) {
 			throw new IllegalValueException( 'Second out of allowed bounds' );
+		}
+
+		if ( $month < 1 && $day > 0 ) {
+			throw new IllegalValueException( 'Can not have a day with no month' );
+		}
+
+		if ( $day < 1 && ( $hour > 0 || $minute > 0 || $second > 0 ) ) {
+			throw new IllegalValueException( 'Can not have hour, minute or second with no day' );
 		}
 
 		// Warning, never cast the year to integer to not run into 32-bit integer overflows!
