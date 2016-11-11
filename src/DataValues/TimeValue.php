@@ -423,7 +423,10 @@ class TimeValue extends DataValueObject {
 	 * @throws IllegalValueException
 	 */
 	public static function newFromArray( $data ) {
-		self::requireArrayFields( $data, array( 'time', 'timezone', 'before', 'after', 'precision', 'calendarmodel' ) );
+		self::requireArrayFields(
+			$data,
+			array( 'time', 'timezone', 'before', 'after', 'precision', 'calendarmodel' )
+		);
 
 		return new static(
 			$data['time'],

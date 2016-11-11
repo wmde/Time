@@ -108,7 +108,7 @@ class PhpDateTimeParser extends StringValueParser {
 				$timestamp = $sign . $dateTime->format( 'Y-m-d\TH:i:s\Z' );
 			}
 
-			// Pass the reformatted string into a base parser that parses this +/-Y-m-d\TH:i:s\Z format with a precision
+			// Use a common base parser for precision detection and option handling.
 			return $this->isoTimestampParser->parse( $timestamp );
 		} catch ( Exception $exception ) {
 			throw new ParseException( $exception->getMessage(), $rawValue, self::FORMAT_NAME );

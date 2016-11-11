@@ -10,7 +10,7 @@
 	<rule ref="Generic.ControlStructures" />
 	<rule ref="Generic.Files.LineLength">
 		<properties>
-			<property name="lineLimit" value="114" />
+			<property name="lineLimit" value="103" />
 		</properties>
 	</rule>
 	<rule ref="Generic.PHP.CharacterBeforePHPOpeningTag" />
