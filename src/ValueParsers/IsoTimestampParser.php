@@ -108,13 +108,13 @@ class IsoTimestampParser extends StringValueParser {
 	 * 5 => minute, 6 => second and 7 => calendar model.
 	 */
 	private function splitTimeString( $value ) {
-		$pattern = '@^\s*'                                                //leading spaces
-			. "([-+\xE2\x88\x92]?)\\s*"                                   //sign
-			. '(\d{1,16})-(\d{2})-(\d{2})'                                //year, month and day
-			. '(?:T(\d{2}):?(\d{2})(?::?(\d{2}))?)?'                      //hour, minute and second
-			. 'Z?'                                                        //time zone
-			. '\s*\(?\s*' . CalendarModelParser::MODEL_PATTERN . '\s*\)?' //calendar model
-			. '\s*$@iu';                                                  //trailing spaces
+		$pattern = '@^\s*'                                                // leading spaces
+			. "([-+\xE2\x88\x92]?)\\s*"                                   // sign
+			. '(\d{1,16})-(\d{2})-(\d{2})'                                // year-month-day
+			. '(?:T(\d{2}):?(\d{2})(?::?(\d{2}))?)?'                      // hour:minute:second
+			. 'Z?'                                                        // time zone
+			. '\s*\(?\s*' . CalendarModelParser::MODEL_PATTERN . '\s*\)?' // calendar model
+			. '\s*$@iu';                                                  // trailing spaces
 
 		if ( !preg_match( $pattern, $value, $matches ) ) {
 			throw new ParseException( 'Malformed time' );

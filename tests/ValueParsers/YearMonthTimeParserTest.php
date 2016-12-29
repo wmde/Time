@@ -170,7 +170,7 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 		$argLists = parent::invalidInputProvider();
 
 		$invalid = array(
-			//These are just wrong!
+			// These are just wrong
 			'June June June',
 			'June June',
 			'111 111 111',
@@ -190,11 +190,11 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 			'00001 1999',
 			'000000001 100001999',
 
-			//Dont parse stuff with separators in the year
+			// Dont parse stuff with separators in the year
 			'june 200,000,000',
 			'june 200.000.000',
 
-			//Not within the scope of this parser
+			// Not within the scope of this parser
 			'1 June 20000',
 			'20000',
 			'-1998',

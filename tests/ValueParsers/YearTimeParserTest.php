@@ -133,15 +133,15 @@ class YearTimeParserTest extends StringValueParserTest {
 		$argLists = parent::invalidInputProvider();
 
 		$invalid = array(
-			//These are just wrong!
+			// These are just wrong
 			'June June June',
 			'111 111 111',
 			'Jann 2014',
 
-			//Not within the scope of this parser
+			// Not within the scope of this parser
 			'1 July 20000',
 
-			//We should not try to parse these, this just gets confusing
+			// We should not try to parse these, this just gets confusing
 			'-100BC',
 			'+100BC',
 			'-100 BC',
