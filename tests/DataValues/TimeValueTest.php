@@ -34,13 +34,13 @@ class TimeValueTest extends DataValueTest {
 				'http://nyan.cat/original.php'
 			),
 			'Maximum timezone' => array(
-				'+2013-01-01T00:00:00Z',
+				'+2013-00-00T00:00:00Z',
 				7200, 9001, 9001,
 				TimeValue::PRECISION_YEAR1G,
 				'http://nyan.cat/original.php'
 			),
 			'Minimum timezone' => array(
-				'+2013-01-01T00:00:00Z',
+				'+2013-00-00T00:00:00Z',
 				-7200, 0, 42,
 				TimeValue::PRECISION_YEAR,
 				'http://nyan.cat/original.php'
@@ -52,7 +52,7 @@ class TimeValueTest extends DataValueTest {
 				'http://nyan.cat/original.php'
 			),
 			'No day' => array(
-				'+2015-01-00T00:00:00Z',
+				'+2015-00-00T00:00:00Z',
 				0, 0, 0,
 				TimeValue::PRECISION_YEAR,
 				'http://nyan.cat/original.php'
@@ -277,27 +277,33 @@ class TimeValueTest extends DataValueTest {
 	}
 
 	/**
-	 * @dataProvider unpaddedYearsProvider
+	 * @dataProvider notNormalizedTimestampProvider
 	 */
-	public function testGivenUnpaddedYear_yearIsPadded( $year, $expected ) {
+	public function testTimestampNormalization( $input, $expected, $precision ) {
 		$timeValue = new TimeValue(
-			$year . '-01-01T00:00:00Z',
+			$input,
 			0, 0, 0,
-			TimeValue::PRECISION_DAY,
+			$precision,
 			'Stardate'
 		);
-		$this->assertSame( $expected . '-01-01T00:00:00Z', $timeValue->getTime() );
+		$this->assertSame( $expected, $timeValue->getTime() );
 	}
 
-	public function unpaddedYearsProvider() {
+	public function notNormalizedTimestampProvider() {
 		return array(
-			array( '+1', '+0001' ),
-			array( '-10', '-0010' ),
-			array( '+2015', '+2015' ),
-			array( '+02015', '+2015' ),
-			array( '+00000010000', '+10000' ),
-			array( '+0000000000000001', '+0001' ),
-			array( '+9999999999999999', '+9999999999999999' ),
+			array( '+1-00-00T00:00:00Z', '+0001-00-00T00:00:00Z', TimeValue::PRECISION_YEAR ),
+			array( '-10-00-00T00:00:00Z', '-0010-00-00T00:00:00Z', TimeValue::PRECISION_YEAR ),
+			array( '+2015-00-00T00:00:00Z', '+2015-00-00T00:00:00Z', TimeValue::PRECISION_YEAR ),
+			array( '+02015-00-00T00:00:00Z', '+2015-00-00T00:00:00Z', TimeValue::PRECISION_YEAR ),
+			array( '+00000010000-00-00T00:00:00Z', '+10000-00-00T00:00:00Z', TimeValue::PRECISION_YEAR ),
+			array( '+0000000000000001-00-00T00:00:00Z', '+0001-00-00T00:00:00Z', TimeValue::PRECISION_YEAR ),
+			array( '+9999999999999999-00-00T00:00:00Z', '+9999999999999999-00-00T00:00:00Z', TimeValue::PRECISION_YEAR ),
+			array( '+2015-01-01T01:01:01Z', '+2015-00-00T00:00:00Z', TimeValue::PRECISION_YEAR ),
+			array( '+2015-01-01T01:01:01Z', '+2015-01-00T00:00:00Z', TimeValue::PRECISION_MONTH ),
+			array( '+2015-01-01T01:01:01Z', '+2015-01-01T00:00:00Z', TimeValue::PRECISION_DAY ),
+			array( '+2015-01-01T01:01:01Z', '+2015-01-01T01:00:00Z', TimeValue::PRECISION_HOUR ),
+			array( '+2015-01-01T01:01:01Z', '+2015-01-01T01:01:00Z', TimeValue::PRECISION_MINUTE ),
+			array( '+2015-01-01T01:01:01Z', '+2015-01-01T01:01:01Z', TimeValue::PRECISION_SECOND ),
 		);
 	}
 
