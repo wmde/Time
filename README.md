@@ -52,6 +52,10 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.8.5 (dev)
+
+* Raised required PHP version from 5.3 to 5.5.
+
 ### 0.8.4 (2016-04-20)
 
 * Added `MonthNameProvider` interface.
