@@ -51,6 +51,7 @@
 		],
 		"test": [
 			"@validate --no-interaction",
+			"@phpcs",
 			"vendor/bin/phpunit"
 		]
 	}
