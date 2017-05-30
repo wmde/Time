@@ -7,11 +7,16 @@
 	</rule>
 
 	<rule ref="Generic.ControlStructures" />
+
+	<rule ref="Generic.Files.InlineHTML" />
 	<rule ref="Generic.Files.LineLength">
 		<properties>
 			<property name="lineLimit" value="103" />
 		</properties>
 	</rule>
+	<rule ref="Generic.Files.OneClassPerFile" />
+	<rule ref="Generic.Files.OneInterfacePerFile" />
+	<rule ref="Generic.Files.OneTraitPerFile" />
 	<rule ref="Generic.PHP.CharacterBeforePHPOpeningTag" />
 
 	<rule ref="PSR1" />
@@ -22,6 +27,7 @@
 
 	<rule ref="PSR2.Files" />
 
+	<rule ref="Squiz.Arrays.ArrayBracketSpacing" />
 	<rule ref="Squiz.Classes.DuplicateProperty" />
 	<rule ref="Squiz.Classes.SelfMemberReference" />
 	<rule ref="Squiz.ControlStructures.ControlSignature" />
@@ -39,6 +45,8 @@
 		</properties>
 	</rule>
 
+	<file>.</file>
 	<arg name="extensions" value="php" />
 	<arg name="encoding" value="utf8" />
+	<exclude-pattern type="relative">^vendor/</exclude-pattern>
 </ruleset>
