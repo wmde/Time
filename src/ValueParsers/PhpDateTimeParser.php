@@ -95,9 +95,9 @@ class PhpDateTimeParser extends StringValueParser {
 				throw new ParseException( $value . ' is not a valid date.' );
 			}
 
-			// Input was three numbers? Where the heck does a time come from?
+			// Input was one, two, or three numbers? Where the heck does a time come from?
 			if ( $dateTime->format( 'H:i:s' ) !== '00:00:00'
-				&& preg_match( '/^\D*\d+\D+\d+\D+\d+\D*$/', $value )
+				&& preg_match( '/^\D*\d+(?:\D+\d+){0,2}\D*$/', $value )
 			) {
 				throw new ParseException( $value . ' is not a valid date.' );
 			}
