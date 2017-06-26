@@ -176,8 +176,6 @@ class TimeValue extends DataValueObject {
 	private $calendarModel;
 
 	/**
-	 * @since 0.1
-	 *
 	 * @param string $timestamp Timestamp in a format resembling ISO 8601.
 	 * @param int $timezone Time zone offset from UTC in minutes.
 	 * @param int $before Number of units given by the precision.
@@ -272,8 +270,6 @@ class TimeValue extends DataValueObject {
 	/**
 	 * @see $timestamp
 	 *
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public function getTime() {
@@ -282,8 +278,6 @@ class TimeValue extends DataValueObject {
 
 	/**
 	 * @see $calendarModel
-	 *
-	 * @since 0.1
 	 *
 	 * @return string URI
 	 */
@@ -294,8 +288,6 @@ class TimeValue extends DataValueObject {
 	/**
 	 * @see $before
 	 *
-	 * @since 0.1
-	 *
 	 * @return int Amount
 	 */
 	public function getBefore() {
@@ -304,8 +296,6 @@ class TimeValue extends DataValueObject {
 
 	/**
 	 * @see $after
-	 *
-	 * @since 0.1
 	 *
 	 * @return int Amount
 	 */
@@ -316,8 +306,6 @@ class TimeValue extends DataValueObject {
 	/**
 	 * @see $precision
 	 *
-	 * @since 0.1
-	 *
 	 * @return int one of the self::PRECISION_... constants
 	 */
 	public function getPrecision() {
@@ -326,8 +314,6 @@ class TimeValue extends DataValueObject {
 
 	/**
 	 * @see $timezone
-	 *
-	 * @since 0.1
 	 *
 	 * @return int Minutes
 	 */
@@ -338,8 +324,6 @@ class TimeValue extends DataValueObject {
 	/**
 	 * @see DataValue::getType
 	 *
-	 * @since 0.1
-	 *
 	 * @return string
 	 */
 	public static function getType() {
@@ -348,8 +332,6 @@ class TimeValue extends DataValueObject {
 
 	/**
 	 * @see DataValue::getSortKey
-	 *
-	 * @since 0.1
 	 *
 	 * @return string
 	 */
@@ -360,9 +342,7 @@ class TimeValue extends DataValueObject {
 	/**
 	 * @see DataValue::getValue
 	 *
-	 * @since 0.1
-	 *
-	 * @return TimeValue
+	 * @return self
 	 */
 	public function getValue() {
 		return $this;
@@ -370,8 +350,6 @@ class TimeValue extends DataValueObject {
 
 	/**
 	 * @see Serializable::serialize
-	 *
-	 * @since 0.1
 	 *
 	 * @return string
 	 */
@@ -381,8 +359,6 @@ class TimeValue extends DataValueObject {
 
 	/**
 	 * @see Serializable::unserialize
-	 *
-	 * @since 0.1
 	 *
 	 * @param string $value
 	 *
@@ -395,8 +371,6 @@ class TimeValue extends DataValueObject {
 
 	/**
 	 * @see DataValue::getArrayValue
-	 *
-	 * @since 0.1
 	 *
 	 * @return array
 	 */
@@ -412,15 +386,20 @@ class TimeValue extends DataValueObject {
 	}
 
 	/**
-	 * Constructs a new instance of the DataValue from the provided data.
-	 * This can round-trip with @see getArrayValue
+	 * Constructs a new instance from the provided data. Required for @see DataValueDeserializer.
+	 * This is expected to round-trip with @see getArrayValue.
 	 *
-	 * @since 0.1
+	 * @deprecated since 0.8.5. Static DataValue::newFromArray constructors like this are
+	 *  underspecified (not in the DataValue interface), and misleadingly named (should be named
+	 *  newFromArrayValue). Instead, use DataValue builder callbacks in @see DataValueDeserializer.
 	 *
-	 * @param mixed $data
+	 * @param mixed $data Warning! Even if this is expected to be a value as returned by
+	 *  @see getArrayValue, callers of this specific newFromArray implementation can not guarantee
+	 *  this. This is not even guaranteed to be an array!
 	 *
-	 * @return TimeValue
-	 * @throws IllegalValueException
+	 * @throws IllegalValueException if $data is not in the expected format. Subclasses of
+	 *  InvalidArgumentException are expected and properly handled by @see DataValueDeserializer.
+	 * @return self
 	 */
 	public static function newFromArray( $data ) {
 		self::requireArrayFields(
