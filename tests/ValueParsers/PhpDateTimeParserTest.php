@@ -299,6 +299,7 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 			'zz',
 			'America/New_York',
 			'1991 2',
+			', 1966',
 		);
 
 		foreach ( $invalid as $value ) {
