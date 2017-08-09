@@ -52,6 +52,11 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
+### 0.8.5 (2017-08-09)
+
+* Removed MediaWiki integration
+* Bump data-values/common dependency
+
 ### 0.8.4 (2016-04-20)
 
 * Added `MonthNameProvider` interface.
