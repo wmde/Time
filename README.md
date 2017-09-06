@@ -52,7 +52,7 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.8.6 (2017-09-05)
+### 0.8.6 (2017-09-06)
 
 * Added whitespace trimming to `YearTimeParser`.
 * Fixed `IsoTimestampParser` and `TimeValue` accepting a time of day with no day.
