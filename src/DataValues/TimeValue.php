@@ -389,7 +389,7 @@ class TimeValue extends DataValueObject {
 	 * Constructs a new instance from the provided data. Required for @see DataValueDeserializer.
 	 * This is expected to round-trip with @see getArrayValue.
 	 *
-	 * @deprecated since 0.8.5. Static DataValue::newFromArray constructors like this are
+	 * @deprecated since 0.8.6. Static DataValue::newFromArray constructors like this are
 	 *  underspecified (not in the DataValue interface), and misleadingly named (should be named
 	 *  newFromArrayValue). Instead, use DataValue builder callbacks in @see DataValueDeserializer.
 	 *

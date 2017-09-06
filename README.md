@@ -52,9 +52,19 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
 
 ## Release notes
 
-### 0.8.5 (dev)
+### 0.8.6 (2017-09-06)
 
+* Added whitespace trimming to `YearTimeParser`.
+* Fixed `IsoTimestampParser` and `TimeValue` accepting a time of day with no day.
+* Fixed `MonthNameUnlocalizer` accidentally replacing already unlocalized numeric months.
+* Fixed `PhpDateTimeParser` misinterpreting inputs with only one or two numbers.
+* Deprecated `TimeValue::newFromArray`.
 * Raised required PHP version from 5.3 to 5.5.
+
+### 0.8.5 (2017-08-09)
+
+* Removed MediaWiki integration
+* Bump data-values/common dependency
 
 ### 0.8.4 (2016-04-20)
 
