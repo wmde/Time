@@ -22,7 +22,7 @@ class TimeValueTest extends DataValueTest {
 	 * @return string
 	 */
 	public function getClass() {
-		return 'DataValues\TimeValue';
+		return TimeValue::class;
 	}
 
 	public function validConstructorArgumentsProvider() {

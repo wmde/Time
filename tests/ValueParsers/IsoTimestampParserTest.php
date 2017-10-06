@@ -4,6 +4,7 @@ namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
 use ValueParsers\IsoTimestampParser;
+use ValueParsers\ParseException;
 use ValueParsers\ParserOptions;
 
 /**
@@ -487,7 +488,7 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 	 */
 	public function testInvalidOptions( array $options ) {
 		$parser = new IsoTimestampParser( null, new ParserOptions( $options ) );
-		$this->setExpectedException( 'ValueParsers\ParseException' );
+		$this->setExpectedException( ParseException::class );
 		$parser->parse( '2016-01-31' );
 	}
 
