@@ -49,7 +49,7 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 	 * @return ValueParser
 	 */
 	private function getEraParser() {
-		$mock = $this->getMock( 'ValueParsers\ValueParser' );
+		$mock = $this->getMock( ValueParser::class );
 
 		$mock->expects( $this->any() )
 			->method( 'parse' )

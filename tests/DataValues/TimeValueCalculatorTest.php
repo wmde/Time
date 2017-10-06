@@ -32,7 +32,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	 * @return TimeValue
 	 */
 	private function getTimeValueMock( $time, $timezone = 0 ) {
-		$timeValue = $this->getMockBuilder( 'DataValues\TimeValue' )
+		$timeValue = $this->getMockBuilder( TimeValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
