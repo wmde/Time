@@ -20,7 +20,7 @@ use InvalidArgumentException;
  *
  * @license GPL-2.0+
  * @author Addshore
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  * @author Daniel Kinzler
  */
 class IsoTimestampParser extends StringValueParser {

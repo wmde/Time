@@ -13,8 +13,9 @@ use ValueParsers\ParserOptions;
  * @group DataValue
  * @group DataValueExtensions
  *
+ * @license GPL-2.0+
  * @author Addshore
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  */
 class IsoTimestampParserTest extends ValueParserTestBase {
 
