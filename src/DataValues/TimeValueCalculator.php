@@ -61,14 +61,13 @@ class TimeValueCalculator {
 	public function getLowerTimestamp( TimeValue $timeValue ) {
 		$precision = $timeValue->getPrecision();
 		$timestamp = $timeValue->getTime();
-		if (strcmp(substr($timestamp, 0, 1), '-') === 0 && $precision < TimeValue::PRECISION_YEAR) {
-			$timestamp = $this->timestampAbsCeiling($timestamp, $precision);
+		if ( strcmp( substr( $timestamp, 0, 1 ), '-' ) === 0 && $precision < TimeValue::PRECISION_YEAR ) {
+			$timestamp = $this->timestampAbsCeiling( $timestamp, $precision );
+		} else {
+			$timestamp = $this->timestampAbsFloor( $timestamp, $precision );
 		}
-		else {
-			$timestamp = $this->timestampAbsFloor($timestamp, $precision);
-		}
-		$unixTimestamp = $this->getSecondsSinceUnixEpoch($timestamp, $timeValue->getTimezone());
-		$unixTimestamp -= $timeValue->getBefore() * $this->getSecondsForPrecision($precision);
+		$unixTimestamp = $this->getSecondsSinceUnixEpoch( $timestamp, $timeValue->getTimezone() );
+		$unixTimestamp -= $timeValue->getBefore() * $this->getSecondsForPrecision( $precision );
 		return $unixTimestamp;
 	}
 
@@ -84,14 +83,13 @@ class TimeValueCalculator {
 	public function getHigherTimestamp( TimeValue $timeValue ) {
 		$precision = $timeValue->getPrecision();
 		$timestamp = $timeValue->getTime();
-		if (strcmp(substr($timestamp, 0, 1), '-') === 0 && $precision < TimeValue::PRECISION_YEAR) {
-			$timestamp = $this->timestampAbsFloor($timestamp, $precision);
+		if ( strcmp( substr( $timestamp, 0, 1 ), '-' ) === 0 && $precision < TimeValue::PRECISION_YEAR ) {
+			$timestamp = $this->timestampAbsFloor( $timestamp, $precision );
+		} else {
+			$timestamp = $this->timestampAbsCeiling( $timestamp, $precision );
 		}
-		else {
-			$timestamp = $this->timestampAbsCeiling($timestamp, $precision);
-		}
-		$unixTimestamp = $this->getSecondsSinceUnixEpoch($timestamp, $timeValue->getTimezone());
-		$unixTimestamp += $timeValue->getAfter() * $this->getSecondsForPrecision($precision);
+		$unixTimestamp = $this->getSecondsSinceUnixEpoch( $timestamp, $timeValue->getTimezone() );
+		$unixTimestamp += $timeValue->getAfter() * $this->getSecondsForPrecision( $precision );
 		return $unixTimestamp;
 	}
 
@@ -139,7 +137,7 @@ class TimeValueCalculator {
 	 */
 	public function isLeapYear( $year ) {
 		$year = $year < 0 ? ceil( $year ) + 1 : floor( $year );
-		$isMultipleOf4   = fmod( $year,   4 ) === 0.0;
+		$isMultipleOf4 = fmod( $year, 4 ) === 0.0;
 		$isMultipleOf100 = fmod( $year, 100 ) === 0.0;
 		$isMultipleOf400 = fmod( $year, 400 ) === 0.0;
 		return $isMultipleOf4 && !$isMultipleOf100 || $isMultipleOf400;
@@ -165,9 +163,9 @@ class TimeValueCalculator {
 	public function getSecondsForPrecision( $precision ) {
 		if ( $precision <= TimeValue::PRECISION_YEAR ) {
 			return self::SECONDS_PER_GREGORIAN_YEAR * pow(
-				10,
-				TimeValue::PRECISION_YEAR - $precision
-			);
+					10,
+					TimeValue::PRECISION_YEAR - $precision
+				);
 		}
 
 		switch ( $precision ) {
@@ -189,41 +187,52 @@ class TimeValueCalculator {
 	/**
 	 * @param $timestamp
 	 * @param $precision
+	 *
 	 * @return string
 	 */
-	private function timestampAbsFloor($timestamp, $precision) {
+	private function timestampAbsFloor( $timestamp, $precision ) {
 		// The year is padded with zeros to have 16 digits
-		$timestamp = substr_replace($timestamp,
-			str_repeat('0', self::MAX_LENGTH_TIMESTAMP - strlen($timestamp)), 1, 0);
-		$numCharsToModify = $this->charsAffectedByPrecision($precision);
-		$timestamp = substr($timestamp, 0, -$numCharsToModify) .
-			substr(self::TIMESTAMP_ZERO, -$numCharsToModify);
+		$timestamp = substr_replace(
+			$timestamp,
+			str_repeat( '0', self::MAX_LENGTH_TIMESTAMP - strlen( $timestamp ) ),
+			1,
+			0
+		);
+		$numCharsToModify = $this->charsAffectedByPrecision( $precision );
+		$timestamp = substr( $timestamp, 0, -$numCharsToModify ) .
+			substr( self::TIMESTAMP_ZERO, -$numCharsToModify );
 		return $timestamp;
 	}
 
 	/**
 	 * @param $timestamp
 	 * @param $precision
+	 *
 	 * @return string
 	 */
-	private function timestampAbsCeiling($timestamp, $precision) {
+	private function timestampAbsCeiling( $timestamp, $precision ) {
 		// The year is padded with zeros to have 16 digits
-		$timestamp = substr_replace($timestamp,
-			str_repeat('0', self::MAX_LENGTH_TIMESTAMP - strlen($timestamp)), 1, 0);
-		$numCharsToModify = $this->charsAffectedByPrecision($precision);
+		$timestamp = substr_replace(
+			$timestamp,
+			str_repeat( '0', self::MAX_LENGTH_TIMESTAMP - strlen( $timestamp ) ),
+			1,
+			0
+		);
+		$numCharsToModify = $this->charsAffectedByPrecision( $precision );
 		// WARNING: Day 31 will be applied to all months
-		$timestamp = substr($timestamp, 0, -$numCharsToModify) .
-			substr(self::HIGHEST_TIMESTAMP, -$numCharsToModify);
+		$timestamp = substr( $timestamp, 0, -$numCharsToModify ) .
+			substr( self::HIGHEST_TIMESTAMP, -$numCharsToModify );
 		return $timestamp;
 	}
 
 	/**
 	 * @param $precision
+	 *
 	 * @return int
 	 */
-	private function charsAffectedByPrecision($precision) {
+	private function charsAffectedByPrecision( $precision ) {
 		$numCharsAffected = 1;
-		switch ($precision) {
+		switch ( $precision ) {
 			case TimeValue::PRECISION_MINUTE:
 				$numCharsAffected = 3;
 				break;
