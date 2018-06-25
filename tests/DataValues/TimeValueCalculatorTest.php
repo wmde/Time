@@ -269,7 +269,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private function auxTestGetLowerTimestamp($timestamp) {
 		$timeValueCalculator = new TimeValueCalculator();
-		$array = precisionProvider();
+		$array = simplePrecisionProvider();
 		foreach ($array as &$precision) {
 			$timeValue = new TimeValue($timestamp,
 				0, 0, 0,
@@ -300,7 +300,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private function auxTestGetHigherTimestamp($timestamp) {
 		$timeValueCalculator = new TimeValueCalculator();
-		$array = precisionProvider();
+		$array = simplePrecisionProvider();
 		foreach ($array as &$precision) {
 			$timeValue = new TimeValue($timestamp,
 				0, 0, 0,
