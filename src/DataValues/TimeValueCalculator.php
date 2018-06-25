@@ -22,9 +22,24 @@ class TimeValueCalculator {
 	const SECONDS_PER_GREGORIAN_YEAR = 31556952;
 
 	/**
-	 * This returns a Unix timestamp from a TimeValue similar to PHP's mk_time() (or strtotime()),
-	 * but with no range limitations. Data type is float because PHP's 32 bit integer would
-	 * clip in the year 2038.
+	 * Lowest positive timestamp.
+	 */
+	const TIMESTAMP_ZERO = '+0000000000000000-01-01T00:00:00Z';
+
+	/**
+	 * Highest positive timestamp.
+	 */
+	const HIGHEST_TIMESTAMP = '+9999999999999999-12-31T23:59:59Z';
+
+	/**
+	 * Maximum length for a timestamp.
+	 */
+	const MAX_LENGTH_TIMESTAMP = 33;
+
+	/**
+	 * This returns the Unix timestamp from a TimeValue.
+	 * This is similar to PHP's mk_time() (or strtotime()), but with no range limitations.
+	 * Data type is float because PHP's 32 bit integer would clip in the year 2038.
 	 *
 	 * @param TimeValue $timeValue
 	 *
@@ -32,6 +47,52 @@ class TimeValueCalculator {
 	 */
 	public function getTimestamp( TimeValue $timeValue ) {
 		return $this->getSecondsSinceUnixEpoch( $timeValue->getTime(), $timeValue->getTimezone() );
+	}
+
+	/**
+	 * Returns the lowest possible Unix timestamp from a TimeValue considering its precision
+	 * and its before value. Data type is float because PHP's 32 bit integer would clip in the
+	 * year 2038.
+	 *
+	 * @param TimeValue $timeValue
+	 *
+	 * @return float seconds since 1970-01-01T00:00:00Z
+	 */
+	public function getLowerTimestamp( TimeValue $timeValue ) {
+		$precision = $timeValue->getPrecision();
+		$timestamp = $timeValue->getTime();
+		if (strcmp(substr($timestamp, 0, 1), '-') === 0 && $precision < TimeValue::PRECISION_YEAR) {
+			$timestamp = $this->timestampAbsCeiling($timestamp, $precision);
+		}
+		else {
+			$timestamp = $this->timestampAbsFloor($timestamp, $precision);
+		}
+		$unixTimestamp = $this->getSecondsSinceUnixEpoch($timestamp, $timeValue->getTimezone());
+		$unixTimestamp -= $timeValue->getBefore() * $this->getSecondsForPrecision($precision);
+		return $unixTimestamp;
+	}
+
+	/**
+	 * Returns the highest possible Unix timestamp from a TimeValue considering its precision
+	 * and its after value. Data type is float because PHP's 32 bit integer would clip in the
+	 * year 2038.
+	 *
+	 * @param TimeValue $timeValue
+	 *
+	 * @return float seconds since 1970-01-01T00:00:00Z
+	 */
+	public function getHigherTimestamp( TimeValue $timeValue ) {
+		$precision = $timeValue->getPrecision();
+		$timestamp = $timeValue->getTime();
+		if (strcmp(substr($timestamp, 0, 1), '-') === 0 && $precision < TimeValue::PRECISION_YEAR) {
+			$timestamp = $this->timestampAbsFloor($timestamp, $precision);
+		}
+		else {
+			$timestamp = $this->timestampAbsCeiling($timestamp, $precision);
+		}
+		$unixTimestamp = $this->getSecondsSinceUnixEpoch($timestamp, $timeValue->getTimezone());
+		$unixTimestamp += $timeValue->getAfter() * $this->getSecondsForPrecision($precision);
+		return $unixTimestamp;
 	}
 
 	/**
@@ -111,18 +172,102 @@ class TimeValueCalculator {
 
 		switch ( $precision ) {
 			case TimeValue::PRECISION_SECOND:
-				return 1;
+				return 1.0;
 			case TimeValue::PRECISION_MINUTE:
-				return 60;
+				return 60.0;
 			case TimeValue::PRECISION_HOUR:
-				return 3600;
+				return 3600.0;
 			case TimeValue::PRECISION_DAY:
-				return 86400;
+				return 86400.0;
 			case TimeValue::PRECISION_MONTH:
 				return self::SECONDS_PER_GREGORIAN_YEAR / 12;
 		}
 
 		throw new InvalidArgumentException( "Unable to get seconds for precision $precision." );
+	}
+
+	/**
+	 * @param $timestamp
+	 * @param $precision
+	 * @return string
+	 */
+	private function timestampAbsFloor($timestamp, $precision) {
+		// The year is padded with zeros to have 16 digits
+		$timestamp = substr_replace($timestamp,
+			str_repeat('0', self::MAX_LENGTH_TIMESTAMP - strlen($timestamp)), 1, 0);
+		$numCharsToModify = $this->charsAffectedByPrecision($precision);
+		$timestamp = substr($timestamp, 0, -$numCharsToModify) .
+			substr(self::TIMESTAMP_ZERO, -$numCharsToModify);
+		return $timestamp;
+	}
+
+	/**
+	 * @param $timestamp
+	 * @param $precision
+	 * @return string
+	 */
+	private function timestampAbsCeiling($timestamp, $precision) {
+		// The year is padded with zeros to have 16 digits
+		$timestamp = substr_replace($timestamp,
+			str_repeat('0', self::MAX_LENGTH_TIMESTAMP - strlen($timestamp)), 1, 0);
+		$numCharsToModify = $this->charsAffectedByPrecision($precision);
+		// WARNING: Day 31 will be applied to all months
+		$timestamp = substr($timestamp, 0, -$numCharsToModify) .
+			substr(self::HIGHEST_TIMESTAMP, -$numCharsToModify);
+		return $timestamp;
+	}
+
+	/**
+	 * @param $precision
+	 * @return int
+	 */
+	private function charsAffectedByPrecision($precision) {
+		$numCharsAffected = 1;
+		switch ($precision) {
+			case TimeValue::PRECISION_MINUTE:
+				$numCharsAffected = 3;
+				break;
+			case TimeValue::PRECISION_HOUR:
+				$numCharsAffected = 6;
+				break;
+			case TimeValue::PRECISION_DAY:
+				$numCharsAffected = 9;
+				break;
+			case TimeValue::PRECISION_MONTH:
+				$numCharsAffected = 12;
+				break;
+			case TimeValue::PRECISION_YEAR:
+				$numCharsAffected = 15;
+				break;
+			case TimeValue::PRECISION_YEAR10:
+				$numCharsAffected = 17;
+				break;
+			case TimeValue::PRECISION_YEAR100:
+				$numCharsAffected = 18;
+				break;
+			case TimeValue::PRECISION_YEAR1K:
+				$numCharsAffected = 19;
+				break;
+			case TimeValue::PRECISION_YEAR10K:
+				$numCharsAffected = 20;
+				break;
+			case TimeValue::PRECISION_YEAR100K:
+				$numCharsAffected = 21;
+				break;
+			case TimeValue::PRECISION_YEAR1M:
+				$numCharsAffected = 22;
+				break;
+			case TimeValue::PRECISION_YEAR10M:
+				$numCharsAffected = 23;
+				break;
+			case TimeValue::PRECISION_YEAR100M:
+				$numCharsAffected = 24;
+				break;
+			case TimeValue::PRECISION_YEAR1G:
+				$numCharsAffected = 25;
+				break;
+		}
+		return $numCharsAffected;
 	}
 
 }
