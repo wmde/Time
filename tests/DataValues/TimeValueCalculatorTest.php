@@ -208,12 +208,12 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals( $expected, $seconds );
 	}
-	
+
 	/**
 	 * @return array
 	 */
 	private function timestampWithoutSignProvider() {
-		return array(
+		return [
 			'1054-02-11' . 'T' . '14:00:02' . 'Z',
 			'16-11-11' . 'T' . '06:08:04' . 'Z',
 			'2012-02-29' . 'T' . '23:59:59' . 'Z',
@@ -222,14 +222,14 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 			'2013-03-01' . 'T' . '00:00:00' . 'Z',
 			'99999-12-31' . 'T' . '23:59:59' . 'Z',
 			'0001-01-01' . 'T' . '00:00:00' . 'Z',
-		);
+		];
 	}
 
 	/**
 	 * @return array
 	 */
 	private function simplePrecisionProvider() {
-		return array(
+		return [
 			TimeValue::PRECISION_SECOND,
 			TimeValue::PRECISION_MINUTE,
 			TimeValue::PRECISION_HOUR,
@@ -245,84 +245,96 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 			TimeValue::PRECISION_YEAR10M,
 			TimeValue::PRECISION_YEAR100M,
 			TimeValue::PRECISION_YEAR1G
-		);
+		];
 	}
 
 	public function testGetLowerTimestamp() {
 		$timestamps = $this->timestampWithoutSignProvider();
-		foreach ($timestamps as &$timestamp) {
-			$this->auxTestGetLowerTimestamp('+' . $timestamp);
-			$this->auxTestGetLowerTimestamp('-' . $timestamp);
+		foreach ( $timestamps as &$timestamp ) {
+			$this->auxTestGetLowerTimestamp( '+' . $timestamp );
+			$this->auxTestGetLowerTimestamp( '-' . $timestamp );
 		}
 	}
 
 	public function testGetHigherTimestamp() {
 		$timestamps = $this->timestampWithoutSignProvider();
-		foreach ($timestamps as &$timestamp) {
-			$this->auxTestGetHigherTimestamp('+' . $timestamp);
-			$this->auxTestGetHigherTimestamp('-' . $timestamp);
+		foreach ( $timestamps as &$timestamp ) {
+			$this->auxTestGetHigherTimestamp( '+' . $timestamp );
+			$this->auxTestGetHigherTimestamp( '-' . $timestamp );
 		}
 	}
 
 	/**
 	 * @param $timestamp
 	 */
-	private function auxTestGetLowerTimestamp($timestamp) {
+	private function auxTestGetLowerTimestamp( $timestamp ) {
 		$timeValueCalculator = new TimeValueCalculator();
 		$array = $this->simplePrecisionProvider();
-		foreach ($array as &$precision) {
-			$timeValue = new TimeValue($timestamp,
+		foreach ( $array as &$precision ) {
+			$timeValue = new TimeValue(
+				$timestamp,
 				0, 0, 0,
 				$precision,
-				TimeValue::CALENDAR_GREGORIAN);
-			$unixTimestampAsIs = $timeValueCalculator->getTimestamp($timeValue);
-			$unixLowerTimestamp = $timeValueCalculator->getLowerTimestamp($timeValue);
-			$this->assertGreaterThanOrEqual($unixLowerTimestamp, $unixTimestampAsIs);
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixTimestampAsIs = $timeValueCalculator->getTimestamp( $timeValue );
+			$unixLowerTimestamp = $timeValueCalculator->getLowerTimestamp( $timeValue );
+			$this->assertGreaterThanOrEqual( $unixLowerTimestamp, $unixTimestampAsIs );
 
-			$timeValueBefore1 = new TimeValue($timestamp,
+			$timeValueBefore1 = new TimeValue(
+				$timestamp,
 				0, 1, 1,
 				$precision,
-				TimeValue::CALENDAR_GREGORIAN);
-			$unixLowerTimestampBefore1 = $timeValueCalculator->getLowerTimestamp($timeValueBefore1);
-			$this->assertGreaterThan($unixLowerTimestampBefore1, $unixLowerTimestamp);
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixLowerTimestampBefore1 = $timeValueCalculator->getLowerTimestamp( $timeValueBefore1 );
+			$this->assertGreaterThan( $unixLowerTimestampBefore1, $unixLowerTimestamp );
 
-			$timeValueBefore2 = new TimeValue($timestamp,
+			$timeValueBefore2 = new TimeValue(
+				$timestamp,
 				0, 2, 2,
 				$precision,
-				TimeValue::CALENDAR_GREGORIAN);
-			$unixLowerTimestampBefore2 = $timeValueCalculator->getLowerTimestamp($timeValueBefore2);
-			$this->assertGreaterThan($unixLowerTimestampBefore2, $unixLowerTimestampBefore1);
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixLowerTimestampBefore2 = $timeValueCalculator->getLowerTimestamp( $timeValueBefore2 );
+			$this->assertGreaterThan( $unixLowerTimestampBefore2, $unixLowerTimestampBefore1 );
 		}
 	}
 
 	/**
 	 * @param $timestamp
 	 */
-	private function auxTestGetHigherTimestamp($timestamp) {
+	private function auxTestGetHigherTimestamp( $timestamp ) {
 		$timeValueCalculator = new TimeValueCalculator();
 		$array = $this->simplePrecisionProvider();
-		foreach ($array as &$precision) {
-			$timeValue = new TimeValue($timestamp,
+		foreach ( $array as &$precision ) {
+			$timeValue = new TimeValue(
+				$timestamp,
 				0, 0, 0,
 				$precision,
-				TimeValue::CALENDAR_GREGORIAN);
-			$unixTimestampAsIs = $timeValueCalculator->getTimestamp($timeValue);
-			$unixHigherTimestamp = $timeValueCalculator->getHigherTimestamp($timeValue);
-			$this->assertLessThanOrEqual($unixHigherTimestamp, $unixTimestampAsIs);
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixTimestampAsIs = $timeValueCalculator->getTimestamp( $timeValue );
+			$unixHigherTimestamp = $timeValueCalculator->getHigherTimestamp( $timeValue );
+			$this->assertLessThanOrEqual( $unixHigherTimestamp, $unixTimestampAsIs );
 
-			$timeValueAfter1 = new TimeValue($timestamp,
+			$timeValueAfter1 = new TimeValue(
+				$timestamp,
 				0, 1, 1,
 				$precision,
-				TimeValue::CALENDAR_GREGORIAN);
-			$unixHigherTimestampAfter1 = $timeValueCalculator->getHigherTimestamp($timeValueAfter1);
-			$this->assertLessThan($unixHigherTimestampAfter1, $unixHigherTimestamp);
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixHigherTimestampAfter1 = $timeValueCalculator->getHigherTimestamp( $timeValueAfter1 );
+			$this->assertLessThan( $unixHigherTimestampAfter1, $unixHigherTimestamp );
 
-			$timeValueAfter2 = new TimeValue($timestamp,
+			$timeValueAfter2 = new TimeValue(
+				$timestamp,
 				0, 2, 2,
 				$precision,
-				TimeValue::CALENDAR_GREGORIAN);
-			$unixHigherTimestampAfter2 = $timeValueCalculator->getHigherTimestamp($timeValueAfter2);
-			$this->assertLessThan($unixHigherTimestampAfter2, $unixHigherTimestampAfter1);
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixHigherTimestampAfter2 = $timeValueCalculator->getHigherTimestamp( $timeValueAfter2 );
+			$this->assertLessThan( $unixHigherTimestampAfter2, $unixHigherTimestampAfter1 );
 		}
 	}
 
