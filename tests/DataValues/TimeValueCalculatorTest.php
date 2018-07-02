@@ -253,8 +253,8 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 		$precisions = $this->simplePrecisionProvider();
 		foreach ( $timestamps as &$timestamp ) {
 			foreach ( $precisions as &$precision ) {
-				$this->auxTestGetLowerTimestamp( '+' . $timestamp );
-				$this->auxTestGetLowerTimestamp( '-' . $timestamp );
+				$this->auxTestGetLowerTimestamp( '+' . $timestamp, $precision );
+				$this->auxTestGetLowerTimestamp( '-' . $timestamp, $precision );
 			}
 		}
 		$timeValue = new TimeValue(
