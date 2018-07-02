@@ -164,9 +164,9 @@ class TimeValueCalculator {
 	public function getSecondsForPrecision( $precision ) {
 		if ( $precision <= TimeValue::PRECISION_YEAR ) {
 			return self::SECONDS_PER_GREGORIAN_YEAR * pow(
-					10,
-					TimeValue::PRECISION_YEAR - $precision
-				);
+				10,
+				TimeValue::PRECISION_YEAR - $precision
+			);
 		}
 
 		switch ( $precision ) {
