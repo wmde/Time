@@ -234,7 +234,7 @@ class TimeValueCalculator {
 				1,
 				-$this->charsAffectedByPrecision( TimeValue::PRECISION_YEAR ) - 1
 			);
-			$daysInMonth = cal_days_in_month( CAL_GREGORIAN, $month, $year );
+			$daysInMonth = \cal_days_in_month( CAL_GREGORIAN, $month, $year );
 			$timestampCeiling = substr( $timestamp, 0, -$numCharsToModify ) .
 				$daysInMonth .
 				substr( $this->HIGHEST_TIMESTAMP, -$numCharsToModify + 2 );
