@@ -22,24 +22,25 @@ class TimeValueCalculator {
 	const SECONDS_PER_GREGORIAN_YEAR = 31556952;
 
 	/**
-	 * Lowest positive timestamp.
-	 */
-	const TIMESTAMP_ZERO = '+0000000000000000-01-01T00:00:00Z';
-
-	/**
-	 * Highest positive timestamp.
-	 */
-	const HIGHEST_TIMESTAMP = '+9999999999999999-12-31T23:59:59Z';
-
-	/**
 	 * Maximum length for a timestamp.
 	 */
-	const MAX_LENGTH_TIMESTAMP = 33;
+	private $MAX_LENGTH_TIMESTAMP = 33;
 
 	/**
-	 * This returns the Unix timestamp from a TimeValue.
-	 * This is similar to PHP's mk_time() (or strtotime()), but with no range limitations.
-	 * Data type is float because PHP's 32 bit integer would clip in the year 2038.
+	 * Lowest positive timestamp.
+	 */
+	private $TIMESTAMP_ZERO = '+0000000000000000-01-01T00:00:00Z';
+
+	/**
+	 * Highest positive timestamp strictly earlier than the lowest positive timestamp with
+	 * a length of $MAX_LENGTH_TIMESTAMP + 1.
+	 */
+	private $HIGHEST_TIMESTAMP = '+9999999999999999-12-31T23:59:59Z';
+
+	/**
+	 * This returns a Unix timestamp from a TimeValue similar to PHP's mk_time() (or strtotime()),
+	 * but with no range limitations. Data type is float because PHP's 32 bit integer would
+	 * clip in the year 2038.
 	 *
 	 * @param TimeValue $timeValue
 	 *
@@ -83,7 +84,7 @@ class TimeValueCalculator {
 	public function getHigherTimestamp( TimeValue $timeValue ) {
 		$precision = $timeValue->getPrecision();
 		$timestamp = $timeValue->getTime();
-		if ( strcmp( substr( $timestamp, 0, 1 ), '-' ) === 0 && $precision < TimeValue::PRECISION_YEAR ) {
+		if ( $timestamp[0] === '-' && $precision < TimeValue::PRECISION_YEAR ) {
 			$timestamp = $this->timestampAbsFloor( $timestamp, $precision );
 		} else {
 			$timestamp = $this->timestampAbsCeiling( $timestamp, $precision );
@@ -194,13 +195,13 @@ class TimeValueCalculator {
 		// The year is padded with zeros to have 16 digits
 		$timestamp = substr_replace(
 			$timestamp,
-			str_repeat( '0', self::MAX_LENGTH_TIMESTAMP - strlen( $timestamp ) ),
+			str_repeat( '0', $this->MAX_LENGTH_TIMESTAMP - strlen( $timestamp ) ),
 			1,
 			0
 		);
 		$numCharsToModify = $this->charsAffectedByPrecision( $precision );
 		$timestamp = substr( $timestamp, 0, -$numCharsToModify ) .
-			substr( self::TIMESTAMP_ZERO, -$numCharsToModify );
+			substr( $this->TIMESTAMP_ZERO, -$numCharsToModify );
 		return $timestamp;
 	}
 
@@ -214,15 +215,31 @@ class TimeValueCalculator {
 		// The year is padded with zeros to have 16 digits
 		$timestamp = substr_replace(
 			$timestamp,
-			str_repeat( '0', self::MAX_LENGTH_TIMESTAMP - strlen( $timestamp ) ),
+			str_repeat( '0', $this->MAX_LENGTH_TIMESTAMP - strlen( $timestamp ) ),
 			1,
 			0
 		);
 		$numCharsToModify = $this->charsAffectedByPrecision( $precision );
 		// WARNING: Day 31 will be applied to all months
-		$timestamp = substr( $timestamp, 0, -$numCharsToModify ) .
-			substr( self::HIGHEST_TIMESTAMP, -$numCharsToModify );
-		return $timestamp;
+		$timestampCeiling = substr( $timestamp, 0, -$numCharsToModify ) .
+			substr( $this->HIGHEST_TIMESTAMP, -$numCharsToModify );
+		if ( $precision === TimeValue::PRECISION_MONTH ) {
+			$month = (int)substr(
+				$timestamp,
+				-$this->charsAffectedByPrecision( TimeValue::PRECISION_YEAR ),
+				2
+			);
+			$year = (int)substr(
+				$timestamp,
+				1,
+				-$this->charsAffectedByPrecision( TimeValue::PRECISION_YEAR ) - 1
+			);
+			$daysInMonth = cal_days_in_month( CAL_GREGORIAN, $month, $year );
+			$timestampCeiling = substr( $timestamp, 0, -$numCharsToModify ) .
+				$daysInMonth .
+				substr( $this->HIGHEST_TIMESTAMP, -$numCharsToModify + 2 );
+		}
+		return $timestampCeiling;
 	}
 
 	/**
