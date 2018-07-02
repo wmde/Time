@@ -62,7 +62,7 @@ class TimeValueCalculator {
 	public function getLowerTimestamp( TimeValue $timeValue ) {
 		$precision = $timeValue->getPrecision();
 		$timestamp = $timeValue->getTime();
-		if ( strcmp( substr( $timestamp, 0, 1 ), '-' ) === 0 && $precision < TimeValue::PRECISION_YEAR ) {
+		if ( $timestamp[0] === '-' && $precision < TimeValue::PRECISION_YEAR ) {
 			$timestamp = $this->timestampAbsCeiling( $timestamp, $precision );
 		} else {
 			$timestamp = $this->timestampAbsFloor( $timestamp, $precision );
