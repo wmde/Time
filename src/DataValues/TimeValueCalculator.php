@@ -138,7 +138,7 @@ class TimeValueCalculator {
 	 */
 	public function isLeapYear( $year ) {
 		$year = $year < 0 ? ceil( $year ) + 1 : floor( $year );
-		$isMultipleOf4 = fmod( $year, 4 ) === 0.0;
+		$isMultipleOf4   = fmod( $year,   4 ) === 0.0;
 		$isMultipleOf100 = fmod( $year, 100 ) === 0.0;
 		$isMultipleOf400 = fmod( $year, 400 ) === 0.0;
 		return $isMultipleOf4 && !$isMultipleOf100 || $isMultipleOf400;
@@ -171,13 +171,13 @@ class TimeValueCalculator {
 
 		switch ( $precision ) {
 			case TimeValue::PRECISION_SECOND:
-				return 1.0;
+				return 1;
 			case TimeValue::PRECISION_MINUTE:
-				return 60.0;
+				return 60;
 			case TimeValue::PRECISION_HOUR:
-				return 3600.0;
+				return 3600;
 			case TimeValue::PRECISION_DAY:
-				return 86400.0;
+				return 86400;
 			case TimeValue::PRECISION_MONTH:
 				return self::SECONDS_PER_GREGORIAN_YEAR / 12;
 		}
