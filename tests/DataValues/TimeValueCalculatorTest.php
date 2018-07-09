@@ -214,6 +214,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private function timestampWithoutSignProvider() {
 		return [
+			'1-06-16T11:45:12Z',
 			'16-11-11T06:08:04Z',
 			'245-04-30T00:00:00Z',
 			'1054-02-11T14:00:02Z',
@@ -433,7 +434,6 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 					// As $precisions are ordered from most to least precise, old higher timestamps must be
 					// less than or equal to current higher timestamps
 					if ( !empty( $oldUnixHigherTimestamp ) ) {
-						echo $oldUnixHigherTimestamp . ' < ' . $unixHigherTimestamp . "\n";
 						$this->assertLessThanOrEqual( $unixHigherTimestamp, $oldUnixHigherTimestamp );
 					}
 					$oldUnixHigherTimestamp = $unixHigherTimestamp;
