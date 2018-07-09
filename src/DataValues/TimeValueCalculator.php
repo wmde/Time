@@ -62,7 +62,6 @@ class TimeValueCalculator {
 	public function getLowerTimestamp( TimeValue $timeValue ) {
 		$precision = $timeValue->getPrecision();
 		$timestamp = $timeValue->getTime();
-		echo $precision . " | " . $timestamp . " | ";
 		if ( $timestamp[0] === '+' || $precision >= TimeValue::PRECISION_YEAR ) {
 			$timestamp = $this->timestampAbsFloor( $timestamp, $precision );
 		} else {
@@ -81,7 +80,6 @@ class TimeValueCalculator {
 			);
 			$timestamp = $subTimestampLeft . $subTimestampRight;
 		}
-		echo $timestamp . "\n";
 		$unixTimestamp = $this->getSecondsSinceUnixEpoch( $timestamp, $timeValue->getTimezone() );
 		$unixTimestamp -= $timeValue->getBefore() * $this->getSecondsForPrecision( $precision );
 		return $unixTimestamp;
@@ -99,7 +97,6 @@ class TimeValueCalculator {
 	public function getHigherTimestamp( TimeValue $timeValue ) {
 		$precision = $timeValue->getPrecision();
 		$timestamp = $timeValue->getTime();
-		echo 'Timestamp: ' . $timestamp . ' - ';
 		if ( $timestamp[0] === '+' || $precision >= TimeValue::PRECISION_YEAR ) {
 			$timestamp = $this->timestampAbsCeiling( $timestamp, $precision );
 		} else {
