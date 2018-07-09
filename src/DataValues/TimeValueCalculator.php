@@ -62,11 +62,26 @@ class TimeValueCalculator {
 	public function getLowerTimestamp( TimeValue $timeValue ) {
 		$precision = $timeValue->getPrecision();
 		$timestamp = $timeValue->getTime();
-		if ( $timestamp[0] === '-' && $precision < TimeValue::PRECISION_YEAR ) {
-			$timestamp = $this->timestampAbsCeiling( $timestamp, $precision );
-		} else {
+		echo $precision . " | " . $timestamp . " | ";
+		if ( $timestamp[0] === '+' || $precision >= TimeValue::PRECISION_YEAR ) {
 			$timestamp = $this->timestampAbsFloor( $timestamp, $precision );
+		} else {
+			// digits corresponding to [0, PRECISION_YEAR] must be maximized
+			// digits corresponding to [PRECISION_MONTH, PRECISION_SECOND] must be minimized
+			$subTimestampLeft = $this->timestampAbsCeiling( $timestamp, $precision );
+			$subTimestampLeft = substr(
+				$subTimestampLeft,
+				0,
+				-$this->charsAffectedByPrecision( TimeValue::PRECISION_YEAR )
+			);
+			$subTimestampRight = $this->timestampAbsFloor( $timestamp, $precision );
+			$subTimestampRight = substr(
+				$subTimestampRight,
+				-$this->charsAffectedByPrecision( TimeValue::PRECISION_YEAR )
+			);
+			$timestamp = $subTimestampLeft . $subTimestampRight;
 		}
+		echo $timestamp . "\n";
 		$unixTimestamp = $this->getSecondsSinceUnixEpoch( $timestamp, $timeValue->getTimezone() );
 		$unixTimestamp -= $timeValue->getBefore() * $this->getSecondsForPrecision( $precision );
 		return $unixTimestamp;
@@ -84,10 +99,24 @@ class TimeValueCalculator {
 	public function getHigherTimestamp( TimeValue $timeValue ) {
 		$precision = $timeValue->getPrecision();
 		$timestamp = $timeValue->getTime();
-		if ( $timestamp[0] === '-' && $precision < TimeValue::PRECISION_YEAR ) {
-			$timestamp = $this->timestampAbsFloor( $timestamp, $precision );
-		} else {
+		echo 'Timestamp: ' . $timestamp . ' - ';
+		if ( $timestamp[0] === '+' || $precision >= TimeValue::PRECISION_YEAR ) {
 			$timestamp = $this->timestampAbsCeiling( $timestamp, $precision );
+		} else {
+			// digits corresponding to [0, PRECISION_YEAR] must be minimized
+			// digits corresponding to [PRECISION_MONTH, PRECISION_SECOND] must be maximized
+			$subTimestampLeft = $this->timestampAbsFloor( $timestamp, $precision );
+			$subTimestampLeft = substr(
+				$subTimestampLeft,
+				0,
+				-$this->charsAffectedByPrecision( TimeValue::PRECISION_YEAR )
+			);
+			$subTimestampRight = $this->timestampAbsCeiling( $timestamp, $precision );
+			$subTimestampRight = substr(
+				$subTimestampRight,
+				-$this->charsAffectedByPrecision( TimeValue::PRECISION_YEAR )
+			);
+			$timestamp = $subTimestampLeft . $subTimestampRight;
 		}
 		$unixTimestamp = $this->getSecondsSinceUnixEpoch( $timestamp, $timeValue->getTimezone() );
 		$unixTimestamp += $timeValue->getAfter() * $this->getSecondsForPrecision( $precision );
@@ -132,13 +161,28 @@ class TimeValueCalculator {
 	}
 
 	/**
+	 * @param string $calendar only TimeValue::CALENDAR_GREGORIAN is supported
+	 * @param float $month
+	 * @param float $year
+	 *
+	 * @throws InvalidArgumentException if $calendar is not supported
+	 * @return int
+	 */
+	public function getDaysInMonth( $calendar, $month, $year ) {
+		if ( $calendar !== TimeValue::CALENDAR_GREGORIAN ) {
+			throw new InvalidArgumentException( "Only Gregorian calendar is supported." );
+		}
+		return $month == 2 ? ( $this->isLeapYear( $year ) ? 29 : 28 ) : ( ( $month - 1 ) % 7 % 2 ? 30 : 31 );
+	}
+
+	/**
 	 * @param float $year
 	 *
 	 * @return bool if the year is a leap year in the Gregorian calendar
 	 */
 	public function isLeapYear( $year ) {
 		$year = $year < 0 ? ceil( $year ) + 1 : floor( $year );
-		$isMultipleOf4   = fmod( $year,   4 ) === 0.0;
+		$isMultipleOf4 = fmod( $year, 4 ) === 0.0;
 		$isMultipleOf100 = fmod( $year, 100 ) === 0.0;
 		$isMultipleOf400 = fmod( $year, 400 ) === 0.0;
 		return $isMultipleOf4 && !$isMultipleOf100 || $isMultipleOf400;
@@ -164,9 +208,9 @@ class TimeValueCalculator {
 	public function getSecondsForPrecision( $precision ) {
 		if ( $precision <= TimeValue::PRECISION_YEAR ) {
 			return self::SECONDS_PER_GREGORIAN_YEAR * pow(
-				10,
-				TimeValue::PRECISION_YEAR - $precision
-			);
+					10,
+					TimeValue::PRECISION_YEAR - $precision
+				);
 		}
 
 		switch ( $precision ) {
@@ -220,21 +264,21 @@ class TimeValueCalculator {
 			0
 		);
 		$numCharsToModify = $this->charsAffectedByPrecision( $precision );
-		// WARNING: Day 31 will be applied to all months
 		$timestampCeiling = substr( $timestamp, 0, -$numCharsToModify ) .
 			substr( $this->HIGHEST_TIMESTAMP, -$numCharsToModify );
 		if ( $precision === TimeValue::PRECISION_MONTH ) {
-			$month = (int)substr(
+			// The highest day (28-31) depends on the month and the year
+			$month = (float)substr(
 				$timestamp,
 				-$this->charsAffectedByPrecision( TimeValue::PRECISION_YEAR ),
 				2
 			);
-			$year = (int)substr(
+			$year = (float)substr(
 				$timestamp,
 				1,
 				-$this->charsAffectedByPrecision( TimeValue::PRECISION_YEAR ) - 1
 			);
-			$daysInMonth = \cal_days_in_month( CAL_GREGORIAN, $month, $year );
+			$daysInMonth = $this->getDaysInMonth( TimeValue::CALENDAR_GREGORIAN, $month, $year );
 			$timestampCeiling = substr( $timestamp, 0, -$numCharsToModify ) .
 				$daysInMonth .
 				substr( $this->HIGHEST_TIMESTAMP, -$numCharsToModify + 2 );
@@ -243,9 +287,10 @@ class TimeValueCalculator {
 	}
 
 	/**
-	 * @param $precision
+	 * @param int $precision
 	 *
-	 * @return int
+	 * @return int lowest number of characters in an ISO 8601 timestamp string
+	 * that are irrelevant given $precision
 	 */
 	private function charsAffectedByPrecision( $precision ) {
 		$numCharsAffected = 1;
