@@ -255,7 +255,7 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @return \Generator
 	 */
-	public function provideTimestamps() { // any order
+	public function provideTimestamps() {
 		foreach ( [ '+', '-' ] as $sign ) {
 			foreach ( $this->provideTimestampsWithoutSign() as $timestamp ) {
 				yield $sign . $timestamp;
