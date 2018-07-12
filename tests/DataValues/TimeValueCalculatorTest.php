@@ -210,27 +210,29 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @return array
+	 * @return array of ISO 8601 timestamps from lower to higher
 	 */
-	private function timestampWithoutSignProvider() {
+	private function provideTimestampsWithoutSign() {
 		return [
-			'1-06-16T11:45:12Z',
-			'16-11-11T06:08:04Z',
-			'245-04-30T00:00:00Z',
-			'1054-02-11T14:00:02Z',
+			'0001-01-11T06:08:04Z',
+			'0016-02-11T06:08:04Z',
+			'0245-03-30T00:00:00Z',
+			'1054-04-11T14:00:02Z',
 			'2012-02-29T23:59:59Z',
-			#'2012-03-01T00:00:00Z',
-			'2013-12-31T23:59:59Z',
-			'2014-01-01T00:00:00Z',
-			'54844518-04-25T02:00:00Z',
-			'9990994999299999-07-09T14:20:00Z',
+			'2012-03-01T00:00:00Z',
+			'2013-05-31T23:59:59Z',
+			'2014-06-01T00:00:00Z',
+			'54844518-07-25T02:00:00Z',
+			'5748404518-08-25T02:00:00Z',
+			'9990994999299999-09-09T14:20:00Z',
+			'9999999999999999-10-15T14:20:00Z',
 		];
 	}
 
 	/**
 	 * @return array of precisions from the most to the least precise
 	 */
-	private function simplePrecisionProvider() {
+	private function provideAllPrecisions() {
 		return [
 			TimeValue::PRECISION_SECOND,
 			TimeValue::PRECISION_MINUTE,
@@ -251,236 +253,403 @@ class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Check that:
-	 *   - timestampWithoutSignProvider() values are ordered from earliest to latest according
-	 *       to getLowerTimestamp(),
-	 *   - getTimestamp() values are always greater or equal than getLowerTimestamp() ones,
-	 *   - higher precisions of the same timestamp always correspond to greater or equal
-	 *       getLowerTimestamp() values than lower precisions,
-	 *   - higher before values for the same timestamp always correspond to lower or equal
-	 *       getLowerTimestamp() values than lower before values,
-	 *   - a few TimeValue values are equal to their expected getLowerTimestamp() ones.
+	 * @return \Generator
 	 */
-	public function testGetLowerTimestamp() {
-		$timestamps = $this->timestampWithoutSignProvider();
-		$precisions = $this->simplePrecisionProvider();
-		$timeValueCalculator = new TimeValueCalculator();
-		$timeValue = new TimeValue(
-			'+2013-03-14T12:51:02Z',
-			0, 0, 0,
-			TimeValue::PRECISION_MONTH,
-			TimeValue::CALENDAR_GREGORIAN
-		);
-		$unixLowerTimestamp = $timeValueCalculator->getLowerTimestamp( $timeValue );
-		$this->assertEquals( 1362096000, $unixLowerTimestamp );
-		$timeValue = new TimeValue(
-			'+0002-07-17T02:41:22Z',
-			0, 0, 0,
-			TimeValue::PRECISION_DAY,
-			TimeValue::CALENDAR_GREGORIAN
-		);
-		$unixLowerTimestamp = $timeValueCalculator->getLowerTimestamp( $timeValue );
-		$this->assertEquals( -62087040000, $unixLowerTimestamp );
+	public function provideTimestamps() { // any order
 		foreach ( [ '+', '-' ] as $sign ) {
-			$oldUnixLowerTimestampMonth = null;
-			foreach ( $timestamps as $timestamp ) {
-				$timestamp = $sign . $timestamp;
-				$timeValue = new TimeValue(
-					$timestamp,
-					0, 0, 0,
-					TimeValue::PRECISION_MONTH,
-					TimeValue::CALENDAR_GREGORIAN
-				);
-				$unixLowerTimestamp = $timeValueCalculator->getLowerTimestamp( $timeValue );
-				if ( !empty( $oldUnixLowerTimestampMonth ) ) {
-					if ( $sign === '+' ) {
-						$this->assertGreaterThan( $oldUnixLowerTimestampMonth, $unixLowerTimestamp );
-					} else {
-						$this->assertGreaterThan( $unixLowerTimestamp, $oldUnixLowerTimestampMonth );
-					}
-				}
-				$oldUnixLowerTimestampMonth = $unixLowerTimestamp;
-				$oldUnixLowerTimestamp = null;
-				foreach ( $precisions as $precision ) {
+			foreach ( $this->provideTimestampsWithoutSign() as $timestamp ) {
+				yield $sign . $timestamp;
+			}
+		}
+	}
+
+	/**
+	 * @return \Generator
+	 */
+	public function provideTimeValuesHighVsLowPrecisions() {
+		$oldTimestamp = null;
+		$oldPrecision = null;
+		foreach ( $this->provideTimestamps() as $timestamp ) {
+			foreach ( $this->provideAllPrecisions() as $precision ) {
+				if ( !empty( $oldTimestamp ) && $timestamp === $oldTimestamp ) {
+					$oldTimeValue = new TimeValue(
+						$oldTimestamp,
+						0, 0, 0,
+						$oldPrecision,
+						TimeValue::CALENDAR_GREGORIAN
+					);
 					$timeValue = new TimeValue(
 						$timestamp,
 						0, 0, 0,
 						$precision,
 						TimeValue::CALENDAR_GREGORIAN
 					);
-					$unixTimestampAsIs = $timeValueCalculator->getTimestamp( $timeValue );
-					$unixLowerTimestamp = $timeValueCalculator->getLowerTimestamp( $timeValue );
-					$this->assertGreaterThanOrEqual( $unixLowerTimestamp, $unixTimestampAsIs );
-					$timeValueBefore1 = new TimeValue(
-						$timestamp,
-						0, 1, 1,
-						$precision,
-						TimeValue::CALENDAR_GREGORIAN
-					);
-					$unixLowerTimestampBefore1 = $timeValueCalculator->getLowerTimestamp( $timeValueBefore1 );
-					if ( $unixTimestampAsIs > -10000000000000 && $unixTimestampAsIs < 10000000000000 ) {
-						$this->assertGreaterThan( $unixLowerTimestampBefore1, $unixLowerTimestamp );
-					} else {
-						$this->assertGreaterThanOrEqual( $unixLowerTimestampBefore1, $unixLowerTimestamp );
-					}
-					$timeValueBefore2 = new TimeValue(
-						$timestamp,
-						0, 2, 2,
-						$precision,
-						TimeValue::CALENDAR_GREGORIAN
-					);
-					$unixLowerTimestampBefore2 = $timeValueCalculator->getLowerTimestamp( $timeValueBefore2 );
-					if ( $unixTimestampAsIs > -10000000000000 && $unixTimestampAsIs < 10000000000000 ) {
-						$this->assertGreaterThan( $unixLowerTimestampBefore2, $unixLowerTimestampBefore1 );
-					} else {
-						$this->assertGreaterThanOrEqual( $unixLowerTimestampBefore2, $unixLowerTimestampBefore1 );
-					}
-					// As $precisions are ordered from most to least precise, old lower timestamps must be
-					// greater than or equal to current lower timestamps
-					if ( !empty( $oldUnixLowerTimestamp ) ) {
-						$this->assertGreaterThanOrEqual( $unixLowerTimestamp, $oldUnixLowerTimestamp );
-					}
-					$oldUnixLowerTimestamp = $unixLowerTimestamp;
+					yield [ [ $oldTimeValue, $timeValue ] ];
 				}
+				$oldTimestamp = $timestamp;
+				$oldPrecision = $precision;
 			}
 		}
 	}
 
 	/**
-	 * Check that:
-	 *   - timestampWithoutSignProvider() values are ordered from earliest to latest according
-	 *       to getHigherTimestamp(),
-	 *   - getHigherTimestamp() values are always greater or equal than getTimestamp() ones,
-	 *   - lower precisions of the same timestamp always correspond to greater or equal
-	 *       getHigherTimestamp() values than higher precisions,
-	 *   - higher after values for the same timestamp always correspond to greater or equal
-	 *       getHigherTimestamp() values than lower after values,
-	 *   - a few TimeValue values are equal to their expected getHigherTimestamp() ones.
+	 * @return \Generator
 	 */
-	public function testGetHigherTimestamp() {
-		$timestamps = $this->timestampWithoutSignProvider();
-		$precisions = $this->simplePrecisionProvider();
-		$timeValueCalculator = new TimeValueCalculator();
-		$timeValue = new TimeValue(
-			'+2013-03-14T12:51:02Z',
-			0, 0, 0,
-			TimeValue::PRECISION_MONTH,
-			TimeValue::CALENDAR_GREGORIAN
-		);
-		$unixHigherTimestamp = $timeValueCalculator->getHigherTimestamp( $timeValue );
-		$this->assertEquals( 1364774399, $unixHigherTimestamp );
-		$timeValue = new TimeValue(
-			'+1002-07-17T02:41:22Z',
-			0, 0, 0,
-			TimeValue::PRECISION_DAY,
-			TimeValue::CALENDAR_GREGORIAN
-		);
-		$unixHigherTimestamp = $timeValueCalculator->getHigherTimestamp( $timeValue );
-		$this->assertEquals( -30530044801, $unixHigherTimestamp );
+	public function provideTimestampsAndPrecisions() {
+		foreach ( $this->provideTimestamps() as $timestamp ) {
+			foreach ( $this->provideAllPrecisions() as $precision ) {
+				yield [ [ $timestamp, $precision ] ];
+			}
+		}
+	}
+
+	/**
+	 * @return \Generator of ISO 8601 timestamp arrays [ t1, t2 ] where t1 ≤ t2
+	 */
+	public function provideTimestampPairs() {
 		foreach ( [ '+', '-' ] as $sign ) {
-			$oldUnixHigherTimestampMonth = null;
-			foreach ( $timestamps as $timestamp ) {
+			$oldTimestamp = null;
+			foreach ( $this->provideTimestampsWithoutSign() as $timestamp ) {
 				$timestamp = $sign . $timestamp;
-				$timeValue = new TimeValue(
-					$timestamp,
+				if ( $oldTimestamp !== null ) {
+					yield $sign === '+' ? [ [ $oldTimestamp, $timestamp ] ] : [ [ $timestamp, $oldTimestamp ] ];
+				}
+				$oldTimestamp = $timestamp;
+			}
+		}
+	}
+
+	/**
+	 * @return \Generator of arrays of:
+	 * - a TimeValue,
+	 * - its lower Unix timestamp, and
+	 * - its Unix higher timestamp.
+	 */
+	public function provideTimeValuesAndLowerAndHigherTimestamps() {
+		$timeValuesAndLowerAndHigherTimestamps = [
+			[
+				new TimeValue( // BCE calculations can differ one year from external ones
+					'-0754-11-27T10:49:31Z',
+					0, 0, 0,
+					TimeValue::PRECISION_SECOND,
+					TimeValue::CALENDAR_GREGORIAN
+				),
+				-85901001029,
+				-85901001029
+			],
+			[
+				new TimeValue( // BCE calculations can differ one year from external ones
+					'-0003-01-06T10:49:31Z',
+					0, 0, 0,
+					TimeValue::PRECISION_YEAR,
+					TimeValue::CALENDAR_GREGORIAN
+				),
+				-62230291200,
+				-62198755201
+			],
+			[
+				new TimeValue(
+					'+0002-07-17T02:41:22Z',
+					0, 0, 0,
+					TimeValue::PRECISION_DAY,
+					TimeValue::CALENDAR_GREGORIAN
+				),
+				-62087040000,
+				-62086953601
+			],
+			[
+				new TimeValue(
+					'+2013-03-14T12:51:02Z',
 					0, 0, 0,
 					TimeValue::PRECISION_MONTH,
 					TimeValue::CALENDAR_GREGORIAN
-				);
-				$unixHigherTimestamp = $timeValueCalculator->getHigherTimestamp( $timeValue );
-				if ( !empty( $oldUnixHigherTimestampMonth ) ) {
-					if ( $sign === '+' ) {
-						$this->assertGreaterThan( $oldUnixHigherTimestampMonth, $unixHigherTimestamp );
-					} else {
-						$this->assertGreaterThan( $unixHigherTimestamp, $oldUnixHigherTimestampMonth );
-					}
-				}
-				$oldUnixHigherTimestampMonth = $unixHigherTimestamp;
-				$oldUnixHigherTimestamp = null;
-				foreach ( $precisions as $precision ) {
-					$timeValue = new TimeValue(
-						$timestamp,
-						0, 0, 0,
-						$precision,
-						TimeValue::CALENDAR_GREGORIAN
-					);
-					$unixTimestampAsIs = $timeValueCalculator->getTimestamp( $timeValue );
-					$unixHigherTimestamp = $timeValueCalculator->getHigherTimestamp( $timeValue );
-					$this->assertLessThanOrEqual( $unixHigherTimestamp, $unixTimestampAsIs );
-					$timeValueAfter1 = new TimeValue(
-						$timestamp,
-						0, 1, 1,
-						$precision,
-						TimeValue::CALENDAR_GREGORIAN
-					);
-					$unixHigherTimestampAfter1 = $timeValueCalculator->getHigherTimestamp( $timeValueAfter1 );
-					if ( $unixTimestampAsIs > -10000000000000 && $unixTimestampAsIs < 10000000000000 ) {
-						$this->assertLessThan( $unixHigherTimestampAfter1, $unixHigherTimestamp );
-					} else {
-						$this->assertLessThanOrEqual( $unixHigherTimestampAfter1, $unixHigherTimestamp );
-					}
-					$timeValueAfter2 = new TimeValue(
-						$timestamp,
-						0, 2, 2,
-						$precision,
-						TimeValue::CALENDAR_GREGORIAN
-					);
-					$unixHigherTimestampAfter2 = $timeValueCalculator->getHigherTimestamp( $timeValueAfter2 );
-					if ( $unixTimestampAsIs > -10000000000000 && $unixTimestampAsIs < 10000000000000 ) {
-						$this->assertLessThan( $unixHigherTimestampAfter2, $unixHigherTimestampAfter1 );
-					} else {
-						$this->assertLessThanOrEqual( $unixHigherTimestampAfter2, $unixHigherTimestampAfter1 );
-					}
-					// As $precisions are ordered from most to least precise, old higher timestamps must be
-					// less than or equal to current higher timestamps
-					if ( !empty( $oldUnixHigherTimestamp ) ) {
-						$this->assertLessThanOrEqual( $unixHigherTimestamp, $oldUnixHigherTimestamp );
-					}
-					$oldUnixHigherTimestamp = $unixHigherTimestamp;
-				}
+				),
+				1362096000,
+				1364774399
+			],
+			[
+				new TimeValue(
+					'+7254-11-27T10:49:31Z',
+					0, 0, 0,
+					TimeValue::PRECISION_SECOND,
+					TimeValue::CALENDAR_GREGORIAN
+				),
+				166775539771,
+				166775539771
+			],
+			[
+				new TimeValue(
+					'+190134401-01-15T10:39:59Z',
+					0, 0, 0,
+					TimeValue::PRECISION_DAY,
+					TimeValue::CALENDAR_GREGORIAN
+				),
+				5999999999961600,
+				6000000000047999
+			],
+			[
+				new TimeValue(
+					'+190134401-01-15T10:39:59Z',
+					0, 0, 0,
+					TimeValue::PRECISION_SECOND,
+					TimeValue::CALENDAR_GREGORIAN
+				),
+				5999999999999999,
+				5999999999999999
+			],
+		];
+		yield $timeValuesAndLowerAndHigherTimestamps;
+	}
+
+	/**
+	 * Check that a few TimeValue values are equal to their expected getLowerTimestamp() ones.
+	 *
+	 * @dataProvider provideTimeValuesAndLowerAndHigherTimestamps
+	 */
+	public function testSpecificLowerTimestamps() {
+		$timeValuesAndLowerTimestamps = func_get_args();
+		$timeValueCalculator = new TimeValueCalculator();
+		foreach ( $timeValuesAndLowerTimestamps as $timeValueAndLowerTimestamp ) {
+			$unixLowerTimestamp = $timeValueCalculator->getLowerTimestamp( $timeValueAndLowerTimestamp[0] );
+			$this->assertEquals( $timeValueAndLowerTimestamp[1], $unixLowerTimestamp );
+		}
+	}
+
+	/**
+	 * Check that a few TimeValue values are equal to their expected getHigherTimestamp() ones.
+	 *
+	 * @dataProvider provideTimeValuesAndLowerAndHigherTimestamps
+	 */
+	public function testSpecificHigherTimestamps() {
+		$timeValuesAndHigherTimestamps = func_get_args();
+		$timeValueCalculator = new TimeValueCalculator();
+		foreach ( $timeValuesAndHigherTimestamps as $timeValueAndHigherTimestamp ) {
+			$unixHigherTimestamp = $timeValueCalculator->getHigherTimestamp( $timeValueAndHigherTimestamp[0] );
+			$this->assertEquals( $timeValueAndHigherTimestamp[2], $unixHigherTimestamp );
+		}
+	}
+
+	/**
+	 * Check that timestampWithoutSignProvider() values are ordered from earliest to latest according
+	 * to getLowerTimestamp(),
+	 *
+	 * @dataProvider provideTimestampPairs
+	 */
+	public function testOrderingLowerTimestamps() {
+		$timeValueCalculator = new TimeValueCalculator();
+		$timestampPairs = func_get_args();
+		foreach ( $timestampPairs as $timestampPair ) {
+			$earlierTimestamp = $timestampPair[0];
+			$laterTimestamp = $timestampPair[1];
+			$earlierTimeValue = new TimeValue(
+				$earlierTimestamp,
+				0, 0, 0,
+				TimeValue::PRECISION_DAY,
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$laterTimeValue = new TimeValue(
+				$laterTimestamp,
+				0, 0, 0,
+				TimeValue::PRECISION_DAY,
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$earlierUnixLowerTimestamp = $timeValueCalculator->getLowerTimestamp( $earlierTimeValue );
+			$laterUnixLowerTimestamp = $timeValueCalculator->getLowerTimestamp( $laterTimeValue );
+			$this->assertGreaterThanOrEqual( $earlierUnixLowerTimestamp, $laterUnixLowerTimestamp );
+		}
+	}
+
+	/**
+	 * Check that timestampWithoutSignProvider() values are ordered from earliest to latest according
+	 * to getHigherTimestamp(),
+	 *
+	 * @dataProvider provideTimestampPairs
+	 */
+	public function testOrderingHigherTimestamps() {
+		$timeValueCalculator = new TimeValueCalculator();
+		$timestampPairs = func_get_args();
+		foreach ( $timestampPairs as $timestampPair ) {
+			$earlierTimestamp = $timestampPair[0];
+			$laterTimestamp = $timestampPair[1];
+			$earlierTimeValue = new TimeValue(
+				$earlierTimestamp,
+				0, 0, 0,
+				TimeValue::PRECISION_DAY,
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$laterTimeValue = new TimeValue(
+				$laterTimestamp,
+				0, 0, 0,
+				TimeValue::PRECISION_DAY,
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$earlierUnixHigherTimestamp = $timeValueCalculator->getHigherTimestamp( $earlierTimeValue );
+			$laterUnixHigherTimestamp = $timeValueCalculator->getHigherTimestamp( $laterTimeValue );
+			$this->assertGreaterThanOrEqual( $earlierUnixHigherTimestamp, $laterUnixHigherTimestamp );
+		}
+	}
+
+	/**
+	 * Check that getTimestamp() values are always greater or equal than getLowerTimestamp() ones.
+	 *
+	 * @dataProvider provideTimestampsAndPrecisions
+	 */
+	public function testLowerTimestampsVsTimestamps() {
+		$timeValueCalculator = new TimeValueCalculator();
+		$timestampsAndPrecisions = func_get_args();
+		foreach ( $timestampsAndPrecisions as $timestampAndPrecision ) {
+			$timestamp = $timestampAndPrecision[0];
+			$precision = $timestampAndPrecision[1];
+			$timeValue = new TimeValue(
+				$timestamp,
+				0, 0, 0,
+				$precision,
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixTimestampAsIs = $timeValueCalculator->getTimestamp( $timeValue );
+			$unixLowerTimestamp = $timeValueCalculator->getLowerTimestamp( $timeValue );
+			$this->assertGreaterThanOrEqual( $unixLowerTimestamp, $unixTimestampAsIs );
+		}
+	}
+
+	/**
+	 * Check that getHigherTimestamp() values are always greater or equal than getTimestamp() ones.
+	 *
+	 * @dataProvider provideTimestampsAndPrecisions
+	 */
+	public function testHigherTimestampsVsTimestamps() {
+		$timeValueCalculator = new TimeValueCalculator();
+		$timestampsAndPrecisions = func_get_args();
+		foreach ( $timestampsAndPrecisions as $timestampAndPrecision ) {
+			$timestamp = $timestampAndPrecision[0];
+			$precision = $timestampAndPrecision[1];
+			$timeValue = new TimeValue(
+				$timestamp,
+				0, 0, 0,
+				$precision,
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixTimestampAsIs = $timeValueCalculator->getTimestamp( $timeValue );
+			$unixHigherTimestamp = $timeValueCalculator->getHigherTimestamp( $timeValue );
+			$this->assertGreaterThanOrEqual( $unixTimestampAsIs, $unixHigherTimestamp );
+		}
+	}
+
+	/**
+	 * Check that higher before values for the same timestamp always correspond to lower or equal
+	 * getLowerTimestamp() values than lower before values.
+	 *
+	 * @dataProvider provideTimestampsAndPrecisions
+	 */
+	public function testGetLowerTimestampBefore() {
+		$timeValueCalculator = new TimeValueCalculator();
+		$timestampsAndPrecisions = func_get_args();
+		foreach ( $timestampsAndPrecisions as $timestampAndPrecision ) {
+			$timestamp = $timestampAndPrecision[0];
+			$precision = $timestampAndPrecision[1];
+			$timeValue = new TimeValue(
+				$timestamp,
+				0, 0, 1,
+				$precision,
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixLowerTimestamp = $timeValueCalculator->getLowerTimestamp( $timeValue );
+			$timeValueBefore1 = new TimeValue(
+				$timestamp,
+				0, 1, 1,
+				$precision,
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixLowerTimestampBefore1 = $timeValueCalculator->getLowerTimestamp( $timeValueBefore1 );
+			$timeValueBefore2 = new TimeValue(
+				$timestamp,
+				0, 2, 0,
+				$precision,
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixLowerTimestampBefore2 = $timeValueCalculator->getLowerTimestamp( $timeValueBefore2 );
+			if ( $unixLowerTimestamp > -10000000000000 && $unixLowerTimestamp < 10000000000000 ) {
+				$this->assertGreaterThan( $unixLowerTimestampBefore1, $unixLowerTimestamp );
+				$this->assertGreaterThan( $unixLowerTimestampBefore2, $unixLowerTimestampBefore1 );
+			} else {
+				$this->assertGreaterThanOrEqual( $unixLowerTimestampBefore1, $unixLowerTimestamp );
+				$this->assertGreaterThanOrEqual( $unixLowerTimestampBefore2, $unixLowerTimestampBefore1 );
 			}
 		}
 	}
 
 	/**
-	 * @param string $timestamp
-	 * @param int $precision
+	 * Check that lower after values for the same timestamp always correspond to lower or equal
+	 * getHigherTimestamp() values than higher after values.
+	 *
+	 * @dataProvider provideTimestampsAndPrecisions
 	 */
-	private function auxTestGetHigherTimestamp( $timestamp, $precision ) {
+	public function testGetHigherTimestampAfter() {
 		$timeValueCalculator = new TimeValueCalculator();
-		$timeValue = new TimeValue(
-			$timestamp,
-			0, 0, 0,
-			$precision,
-			TimeValue::CALENDAR_GREGORIAN
-		);
-		$unixTimestampAsIs = $timeValueCalculator->getTimestamp( $timeValue );
-		$unixHigherTimestamp = $timeValueCalculator->getHigherTimestamp( $timeValue );
-		$this->assertLessThanOrEqual( $unixHigherTimestamp, $unixTimestampAsIs );
-
-		$timeValueAfter1 = new TimeValue(
-			$timestamp,
-			0, 1, 1,
-			$precision,
-			TimeValue::CALENDAR_GREGORIAN
-		);
-		$unixHigherTimestampAfter1 = $timeValueCalculator->getHigherTimestamp( $timeValueAfter1 );
-		if ( $unixTimestampAsIs > -10000000000000 && $unixTimestampAsIs < 10000000000000 ) {
-			$this->assertLessThan( $unixHigherTimestampAfter1, $unixHigherTimestamp );
-		} else {
-			$this->assertLessThanOrEqual( $unixHigherTimestampAfter1, $unixHigherTimestamp );
+		$timestampsAndPrecisions = func_get_args();
+		foreach ( $timestampsAndPrecisions as $timestampAndPrecision ) {
+			$timestamp = $timestampAndPrecision[0];
+			$precision = $timestampAndPrecision[1];
+			$timeValue = new TimeValue(
+				$timestamp,
+				0, 1, 0,
+				$precision,
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixHigherTimestamp = $timeValueCalculator->getHigherTimestamp( $timeValue );
+			$timeValueAfter1 = new TimeValue(
+				$timestamp,
+				0, 1, 1,
+				$precision,
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixHigherTimestampAfter1 = $timeValueCalculator->getHigherTimestamp( $timeValueAfter1 );
+			$timeValueAfter2 = new TimeValue(
+				$timestamp,
+				0, 0, 2,
+				$precision,
+				TimeValue::CALENDAR_GREGORIAN
+			);
+			$unixHigherTimestampAfter2 = $timeValueCalculator->getHigherTimestamp( $timeValueAfter2 );
+			if ( $unixHigherTimestamp > -10000000000000 && $unixHigherTimestamp < 10000000000000 ) {
+				$this->assertGreaterThan( $unixHigherTimestamp, $unixHigherTimestampAfter1 );
+				$this->assertGreaterThan( $unixHigherTimestampAfter1, $unixHigherTimestampAfter2 );
+			} else {
+				$this->assertGreaterThanOrEqual( $unixHigherTimestamp, $unixHigherTimestampAfter1 );
+				$this->assertGreaterThanOrEqual( $unixHigherTimestampAfter1, $unixHigherTimestampAfter2 );
+			}
 		}
-		$timeValueAfter2 = new TimeValue(
-			$timestamp,
-			0, 2, 2,
-			$precision,
-			TimeValue::CALENDAR_GREGORIAN
-		);
-		$unixHigherTimestampAfter2 = $timeValueCalculator->getHigherTimestamp( $timeValueAfter2 );
-		if ( $unixTimestampAsIs > -10000000000000 && $unixTimestampAsIs < 10000000000000 ) {
-			$this->assertLessThan( $unixHigherTimestampAfter2, $unixHigherTimestampAfter1 );
-		} else {
-			$this->assertLessThanOrEqual( $unixHigherTimestampAfter2, $unixHigherTimestampAfter1 );
+	}
+
+	/**
+	 * Check that higher precisions of the same timestamp always correspond to greater or equal
+	 * getLowerTimestamp() values than lower precisions.
+	 *
+	 * @dataProvider provideTimeValuesHighVsLowPrecisions
+	 */
+	public function testGetLowerTimestampsHighVsLowPrecisions() {
+		$timeValueCalculator = new TimeValueCalculator();
+		$timeValuesHighVsLowPrecisions = func_get_args();
+		foreach ( $timeValuesHighVsLowPrecisions as $timeValueHighVsLowPrecision ) {
+			$timestampHighPrecision = $timeValueCalculator->getLowerTimestamp( $timeValueHighVsLowPrecision[0] );
+			$timestampLowPrecision = $timeValueCalculator->getLowerTimestamp( $timeValueHighVsLowPrecision[1] );
+			$this->assertGreaterThanOrEqual( $timestampLowPrecision, $timestampHighPrecision );
+		}
+	}
+
+	/**
+	 * Check that lower precisions of the same timestamp always correspond to greater or equal
+	 * getHigherTimestamp() values than higher precisions.
+	 *
+	 * @dataProvider provideTimeValuesHighVsLowPrecisions
+	 */
+	public function testGetHigherTimestampsHighVsLowPrecisions() {
+		$timeValueCalculator = new TimeValueCalculator();
+		$timeValuesHighVsLowPrecisions = func_get_args();
+		foreach ( $timeValuesHighVsLowPrecisions as $timeValueHighVsLowPrecision ) {
+			$timestampHighPrecision = $timeValueCalculator->getHigherTimestamp( $timeValueHighVsLowPrecision[0] );
+			$timestampLowPrecision = $timeValueCalculator->getHigherTimestamp( $timeValueHighVsLowPrecision[1] );
+			$this->assertGreaterThanOrEqual( $timestampHighPrecision, $timestampLowPrecision );
 		}
 	}
 
