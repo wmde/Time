@@ -4,6 +4,7 @@ namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
 use ValueParsers\IsoTimestampParser;
+use ValueParsers\ParseException;
 use ValueParsers\ParserOptions;
 use ValueParsers\YearMonthDayTimeParser;
 
@@ -16,7 +17,7 @@ use ValueParsers\YearMonthDayTimeParser;
  * @group ValueParsers
  *
  * @license GPL-2.0+
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  */
 class YearMonthDayTimeParserTest extends StringValueParserTest {
 
@@ -269,7 +270,7 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 	 */
 	public function testInvalidOptions( array $options ) {
 		$parser = new YearMonthDayTimeParser( null, new ParserOptions( $options ) );
-		$this->setExpectedException( 'ValueParsers\ParseException' );
+		$this->setExpectedException( ParseException::class );
 		$parser->parse( '2016-01-31' );
 	}
 

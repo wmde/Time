@@ -3,6 +3,7 @@
 namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
+use ValueParsers\MonthNameProvider;
 use ValueParsers\YearMonthTimeParser;
 
 /**
@@ -15,7 +16,7 @@ use ValueParsers\YearMonthTimeParser;
  *
  * @license GPL-2.0+
  * @author Addshore
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  */
 class YearMonthTimeParserTest extends StringValueParserTest {
 
@@ -25,7 +26,7 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 	 * @return YearMonthTimeParser
 	 */
 	protected function getInstance() {
-		$monthNameProvider = $this->getMockBuilder( 'ValueParsers\MonthNameProvider' )
+		$monthNameProvider = $this->getMockBuilder( MonthNameProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$monthNameProvider->expects( $this->once() )

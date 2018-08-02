@@ -12,7 +12,7 @@ use DataValues\TimeValue;
  *
  * @license GPL-2.0+
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  */
 class TimeValueTest extends DataValueTest {
 
@@ -22,7 +22,7 @@ class TimeValueTest extends DataValueTest {
 	 * @return string
 	 */
 	public function getClass() {
-		return 'DataValues\TimeValue';
+		return TimeValue::class;
 	}
 
 	public function validConstructorArgumentsProvider() {

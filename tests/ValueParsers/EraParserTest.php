@@ -14,7 +14,7 @@ use ValueParsers\EraParser;
  *
  * @license GPL-2.0+
  * @author Addshore
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  */
 class EraParserTest extends StringValueParserTest {
 

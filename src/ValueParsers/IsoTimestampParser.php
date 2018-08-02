@@ -4,7 +4,6 @@ namespace ValueParsers;
 
 use DataValues\IllegalValueException;
 use DataValues\TimeValue;
-use InvalidArgumentException;
 
 /**
  * ValueParser that parses various string representations of time values, in YMD ordered formats
@@ -20,7 +19,7 @@ use InvalidArgumentException;
  *
  * @license GPL-2.0+
  * @author Addshore
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  * @author Daniel Kinzler
  */
 class IsoTimestampParser extends StringValueParser {
@@ -73,15 +72,10 @@ class IsoTimestampParser extends StringValueParser {
 	/**
 	 * @param string $value
 	 *
-	 * @throws InvalidArgumentException
 	 * @throws ParseException
 	 * @return TimeValue
 	 */
 	protected function stringParse( $value ) {
-		if ( !is_string( $value ) ) {
-			throw new InvalidArgumentException( '$value must be a string' );
-		}
-
 		try {
 			$timeParts = $this->splitTimeString( $value );
 		} catch ( ParseException $ex ) {

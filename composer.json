@@ -10,7 +10,7 @@
 		"time"
 	],
 	"homepage": "https://github.com/DataValues/Time",
-	"license": "GPL-2.0+",
+	"license": "GPL-2.0-or-later",
 	"authors": [
 		{
 			"name": "The Wikidata team",
@@ -22,7 +22,7 @@
 	},
 	"require": {
 		"php": ">=5.5.9",
-		"data-values/data-values": "~1.0|~0.1",
+		"data-values/data-values": "~2.0|~1.0|~0.1",
 		"data-values/interfaces": "~0.2.0",
 		"data-values/common": "~0.4.0|~0.3.0"
 	},

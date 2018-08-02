@@ -19,7 +19,7 @@ use ValueParsers\ValueParser;
  *
  * @license GPL-2.0+
  * @author Addshore
- * @author Thiemo Mättig
+ * @author Thiemo Kreuz
  */
 class PhpDateTimeParserTest extends StringValueParserTest {
 
@@ -42,7 +42,7 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 	 * @return ValueParser
 	 */
 	private function getEraParser() {
-		$mock = $this->getMock( 'ValueParsers\ValueParser' );
+		$mock = $this->getMock( ValueParser::class );
 
 		$mock->expects( $this->any() )
 			->method( 'parse' )
