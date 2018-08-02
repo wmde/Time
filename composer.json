@@ -31,9 +31,6 @@
 		"wikibase/wikibase-codesniffer": "^0.1.0"
 	},
 	"autoload": {
-		"files" : [
-			"Time.php"
-		],
 		"psr-0": {
 			"DataValues\\": "src",
 			"ValueFormatters\\": "src",
