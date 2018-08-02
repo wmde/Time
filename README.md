@@ -53,6 +53,7 @@ employees for the [Wikidata project](https://wikidata.org/).
 
 ### 1.0.0 (2018-08-02)
 
+* Removed `DATAVALUES_TIME_VERSION` constant
 * Allow installation together with DataValues 2.x
 
 ### 0.8.6 (2017-09-06)
