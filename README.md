@@ -8,7 +8,6 @@ It is part of the [DataValues set of libraries](https://github.com/DataValues).
 [![Build Status](https://secure.travis-ci.org/DataValues/Time.png?branch=master)](http://travis-ci.org/DataValues/Time)
 [![Code Coverage](https://scrutinizer-ci.com/g/DataValues/Time/badges/coverage.png?s=c5db7b37576dedaedd28d27a0e5fda2b79e86da6)](https://scrutinizer-ci.com/g/DataValues/Time/)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/DataValues/Time/badges/quality-score.png?s=3c66db1e59a8bf77f9e9a08760a92ca9c26538b9)](https://scrutinizer-ci.com/g/DataValues/Time/)
-[![Dependency Status](https://www.versioneye.com/php/data-values:time/badge.png)](https://www.versioneye.com/php/data-values:time)
 
 On [Packagist](https://packagist.org/packages/data-values/time):
 [![Latest Stable Version](https://poser.pugx.org/data-values/time/version.png)](https://packagist.org/packages/data-values/time)
@@ -47,10 +46,14 @@ via TravisCI, as a TravisCI configuration file is also provided in the root dire
 
 ## Authors
 
-DataValues Time has been written by the Wikidata team, as [Wikimedia Germany]
-(https://wikimedia.de) employees for the [Wikidata project](https://wikidata.org/).
+DataValues Time has been written by the Wikidata team, as [Wikimedia Germany](https://wikimedia.de/en)
+employees for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
+
+### 1.0.0 (2018-08-02)
+
+* Allow installation together with DataValues 2.x
 
 ### 0.8.6 (2017-09-06)
 
