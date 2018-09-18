@@ -51,6 +51,10 @@ employees for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
 
+### 1.0.1 (2018-09-18)
+
+* Parse and refuse invalid calendar option
+
 ### 1.0.0 (2018-08-02)
 
 * Removed `DATAVALUES_TIME_VERSION` constant
