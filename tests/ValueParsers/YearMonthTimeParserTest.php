@@ -35,6 +35,8 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 			->will( $this->returnValue( array(
 				'January' => 1,
 				'Jan' => 1,
+				// to test Unicode (it's Czech)
+				'Březen' => 3,
 				'April' => 4,
 				'June' => 6,
 			) ) );
@@ -95,6 +97,10 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 				array( '+0001-01-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 			'jan/1999' =>
 				array( '+1999-01-00T00:00:00Z' ),
+
+			// Unicode
+			'Březen 1999' => array( '+1999-03-00T00:00:00Z' ),
+			'březen 1999' => array( '+1999-03-00T00:00:00Z' ),
 
 			// use different date separators
 			'1-1999' =>
