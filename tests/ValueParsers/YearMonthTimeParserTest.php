@@ -59,6 +59,10 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 				array( '+2016-01-00T00:00:00Z' ),
 			' January 2016 ' =>
 				array( '+2016-01-00T00:00:00Z' ),
+			' January 2016 CE ' =>
+				array( '+2016-01-00T00:00:00Z' ),
+			' January 2016 BCE ' =>
+				array( '-2016-01-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 
 			// leading zeros
 			'1 00001999' =>
@@ -85,8 +89,16 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 				array( '+0001-01-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 			'1999 January' =>
 				array( '+1999-01-00T00:00:00Z' ),
+			'1999 January CE' =>
+				array( '+1999-01-00T00:00:00Z' ),
+			'1999 January BCE' =>
+				array( '-1999-01-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 			'January 1999' =>
 				array( '+1999-01-00T00:00:00Z' ),
+			'January 1999 CE' =>
+				array( '+1999-01-00T00:00:00Z' ),
+			'January 1999 BCE' =>
+				array( '-1999-01-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 			'January-1' =>
 				array( '+0001-01-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 			'JanuARY-1' =>
@@ -100,7 +112,9 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 
 			// Unicode
 			'Březen 1999' => array( '+1999-03-00T00:00:00Z' ),
+			'Březen 1999 BCE' => array( '-1999-03-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 			'březen 1999' => array( '+1999-03-00T00:00:00Z' ),
+			'březen 1999 BCE' => array( '-1999-03-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 
 			// use different date separators
 			'1-1999' =>
@@ -170,6 +184,11 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 		$argLists = parent::invalidInputProvider();
 
 		$invalid = array(
+			'',
+			' ',
+			'+',
+			'-',
+
 			// These are just wrong
 			'June June June',
 			'June June',
@@ -198,11 +217,13 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 			'1 June 20000',
 			'20000',
 			'-1998',
+			'1998 BCE',
 
-			// BCE is not supported yet
-			'April 1998 BCE',
-			'1998 April BCE',
-			'1998 BCE April',
+			// era in conjunction with sign
+			'April -1998 BCE',
+			'April -1998 CE',
+			'-1998 April BCE',
+			'-1998 April CE',
 		);
 
 		foreach ( $invalid as $value ) {
