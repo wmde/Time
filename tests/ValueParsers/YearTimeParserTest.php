@@ -4,6 +4,7 @@ namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
 use ValueParsers\EraParser;
+use ValueParsers\ParseException;
 use ValueParsers\ParserOptions;
 use ValueParsers\YearTimeParser;
 
@@ -15,7 +16,7 @@ use ValueParsers\YearTimeParser;
  * @group TimeParsers
  * @group ValueParsers
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Addshore
  * @author Thiemo Kreuz
  */
@@ -161,12 +162,10 @@ class YearTimeParserTest extends StringValueParserTest {
 		return $argLists;
 	}
 
-	/**
-	 * @expectedException \ValueParsers\ParseException
-	 * @expectedExceptionMessage Failed to parse year
-	 */
 	public function testParseExceptionMessage() {
 		$parser = $this->getInstance();
+		$this->expectException( ParseException::class );
+		$this->expectExceptionMessage( 'Failed to parse year' );
 		$parser->parse( 'ju5t 1nval1d' );
 	}
 

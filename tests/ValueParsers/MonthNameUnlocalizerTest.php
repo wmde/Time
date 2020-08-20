@@ -2,7 +2,7 @@
 
 namespace ValueParsers\Test;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use ValueParsers\MonthNameUnlocalizer;
 
 /**
@@ -12,11 +12,11 @@ use ValueParsers\MonthNameUnlocalizer;
  * @group DataValueExtensions
  * @group ValueParsers
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Addshore
  * @author Thiemo Kreuz
  */
-class MonthNameUnlocalizerTest extends PHPUnit_Framework_TestCase {
+class MonthNameUnlocalizerTest extends TestCase {
 
 	/**
 	 * @dataProvider localizedDateProvider

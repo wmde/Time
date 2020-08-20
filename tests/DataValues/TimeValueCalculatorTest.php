@@ -4,6 +4,7 @@ namespace DataValues\Tests;
 
 use DataValues\TimeValue;
 use DataValues\TimeValueCalculator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers DataValues\TimeValueCalculator
@@ -11,17 +12,17 @@ use DataValues\TimeValueCalculator;
  * @group DataValue
  * @group DataValueExtensions
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Thiemo Kreuz
  */
-class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
+class TimeValueCalculatorTest extends TestCase {
 
 	/**
 	 * @var TimeValueCalculator
 	 */
 	private $calculator;
 
-	protected function setUp() {
+	protected function setUp(): void {
 		$this->calculator = new TimeValueCalculator();
 	}
 
