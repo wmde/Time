@@ -51,6 +51,10 @@ employees for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
 
+### 1.0.2 (2020-08-20)
+
+* Fixed parsing unicode month names
+
 ### 1.0.1 (2018-09-18)
 
 * Parse and refuse invalid calendar option
