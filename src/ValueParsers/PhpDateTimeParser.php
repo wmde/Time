@@ -165,10 +165,10 @@ class PhpDateTimeParser extends StringValueParser {
 		// documentation of the extraction heuristics up to date!
 		$patterns = array(
 			// Check if the string contains a number longer than 2 digits or bigger than 59.
-			'/(?<!\d)('           // can not be prepended by a digit
+			'/(?<!\d)('           // cannot be prepended by a digit
 				. '\d{3,}|'       // any number longer than 2 digits, or
 				. '[6-9]\d'       // any number bigger than 59
-				. ')(?!\d)/',     // can not be followed by a digit
+				. ')(?!\d)/',     // cannot be followed by a digit
 
 			// Check if the first number in the string is bigger than 31.
 			'/^\D*(3[2-9]|[4-9]\d)/',
