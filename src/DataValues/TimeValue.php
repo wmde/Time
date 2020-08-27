@@ -253,11 +253,11 @@ class TimeValue extends DataValueObject {
 		}
 
 		if ( $month < 1 && $day > 0 ) {
-			throw new IllegalValueException( 'Can not have a day with no month' );
+			throw new IllegalValueException( 'Cannot have a day with no month' );
 		}
 
 		if ( $day < 1 && ( $hour > 0 || $minute > 0 || $second > 0 ) ) {
-			throw new IllegalValueException( 'Can not have hour, minute or second with no day' );
+			throw new IllegalValueException( 'Cannot have hour, minute or second with no day' );
 		}
 
 		// Warning, never cast the year to integer to not run into 32-bit integer overflows!
@@ -394,7 +394,7 @@ class TimeValue extends DataValueObject {
 	 *  newFromArrayValue). Instead, use DataValue builder callbacks in @see DataValueDeserializer.
 	 *
 	 * @param mixed $data Warning! Even if this is expected to be a value as returned by
-	 *  @see getArrayValue, callers of this specific newFromArray implementation can not guarantee
+	 *  @see getArrayValue, callers of this specific newFromArray implementation cannot guarantee
 	 *  this. This is not even guaranteed to be an array!
 	 *
 	 * @throws IllegalValueException if $data is not in the expected format. Subclasses of

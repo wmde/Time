@@ -137,11 +137,11 @@ class IsoTimestampParser extends StringValueParser {
 		}
 
 		if ( $month < 1 && $day > 0 ) {
-			throw new ParseException( 'Can not have a day with no month' );
+			throw new ParseException( 'Cannot have a day with no month' );
 		}
 
 		if ( $day < 1 && ( $hour > 0 || $minute > 0 || $second > 0 ) ) {
-			throw new ParseException( 'Can not have hour, minute or second with no day' );
+			throw new ParseException( 'Cannot have hour, minute or second with no day' );
 		}
 
 		$sign = str_replace( "\xE2\x88\x92", '-', $sign );
@@ -163,7 +163,7 @@ class IsoTimestampParser extends StringValueParser {
 		} elseif ( $timeParts[4] > 0 ) {
 			$precision = TimeValue::PRECISION_HOUR;
 		} elseif ( $timeParts[3] > 0
-			// Can not have a day with no month, fall back to year precision.
+			// Cannot have a day with no month, fall back to year precision.
 			&& $timeParts[2] > 0
 		) {
 			$precision = TimeValue::PRECISION_DAY;

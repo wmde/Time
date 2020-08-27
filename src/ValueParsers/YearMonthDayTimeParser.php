@@ -6,7 +6,7 @@ use DataValues\TimeValue;
 
 /**
  * A straight time parser with a strict rule set that only accepts YMD, DMY, MDY and YDM formatted
- * dates if they can not be confused with an other format.
+ * dates if they cannot be confused with an other format.
  *
  * @since 0.8.1
  *
@@ -70,21 +70,21 @@ class YearMonthDayTimeParser extends StringValueParser {
 	 */
 	private function parseYearMonthDay( $value ) {
 		if ( !preg_match( '/^\D*?(-?\d+)\D+(\d+)\D+?(-?\d+)\D*$/', $value, $matches ) ) {
-			throw new ParseException( 'Can not find three numbers' );
+			throw new ParseException( 'Cannot find three numbers' );
 		}
 
-		// A 32 in the first spot can not be confused with anything.
+		// A 32 in the first spot cannot be confused with anything.
 		if ( $matches[1] < 1 || $matches[1] > 31 ) {
 			if ( $matches[3] > 12 || $matches[2] == $matches[3] ) {
 				list( , $signedYear, $month, $day ) = $matches;
 			} elseif ( $matches[2] > 12 ) {
 				list( , $signedYear, $day, $month ) = $matches;
 			} else {
-				throw new ParseException( 'Can not distinguish YDM and YMD' );
+				throw new ParseException( 'Cannot distinguish YDM and YMD' );
 			}
 		} elseif ( $matches[3] < 1 || $matches[3] > 59
-			// A 59 in the third spot may be a second, but can not if the first number is > 24.
-			// A 31 in the last spot may be the day, but can not if it's negative.
+			// A 59 in the third spot may be a second, but cannot if the first number is > 24.
+			// A 31 in the last spot may be the day, but cannot if it's negative.
 			|| ( abs( $matches[1] ) > 24 && $matches[3] > 31 )
 		) {
 			if ( $matches[1] > 12 || $matches[1] == $matches[2] ) {
@@ -92,11 +92,11 @@ class YearMonthDayTimeParser extends StringValueParser {
 			} elseif ( $matches[2] > 12 ) {
 				list( , $month, $day, $signedYear ) = $matches;
 			} else {
-				throw new ParseException( 'Can not distinguish DMY and MDY' );
+				throw new ParseException( 'Cannot distinguish DMY and MDY' );
 			}
 		} else {
 			// Formats DYM and MYD do not exist.
-			throw new ParseException( 'Can not identify year' );
+			throw new ParseException( 'Cannot identify year' );
 		}
 
 		return array( $signedYear, $month, $day );

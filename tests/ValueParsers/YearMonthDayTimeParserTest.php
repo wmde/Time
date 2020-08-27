@@ -148,7 +148,7 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 			'12 32 32',
 			'32 32 32',
 
-			// Year can be identified, but month and day can not be distinguished.
+			// Year can be identified, but month and day cannot be distinguished.
 			'32 2 1',
 			'2015-12-11',
 			'1 2 32',

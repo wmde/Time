@@ -250,8 +250,8 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				TimeValue::PRECISION_DAY,
 				$julian
 			),
-			// 32 can not be confused with anything. Can't be day or month. Can't be minute or
-			// second because a time can not start with minute or second.
+			// 32 cannot be confused with anything. Can't be day or month. Can't be minute or
+			// second because a time cannot start with minute or second.
 			'32-01-01' => array(
 				'+0032-01-01T00:00:00Z',
 				TimeValue::PRECISION_DAY,
@@ -455,14 +455,14 @@ class IsoTimestampParserTest extends ValueParserTestBase {
 				$gregorian,
 				TimeValue::PRECISION_YEAR1G
 			),
-			'Option can not increase year precision' => array(
+			'Option cannot increase year precision' => array(
 				'2016-00-00',
 				array( IsoTimestampParser::OPT_PRECISION => TimeValue::PRECISION_MONTH ),
 				'+2016-00-00T00:00:00Z',
 				$gregorian,
 				TimeValue::PRECISION_YEAR
 			),
-			'Option can not increase month precision' => array(
+			'Option cannot increase month precision' => array(
 				'2016-01-00',
 				array( IsoTimestampParser::OPT_PRECISION => TimeValue::PRECISION_DAY ),
 				'+2016-01-00T00:00:00Z',
