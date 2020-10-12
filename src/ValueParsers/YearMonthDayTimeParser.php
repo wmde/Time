@@ -15,7 +15,7 @@ use DataValues\TimeValue;
  */
 class YearMonthDayTimeParser extends StringValueParser {
 
-	const FORMAT_NAME = 'year-month-day';
+	private const FORMAT_NAME = 'year-month-day';
 
 	/**
 	 * @var ValueParser

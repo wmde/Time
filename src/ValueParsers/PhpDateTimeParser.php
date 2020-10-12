@@ -29,7 +29,7 @@ use Exception;
  */
 class PhpDateTimeParser extends StringValueParser {
 
-	const FORMAT_NAME = 'php-date-time';
+	private const FORMAT_NAME = 'php-date-time';
 
 	/**
 	 * @var MonthNameUnlocalizer

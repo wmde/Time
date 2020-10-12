@@ -14,17 +14,17 @@ namespace ValueParsers;
  */
 class EraParser extends StringValueParser {
 
-	const FORMAT_NAME = 'era';
+	private const FORMAT_NAME = 'era';
 
 	/**
 	 * @since 0.8
 	 */
-	const BEFORE_COMMON_ERA = '-';
+	public const BEFORE_COMMON_ERA = '-';
 
 	/**
 	 * @since 0.8
 	 */
-	const COMMON_ERA = '+';
+	public const COMMON_ERA = '+';
 
 	/**
 	 * @param string $value
