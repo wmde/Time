@@ -43,6 +43,7 @@
 		}
 	},
 	"scripts": {
+		"fix": "phpcbf",
 		"test": [
 			"composer validate --no-interaction",
 			"phpcs -p -s",
