@@ -16,7 +16,7 @@ use ValueParsers\YearMonthDayTimeParser;
  * @group TimeParsers
  * @group ValueParsers
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Thiemo Kreuz
  */
 class YearMonthDayTimeParserTest extends StringValueParserTest {

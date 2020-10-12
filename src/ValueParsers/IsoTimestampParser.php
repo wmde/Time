@@ -17,7 +17,7 @@ use DataValues\TimeValue;
  *
  * @since 0.7 renamed from TimeParser to IsoTimestampParser.
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Addshore
  * @author Thiemo Kreuz
  * @author Daniel Kinzler

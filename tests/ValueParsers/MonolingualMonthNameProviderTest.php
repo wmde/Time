@@ -12,7 +12,7 @@ use ValueParsers\MonolingualMonthNameProvider;
  * @group DataValueExtensions
  * @group ValueParsers
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Thiemo Kreuz
  */
 class MonolingualMonthNameProviderTest extends PHPUnit_Framework_TestCase {
