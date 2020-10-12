@@ -14,14 +14,14 @@ use DataValues\TimeValueCalculator;
  * @license GPL-2.0+
  * @author Thiemo Kreuz
  */
-class TimeValueCalculatorTest extends \PHPUnit_Framework_TestCase {
+class TimeValueCalculatorTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @var TimeValueCalculator
 	 */
 	private $calculator;
 
-	protected function setUp() {
+	protected function setUp() : void {
 		$this->calculator = new TimeValueCalculator();
 	}
 

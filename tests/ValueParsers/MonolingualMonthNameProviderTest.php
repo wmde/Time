@@ -2,7 +2,6 @@
 
 namespace ValueParsers\Test;
 
-use PHPUnit_Framework_TestCase;
 use ValueParsers\MonolingualMonthNameProvider;
 
 /**
@@ -15,7 +14,7 @@ use ValueParsers\MonolingualMonthNameProvider;
  * @license GPL-2.0+
  * @author Thiemo Kreuz
  */
-class MonolingualMonthNameProviderTest extends PHPUnit_Framework_TestCase {
+class MonolingualMonthNameProviderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetLocalizedMonthNames() {
 		$instance = new MonolingualMonthNameProvider( array( 1 => 'January' ) );

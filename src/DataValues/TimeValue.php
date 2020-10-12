@@ -264,7 +264,7 @@ class TimeValue extends DataValueObject {
 		$year = ltrim( $year, '0' );
 		$year = str_pad( $year, 4, '0', STR_PAD_LEFT );
 
-		return $sign . $year . '-' . $month . '-' . $day . 'T' . $hour . ':' . $minute .':' . $second . 'Z';
+		return $sign . $year . '-' . $month . '-' . $day . 'T' . $hour . ':' . $minute . ':' . $second . 'Z';
 	}
 
 	/**
