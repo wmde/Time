@@ -7,7 +7,7 @@ namespace ValueParsers;
  *
  * @since 0.8.4
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Thiemo Kreuz
  */
 class MonolingualMonthNameProvider implements MonthNameProvider {

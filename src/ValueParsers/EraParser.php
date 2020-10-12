@@ -8,7 +8,7 @@ namespace ValueParsers;
  *
  * @since 0.8
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Addshore
  * @author Thiemo Kreuz
  */

@@ -23,7 +23,7 @@ use Exception;
  *
  * @since 0.7
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Addshore
  * @author Thiemo Kreuz
  */

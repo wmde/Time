@@ -11,7 +11,7 @@ use DataValues\TimeValueCalculator;
  * @group DataValue
  * @group DataValueExtensions
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Thiemo Kreuz
  */
 class TimeValueCalculatorTest extends \PHPUnit\Framework\TestCase {
