@@ -12,24 +12,24 @@ use DataValues\TimeValue;
  *
  * @since 0.8.4
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Addshore
  * @author Thiemo Kreuz
  */
 class YearTimeParser extends StringValueParser {
 
-	const FORMAT_NAME = 'year';
+	private const FORMAT_NAME = 'year';
 
 	/**
 	 * Option to allow parsing of years with localized digit group separators. For example, the
 	 * English year -10,000 (with a comma) is written as -10.000 (with a dot) in German.
 	 */
-	const OPT_DIGIT_GROUP_SEPARATOR = 'digitGroupSeparator';
+	public const OPT_DIGIT_GROUP_SEPARATOR = 'digitGroupSeparator';
 
 	/**
 	 * Default, canonical digit group separator, as in the year -10,000.
 	 */
-	const CANONICAL_DIGIT_GROUP_SEPARATOR = ',';
+	public const CANONICAL_DIGIT_GROUP_SEPARATOR = ',';
 
 	/**
 	 * @var ValueParser

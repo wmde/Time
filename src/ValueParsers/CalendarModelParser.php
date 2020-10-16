@@ -9,13 +9,13 @@ use DataValues\TimeValue;
  *
  * @since 0.2
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Addshore
  * @author Thiemo Kreuz
  */
 class CalendarModelParser extends StringValueParser {
 
-	const FORMAT_NAME = 'calendar-model';
+	private const FORMAT_NAME = 'calendar-model';
 
 	/**
 	 * Option to provide localized calendar model names for unlocalization. Must be an array mapping
@@ -23,7 +23,7 @@ class CalendarModelParser extends StringValueParser {
 	 *
 	 * @see TimeFormatter::OPT_CALENDARNAMES
 	 */
-	const OPT_CALENDAR_MODEL_URIS = 'calendar-model-uris';
+	public const OPT_CALENDAR_MODEL_URIS = 'calendar-model-uris';
 
 	/**
 	 * @deprecated Do not use.
@@ -33,7 +33,7 @@ class CalendarModelParser extends StringValueParser {
 	 *
 	 * TODO: How crucial is it that this regex is in sync with the list below?
 	 */
-	const MODEL_PATTERN = '(Gregorian|Julian|)';
+	public const MODEL_PATTERN = '(Gregorian|Julian|)';
 
 	/**
 	 * @param ParserOptions|null $options

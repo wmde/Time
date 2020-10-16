@@ -8,7 +8,7 @@ namespace DataValues;
  *
  * @since 0.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Thiemo Kreuz
  */
@@ -17,109 +17,109 @@ class TimeValue extends DataValueObject {
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR1G instead
 	 */
-	const PRECISION_Ga = self::PRECISION_YEAR1G;
+	public const PRECISION_Ga = self::PRECISION_YEAR1G;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR100M instead
 	 */
-	const PRECISION_100Ma = self::PRECISION_YEAR100M;
+	public const PRECISION_100Ma = self::PRECISION_YEAR100M;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR10M instead
 	 */
-	const PRECISION_10Ma = self::PRECISION_YEAR10M;
+	public const PRECISION_10Ma = self::PRECISION_YEAR10M;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR1M instead
 	 */
-	const PRECISION_Ma = self::PRECISION_YEAR1M;
+	public const PRECISION_Ma = self::PRECISION_YEAR1M;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR100K instead
 	 */
-	const PRECISION_100ka = self::PRECISION_YEAR100K;
+	public const PRECISION_100ka = self::PRECISION_YEAR100K;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR10K instead
 	 */
-	const PRECISION_10ka = self::PRECISION_YEAR10K;
+	public const PRECISION_10ka = self::PRECISION_YEAR10K;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR1K instead
 	 */
-	const PRECISION_ka = self::PRECISION_YEAR1K;
+	public const PRECISION_ka = self::PRECISION_YEAR1K;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR100 instead
 	 */
-	const PRECISION_100a = self::PRECISION_YEAR100;
+	public const PRECISION_100a = self::PRECISION_YEAR100;
 
 	/**
 	 * @deprecated since 0.8, use PRECISION_YEAR10 instead
 	 */
-	const PRECISION_10a = self::PRECISION_YEAR10;
+	public const PRECISION_10a = self::PRECISION_YEAR10;
 
 	/**
 	 * @since 0.8
 	 */
-	const PRECISION_YEAR1G = 0;
+	public const PRECISION_YEAR1G = 0;
 
 	/**
 	 * @since 0.8
 	 */
-	const PRECISION_YEAR100M = 1;
+	public const PRECISION_YEAR100M = 1;
 
 	/**
 	 * @since 0.8
 	 */
-	const PRECISION_YEAR10M = 2;
+	public const PRECISION_YEAR10M = 2;
 
 	/**
 	 * @since 0.8
 	 */
-	const PRECISION_YEAR1M = 3;
+	public const PRECISION_YEAR1M = 3;
 
 	/**
 	 * @since 0.8
 	 */
-	const PRECISION_YEAR100K = 4;
+	public const PRECISION_YEAR100K = 4;
 
 	/**
 	 * @since 0.8
 	 */
-	const PRECISION_YEAR10K = 5;
+	public const PRECISION_YEAR10K = 5;
 
 	/**
 	 * @since 0.8
 	 */
-	const PRECISION_YEAR1K = 6;
+	public const PRECISION_YEAR1K = 6;
 
 	/**
 	 * @since 0.8
 	 */
-	const PRECISION_YEAR100 = 7;
+	public const PRECISION_YEAR100 = 7;
 
 	/**
 	 * @since 0.8
 	 */
-	const PRECISION_YEAR10 = 8;
+	public const PRECISION_YEAR10 = 8;
 
-	const PRECISION_YEAR = 9;
-	const PRECISION_MONTH = 10;
-	const PRECISION_DAY = 11;
-	const PRECISION_HOUR = 12;
-	const PRECISION_MINUTE = 13;
-	const PRECISION_SECOND = 14;
+	public const PRECISION_YEAR = 9;
+	public const PRECISION_MONTH = 10;
+	public const PRECISION_DAY = 11;
+	public const PRECISION_HOUR = 12;
+	public const PRECISION_MINUTE = 13;
+	public const PRECISION_SECOND = 14;
 
 	/**
 	 * @since 0.7.1
 	 */
-	const CALENDAR_GREGORIAN = 'http://www.wikidata.org/entity/Q1985727';
+	public const CALENDAR_GREGORIAN = 'http://www.wikidata.org/entity/Q1985727';
 
 	/**
 	 * @since 0.7.1
 	 */
-	const CALENDAR_JULIAN = 'http://www.wikidata.org/entity/Q1985786';
+	public const CALENDAR_JULIAN = 'http://www.wikidata.org/entity/Q1985786';
 
 	/**
 	 * Timestamp describing a point in time. The actual format depends on the calendar model.
@@ -264,7 +264,7 @@ class TimeValue extends DataValueObject {
 		$year = ltrim( $year, '0' );
 		$year = str_pad( $year, 4, '0', STR_PAD_LEFT );
 
-		return $sign . $year . '-' . $month . '-' . $day . 'T' . $hour . ':' . $minute .':' . $second . 'Z';
+		return $sign . $year . '-' . $month . '-' . $day . 'T' . $hour . ':' . $minute . ':' . $second . 'Z';
 	}
 
 	/**

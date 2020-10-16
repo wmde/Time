@@ -12,7 +12,7 @@ use DataValues\TimeValue;
  *
  * @since 0.8.4
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Addshore
  * @author Thiemo Kreuz
  *
@@ -20,7 +20,7 @@ use DataValues\TimeValue;
  */
 class YearMonthTimeParser extends StringValueParser {
 
-	const FORMAT_NAME = 'year-month';
+	private const FORMAT_NAME = 'year-month';
 
 	/**
 	 * @var int[] Array mapping localized month names to month numbers (1 to 12).

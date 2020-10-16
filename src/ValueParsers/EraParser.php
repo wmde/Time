@@ -8,23 +8,23 @@ namespace ValueParsers;
  *
  * @since 0.8
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Addshore
  * @author Thiemo Kreuz
  */
 class EraParser extends StringValueParser {
 
-	const FORMAT_NAME = 'era';
+	private const FORMAT_NAME = 'era';
 
 	/**
 	 * @since 0.8
 	 */
-	const BEFORE_COMMON_ERA = '-';
+	public const BEFORE_COMMON_ERA = '-';
 
 	/**
 	 * @since 0.8
 	 */
-	const COMMON_ERA = '+';
+	public const COMMON_ERA = '+';
 
 	/**
 	 * @param string $value

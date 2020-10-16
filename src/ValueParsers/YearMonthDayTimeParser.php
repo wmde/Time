@@ -10,12 +10,12 @@ use DataValues\TimeValue;
  *
  * @since 0.8.1
  *
- * @license GPL-2.0+
+ * @license GPL-2.0-or-later
  * @author Thiemo Kreuz
  */
 class YearMonthDayTimeParser extends StringValueParser {
 
-	const FORMAT_NAME = 'year-month-day';
+	private const FORMAT_NAME = 'year-month-day';
 
 	/**
 	 * @var ValueParser
