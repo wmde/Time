@@ -2,6 +2,7 @@
 
 namespace ValueParsers\Test;
 
+use PHPUnit\Framework\TestCase;
 use ValueParsers\CalendarModelParser;
 use ValueParsers\ParserOptions;
 
@@ -15,7 +16,7 @@ use ValueParsers\ParserOptions;
  * @author Addshore
  * @author Thiemo Kreuz
  */
-class CalendarModelParserTest extends ValueParserTestBase {
+class CalendarModelParserTest extends TestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
