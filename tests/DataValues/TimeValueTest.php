@@ -3,6 +3,7 @@
 namespace DataValues\Tests;
 
 use DataValues\TimeValue;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers DataValues\TimeValue
@@ -14,7 +15,7 @@ use DataValues\TimeValue;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author Thiemo Kreuz
  */
-class TimeValueTest extends DataValueTest {
+class TimeValueTest extends TestCase {
 
 	/**
 	 * @see DataValueTest::getClass
@@ -228,49 +229,49 @@ class TimeValueTest extends DataValueTest {
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetTime( TimeValue $time, array $arguments ) {
 		$this->assertEquals( $arguments[0], $time->getTime() );
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetTimezone( TimeValue $time, array $arguments ) {
 		$this->assertEquals( $arguments[1], $time->getTimezone() );
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetBefore( TimeValue $time, array $arguments ) {
 		$this->assertEquals( $arguments[2], $time->getBefore() );
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetAfter( TimeValue $time, array $arguments ) {
 		$this->assertEquals( $arguments[3], $time->getAfter() );
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetPrecision( TimeValue $time, array $arguments ) {
 		$this->assertEquals( $arguments[4], $time->getPrecision() );
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetCalendarModel( TimeValue $time, array $arguments ) {
 		$this->assertEquals( $arguments[5], $time->getCalendarModel() );
 	}
 
 	/**
-	 * @dataProvider instanceProvider
+	 * @dataProvider DataValueTest::instanceProvider
 	 */
 	public function testGetValue( TimeValue $time, array $arguments ) {
 		$this->assertTrue( $time->equals( $time->getValue() ) );
