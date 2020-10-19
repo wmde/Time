@@ -3,6 +3,7 @@
 namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
+use PHPUnit\Framework\TestCase;
 use ValueParsers\IsoTimestampParser;
 use ValueParsers\MonthNameUnlocalizer;
 use ValueParsers\ParserOptions;
@@ -21,7 +22,7 @@ use ValueParsers\ValueParser;
  * @author Addshore
  * @author Thiemo Kreuz
  */
-class PhpDateTimeParserTest extends StringValueParserTest {
+class PhpDateTimeParserTest extends TestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
@@ -42,7 +43,7 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 	 * @return ValueParser
 	 */
 	private function getEraParser() {
-		$mock = $this->getMock( ValueParser::class );
+		$mock = $this->createMock( ValueParser::class );
 
 		$mock->expects( $this->any() )
 			->method( 'parse' )
@@ -260,7 +261,7 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = parent::invalidInputProvider();
+		$argLists = StringValueParserTest::invalidInputProvider();
 
 		$invalid = array(
 			'June June June',

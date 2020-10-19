@@ -3,6 +3,7 @@
 namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
+use PHPUnit\Framework\TestCase;
 use ValueParsers\MonthNameProvider;
 use ValueParsers\YearMonthTimeParser;
 
@@ -18,7 +19,7 @@ use ValueParsers\YearMonthTimeParser;
  * @author Addshore
  * @author Thiemo Kreuz
  */
-class YearMonthTimeParserTest extends StringValueParserTest {
+class YearMonthTimeParserTest extends TestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
@@ -167,7 +168,7 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = parent::invalidInputProvider();
+		$argLists = StringValueParserTest::invalidInputProvider();
 
 		$invalid = array(
 			// These are just wrong
