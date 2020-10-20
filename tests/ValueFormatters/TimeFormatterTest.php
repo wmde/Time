@@ -6,6 +6,7 @@ use DataValues\TimeValue;
 use PHPUnit\Framework\TestCase;
 use ValueFormatters\FormatterOptions;
 use ValueFormatters\TimeFormatter;
+use ValueFormatters\ValueFormatter;
 
 /**
  * @covers ValueFormatters\TimeFormatter
@@ -93,6 +94,29 @@ class TimeFormatterTest extends TestCase {
 		}
 
 		return $argLists;
+	}
+
+	/**
+	 * @dataProvider validProvider
+	 *
+	 * @since 0.1
+	 *
+	 * @param mixed $value
+	 * @param mixed $expected
+	 * @param FormatterOptions|null $options
+	 * @param ValueFormatter|null $formatter
+	 */
+	public function testValidFormat(
+		$value,
+		$expected,
+		FormatterOptions $options = null,
+		ValueFormatter $formatter = null
+	) {
+		if ( $formatter === null ) {
+			$formatter = $this->getInstance( $options );
+		}
+
+		$this->assertSame( $expected, $formatter->format( $value ) );
 	}
 
 }
