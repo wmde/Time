@@ -27,7 +27,7 @@ class TimeValueTest extends TestCase {
 		return TimeValue::class;
 	}
 
-		/**
+	/**
 	 * Creates and returns a new instance of the concrete class.
 	 *
 	 * @since 0.1
