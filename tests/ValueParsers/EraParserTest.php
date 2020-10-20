@@ -3,9 +3,6 @@
 namespace ValueParsers\Test;
 
 use ValueParsers\EraParser;
-use PHPUnit\Framework\TestCase;
-use ValueParsers\ParserOptions;
-use ValueParsers\ValueParser;
 
 /**
  * @covers ValueParsers\EraParser
@@ -19,7 +16,7 @@ use ValueParsers\ValueParser;
  * @author Addshore
  * @author Thiemo Kreuz
  */
-class EraParserTest extends TestCase {
+class EraParserTest extends ValueParserTestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
@@ -95,73 +92,5 @@ class EraParserTest extends TestCase {
 			array( '+100 Before Common Era' ),
 			array( '+100 Common Era' ),
 		);
-	}
-
-	public function testSetAndGetOptions() {
-		$parser = $this->getInstance();
-
-		$parser->setOptions( new ParserOptions() );
-
-		$this->assertEquals( new ParserOptions(), $parser->getOptions() );
-
-		$options = new ParserOptions();
-		$options->setOption( '~=[,,_,,]:3', '~=[,,_,,]:3' );
-
-		$parser->setOptions( $options );
-
-		$this->assertEquals( $options, $parser->getOptions() );
-	}
-
-	/**
-	 * @since 0.1
-	 *
-	 * @dataProvider validInputProvider
-	 * @param mixed $value
-	 * @param mixed $expected
-	 * @param ValueParser|null $parser
-	 */
-	public function testParseWithValidInputs( $value, $expected, ValueParser $parser = null ) {
-		if ( $parser === null ) {
-			$parser = $this->getInstance();
-		}
-
-		$this->assertSmartEquals( $expected, $parser->parse( $value ) );
-	}
-
-	/**
-	 * @param DataValue|mixed $expected
-	 * @param DataValue|mixed $actual
-	 */
-	private function assertSmartEquals( $expected, $actual ) {
-		if ( $this->requireDataValue() || $expected instanceof Comparable ) {
-			if ( $expected instanceof DataValue && $actual instanceof DataValue ) {
-				$msg = "testing equals():\n"
-					. preg_replace( '/\s+/', ' ', print_r( $actual->toArray(), true ) ) . " should equal\n"
-					. preg_replace( '/\s+/', ' ', print_r( $expected->toArray(), true ) );
-			} else {
-				$msg = 'testing equals()';
-			}
-
-			$this->assertTrue( $expected->equals( $actual ), $msg );
-		}
-		else {
-			$this->assertEquals( $expected, $actual );
-		}
-	}
-
-	/**
-	 * @since 0.1
-	 *
-	 * @dataProvider invalidInputProvider
-	 * @param mixed $value
-	 * @param ValueParser|null $parser
-	 */
-	public function testParseWithInvalidInputs( $value, ValueParser $parser = null ) {
-		if ( $parser === null ) {
-			$parser = $this->getInstance();
-		}
-
-		$this->expectException( 'ValueParsers\ParseException' );
-		$parser->parse( $value );
 	}
 }

@@ -37,6 +37,11 @@
 			"ValueParsers\\": "src"
 		}
 	},
+	"autoload-dev": {
+		"classmap": [
+			"tests/ValueParsers"
+		]
+	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "1.0.x-dev"
