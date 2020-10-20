@@ -3,7 +3,6 @@
 namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
-use PHPUnit\Framework\TestCase;
 use ValueParsers\EraParser;
 use ValueParsers\ParseException;
 use ValueParsers\ParserOptions;
@@ -21,7 +20,7 @@ use ValueParsers\YearTimeParser;
  * @author Addshore
  * @author Thiemo Kreuz
  */
-class YearTimeParserTest extends TestCase {
+class YearTimeParserTest extends ValueParserTestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
@@ -125,7 +124,7 @@ class YearTimeParserTest extends TestCase {
 	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = StringValueParserTest::invalidInputProvider();
+		$argLists = parent::NON_VALID_CASES;
 
 		$invalid = array(
 			// These are just wrong

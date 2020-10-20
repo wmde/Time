@@ -179,14 +179,7 @@ class YearMonthDayTimeParserTest extends ValueParserTestCase {
 			'2015-012-31',
 		);
 
-		$cases = [
-			array( true ),
-			array( false ),
-			array( null ),
-			array( 4.2 ),
-			array( array() ),
-			array( 42 )
-		];
+		$cases = parent::NON_VALID_CASES;
 
 		foreach ( $invalid as $value ) {
 			$cases[] = array( $value );

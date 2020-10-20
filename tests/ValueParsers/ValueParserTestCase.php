@@ -21,6 +21,15 @@ use ValueParsers\ValueParser;
  */
 abstract class ValueParserTestCase extends TestCase {
 
+	protected const NON_VALID_CASES = [
+		array( true ),
+		array( false ),
+		array( null ),
+		array( 4.2 ),
+		array( array() ),
+		array( 42 )
+	];
+
 	/**
 	 * @since 0.1
 	 *

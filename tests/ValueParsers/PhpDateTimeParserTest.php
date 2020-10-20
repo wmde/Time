@@ -3,7 +3,6 @@
 namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
-use PHPUnit\Framework\TestCase;
 use ValueParsers\IsoTimestampParser;
 use ValueParsers\MonthNameUnlocalizer;
 use ValueParsers\ParserOptions;
@@ -22,7 +21,7 @@ use ValueParsers\ValueParser;
  * @author Addshore
  * @author Thiemo Kreuz
  */
-class PhpDateTimeParserTest extends TestCase {
+class PhpDateTimeParserTest extends ValueParserTestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
@@ -261,7 +260,7 @@ class PhpDateTimeParserTest extends TestCase {
 	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = StringValueParserTest::invalidInputProvider();
+		$argLists = parent::NON_VALID_CASES;
 
 		$invalid = array(
 			'June June June',

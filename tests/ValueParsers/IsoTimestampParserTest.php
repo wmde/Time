@@ -3,7 +3,6 @@
 namespace ValueParsers\Test;
 
 use DataValues\TimeValue;
-use PHPUnit\Framework\TestCase;
 use ValueParsers\IsoTimestampParser;
 use ValueParsers\ParseException;
 use ValueParsers\ParserOptions;
@@ -18,7 +17,7 @@ use ValueParsers\ParserOptions;
  * @author Addshore
  * @author Thiemo Kreuz
  */
-class IsoTimestampParserTest extends TestCase {
+class IsoTimestampParserTest extends ValueParserTestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
