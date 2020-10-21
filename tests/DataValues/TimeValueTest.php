@@ -2,6 +2,7 @@
 
 namespace DataValues\Tests;
 
+use DataValues\IllegalValueException;
 use DataValues\TimeValue;
 use PHPUnit\Framework\TestCase;
 
@@ -223,6 +224,14 @@ class TimeValueTest extends TestCase {
 				'http://nyan.cat/original.php'
 			),
 		);
+	}
+
+	/**
+	 * @dataProvider invalidConstructorArgumentsProvider
+	 */
+	public function testConstructorInvalid( $timestamp, $timezone, $before, $after, $precision, $calendarModel ) {
+		$this->expectException( IllegalValueException::class );
+		new TimeValue( $timestamp, $timezone, $before, $after, $precision, $calendarModel );
 	}
 
 	/**
