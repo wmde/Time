@@ -4,7 +4,6 @@ namespace DataValues\Tests;
 
 use DataValues\TimeValue;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 
 /**
  * @covers DataValues\TimeValue
@@ -18,46 +17,10 @@ use ReflectionClass;
  */
 class TimeValueTest extends TestCase {
 
-	/**
-	 * @see DataValueTest::getClass
-	 *
-	 * @return string
-	 */
-	public function getClass() {
-		return TimeValue::class;
-	}
-
-	/**
-	 * Creates and returns a new instance of the concrete class.
-	 *
-	 * @since 0.1
-	 *
-	 * @return mixed
-	 */
-	public function newInstance() {
-		$reflector = new ReflectionClass( $this->getClass() );
-		$args = func_get_args();
-		$instance = $reflector->newInstanceArgs( $args );
-		return $instance;
-	}
-
-	/**
-	 * @since 0.1
-	 *
-	 * @return array [instance, constructor args]
-	 */
 	public function instanceProvider() {
-		$instanceBuilder = [ $this, 'newInstance' ];
-
-		return array_map(
-			function ( array $args ) use ( $instanceBuilder ) {
-				return [
-					call_user_func_array( $instanceBuilder, $args ),
-					$args
-				];
-			},
-			$this->validConstructorArgumentsProvider()
-		);
+		foreach ( $this->validConstructorArgumentsProvider() as $key => $args ) {
+			yield $key => [ new TimeValue( ...$args ), $args ];
+		}
 	}
 
 	public function validConstructorArgumentsProvider() {
