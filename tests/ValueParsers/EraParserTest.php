@@ -16,7 +16,7 @@ use ValueParsers\EraParser;
  * @author Addshore
  * @author Thiemo Kreuz
  */
-class EraParserTest extends StringValueParserTest {
+class EraParserTest extends ValueParserTestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
@@ -93,5 +93,4 @@ class EraParserTest extends StringValueParserTest {
 			array( '+100 Common Era' ),
 		);
 	}
-
 }

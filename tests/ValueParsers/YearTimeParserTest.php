@@ -20,7 +20,7 @@ use ValueParsers\YearTimeParser;
  * @author Addshore
  * @author Thiemo Kreuz
  */
-class YearTimeParserTest extends StringValueParserTest {
+class YearTimeParserTest extends ValueParserTestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
@@ -124,7 +124,7 @@ class YearTimeParserTest extends StringValueParserTest {
 	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = parent::invalidInputProvider();
+		$argLists = parent::NON_VALID_CASES;
 
 		$invalid = array(
 			// These are just wrong
@@ -164,7 +164,7 @@ class YearTimeParserTest extends StringValueParserTest {
 
 	public function testParseExceptionMessage() {
 		$parser = $this->getInstance();
-		$this->setExpectedException( ParseException::class, 'Failed to parse year' );
+		$this->expectException( ParseException::class );
 		$parser->parse( 'ju5t 1nval1d' );
 	}
 

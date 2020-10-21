@@ -18,7 +18,7 @@ use ValueParsers\YearMonthTimeParser;
  * @author Addshore
  * @author Thiemo Kreuz
  */
-class YearMonthTimeParserTest extends StringValueParserTest {
+class YearMonthTimeParserTest extends ValueParserTestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
@@ -167,7 +167,7 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = parent::invalidInputProvider();
+		$argLists = parent::NON_VALID_CASES;
 
 		$invalid = array(
 			// These are just wrong

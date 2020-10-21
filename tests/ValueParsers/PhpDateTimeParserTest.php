@@ -21,7 +21,7 @@ use ValueParsers\ValueParser;
  * @author Addshore
  * @author Thiemo Kreuz
  */
-class PhpDateTimeParserTest extends StringValueParserTest {
+class PhpDateTimeParserTest extends ValueParserTestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
@@ -42,7 +42,7 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 	 * @return ValueParser
 	 */
 	private function getEraParser() {
-		$mock = $this->getMock( ValueParser::class );
+		$mock = $this->createMock( ValueParser::class );
 
 		$mock->expects( $this->any() )
 			->method( 'parse' )
@@ -260,7 +260,7 @@ class PhpDateTimeParserTest extends StringValueParserTest {
 	 * @see StringValueParserTest::invalidInputProvider
 	 */
 	public function invalidInputProvider() {
-		$argLists = parent::invalidInputProvider();
+		$argLists = parent::NON_VALID_CASES;
 
 		$invalid = array(
 			'June June June',

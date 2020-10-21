@@ -15,7 +15,7 @@ use ValueParsers\ParserOptions;
  * @author Addshore
  * @author Thiemo Kreuz
  */
-class CalendarModelParserTest extends ValueParserTestBase {
+class CalendarModelParserTest extends ValueParserTestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance

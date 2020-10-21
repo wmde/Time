@@ -19,7 +19,7 @@ use ValueParsers\YearMonthDayTimeParser;
  * @license GPL-2.0-or-later
  * @author Thiemo Kreuz
  */
-class YearMonthDayTimeParserTest extends StringValueParserTest {
+class YearMonthDayTimeParserTest extends ValueParserTestCase {
 
 	/**
 	 * @see ValueParserTestBase::getInstance
@@ -179,7 +179,7 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 			'2015-012-31',
 		);
 
-		$cases = parent::invalidInputProvider();
+		$cases = parent::NON_VALID_CASES;
 
 		foreach ( $invalid as $value ) {
 			$cases[] = array( $value );
@@ -276,7 +276,7 @@ class YearMonthDayTimeParserTest extends StringValueParserTest {
 	 */
 	public function testInvalidOptions( array $options ) {
 		$parser = new YearMonthDayTimeParser( null, new ParserOptions( $options ) );
-		$this->setExpectedException( ParseException::class );
+		$this->expectException( ParseException::class );
 		$parser->parse( '2016-01-31' );
 	}
 
