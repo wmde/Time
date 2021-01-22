@@ -42,7 +42,7 @@ class YearTimeParserTest extends ValueParserTestCase {
 			->method( 'parse' )
 			->with( $this->isType( 'string' ) )
 			->will( $this->returnCallback(
-				function( $value ) {
+				function ( $value ) {
 					$sign = '+';
 					// Tiny parser that supports a single negative sign only
 					if ( $value[0] === '-' ) {
