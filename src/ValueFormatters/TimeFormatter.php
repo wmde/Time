@@ -14,7 +14,7 @@ use InvalidArgumentException;
  * @license GPL-2.0-or-later
  * @author H. Snater < mediawiki@snater.com >
  */
-class TimeFormatter extends ValueFormatterBase {
+class TimeFormatter implements ValueFormatter {
 
 	/**
 	 * @deprecated since 0.7.1, use TimeValue::CALENDAR_GREGORIAN instead
@@ -40,15 +40,19 @@ class TimeFormatter extends ValueFormatterBase {
 	public const OPT_TIME_ISO_FORMATTER = 'time iso formatter';
 
 	/**
-	 * @see ValueFormatterBase::__construct
+	 * @var FormatterOptions
+	 */
+	private $options;
+
+	/**
 	 *
 	 * @param FormatterOptions|null $options
 	 */
 	public function __construct( FormatterOptions $options = null ) {
-		parent::__construct( $options );
+		$this->options = $options ?: new FormatterOptions();
 
-		$this->defaultOption( self::OPT_CALENDARNAMES, array() );
-		$this->defaultOption( self::OPT_TIME_ISO_FORMATTER, null );
+		$this->options->defaultOption( self::OPT_CALENDARNAMES, array() );
+		$this->options->defaultOption( self::OPT_TIME_ISO_FORMATTER, null );
 	}
 
 	/**
@@ -66,7 +70,7 @@ class TimeFormatter extends ValueFormatterBase {
 
 		$formatted = $value->getTime();
 
-		$isoFormatter = $this->getOption( self::OPT_TIME_ISO_FORMATTER );
+		$isoFormatter = $this->options->getOption( self::OPT_TIME_ISO_FORMATTER );
 		if ( $isoFormatter instanceof ValueFormatter ) {
 			$formatted = $isoFormatter->format( $value );
 		}
