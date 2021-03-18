@@ -51,6 +51,10 @@ employees for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
 
+### 1.0.3 (2021-03-18)
+
+* Update major `data-values/*` versions
+
 ### 1.0.2 (2020-08-20)
 
 * Fixed parsing unicode month names
