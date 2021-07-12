@@ -64,25 +64,7 @@ class YearMonthTimeParser extends StringValueParser {
 	 * @return TimeValue
 	 */
 	protected function stringParse( $value ) {
-		$trimmedValue = trim( $value );
-		switch ( substr( $trimmedValue, 0, 1 ) ) {
-			case '+':
-			case '-':
-				// don't let EraParser strip it, we will handle it ourselves
-				$newValue = $trimmedValue;
-				$eraWasSpecified = false;
-				$sign = '';
-				break;
-			default:
-				list( $sign, $newValue ) = $this->eraParser->parse( $trimmedValue );
-				if ( $newValue !== $trimmedValue ) {
-					$eraWasSpecified = true;
-				} else {
-					$eraWasSpecified = false;
-					$sign = '';
-				}
-				break;
-		}
+		list( $newValue, $sign, $eraWasSpecified ) = $this->splitBySignAndEra( $value );
 
 		// Matches year and month separated by a separator.
 		// \p{L} matches letters outside the ASCII range.
@@ -118,6 +100,35 @@ class YearMonthTimeParser extends StringValueParser {
 		}
 
 		throw new ParseException( 'Failed to parse year and month', $value, self::FORMAT_NAME );
+	}
+
+	/**
+	 * @param string $value
+	 *
+	 * @return array( string $newValue, string $sign, boolean $eraWasSpecified )
+	 */
+	private function splitBySignAndEra( $value ) {
+		$trimmedValue = trim( $value );
+		switch ( substr( $trimmedValue, 0, 1 ) ) {
+			case '+':
+			case '-':
+				// don't let EraParser strip it, we will handle it ourselves
+				$newValue = $trimmedValue;
+				$eraWasSpecified = false;
+				$sign = '';
+				break;
+			default:
+				list( $sign, $newValue ) = $this->eraParser->parse( $trimmedValue );
+				if ( $newValue !== $trimmedValue ) {
+					$eraWasSpecified = true;
+				} else {
+					$eraWasSpecified = false;
+					$sign = '';
+				}
+				break;
+		}
+
+		return [ $newValue, $sign, $eraWasSpecified ];
 	}
 
 	/**
