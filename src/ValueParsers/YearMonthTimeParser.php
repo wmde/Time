@@ -64,7 +64,7 @@ class YearMonthTimeParser extends StringValueParser {
 	 * @return TimeValue
 	 */
 	protected function stringParse( $value ) {
-		list( $newValue, $sign, $eraWasSpecified ) = $this->splitBySignAndEra( $value );
+		list( $newValue, $sign ) = $this->splitBySignAndEra( $value );
 
 		// Matches year and month separated by a separator.
 		// \p{L} matches letters outside the ASCII range.
@@ -74,16 +74,21 @@ class YearMonthTimeParser extends StringValueParser {
 		}
 		list( , $a, $b ) = $matches;
 
-		// if era was specified, fail on a minus sign
-		$intRegex = $eraWasSpecified ? '/^\d+$/' : '/^-?\d+$/';
+		// non-empty sign indicates the era (e.g. "BCE") was specified
+		// don't accept a negative number as the year
+		$intRegex = $sign !== '' ? '/^\d+$/' : '/^-?\d+$/';
 		$aIsInt = preg_match( $intRegex, $a );
 		$bIsInt = preg_match( $intRegex, $b );
 
 		if ( $aIsInt && $bIsInt ) {
-			if ( $this->canBeMonth( $a ) ) {
-				return $this->getTimeFromYearMonth( $sign . $b, $a );
-			} elseif ( $this->canBeMonth( $b ) ) {
-				return $this->getTimeFromYearMonth( $sign . $a, $b );
+			// stuff like "1 234 BCE" can be interpreted as "1234 BCE"
+			// this is for YearTimeParser, don't interfere with it
+			if ( $sign !== '-' ) {
+				if ( $this->canBeMonth( $a ) ) {
+					return $this->getTimeFromYearMonth( $sign . $b, $a );
+				} elseif ( $this->canBeMonth( $b ) ) {
+					return $this->getTimeFromYearMonth( $sign . $a, $b );
+				}
 			}
 		} elseif ( $aIsInt ) {
 			$month = $this->parseMonth( $b );
@@ -105,30 +110,24 @@ class YearMonthTimeParser extends StringValueParser {
 	/**
 	 * @param string $value
 	 *
-	 * @return array( string $newValue, string $sign, boolean $eraWasSpecified )
+	 * @return array( string $newValue, string $sign )
 	 */
 	private function splitBySignAndEra( $value ) {
 		$trimmedValue = trim( $value );
-		switch ( substr( $trimmedValue, 0, 1 ) ) {
-			case '+':
-			case '-':
-				// don't let EraParser strip it, we will handle it ourselves
-				$newValue = $trimmedValue;
-				$eraWasSpecified = false;
+		$init = substr( $trimmedValue, 0, 1 );
+		// we want to handle signs at the beginning ourselves
+		if ( $init === '+' || $init === '-' ) {
+			$newValue = $trimmedValue;
+			$sign = '';
+		} else {
+			list( $sign, $newValue ) = $this->eraParser->parse( $trimmedValue );
+			if ( $newValue === $trimmedValue ) {
+				// EraParser defaults to "+" but we need to indicate "unspecified era"
 				$sign = '';
-				break;
-			default:
-				list( $sign, $newValue ) = $this->eraParser->parse( $trimmedValue );
-				if ( $newValue !== $trimmedValue ) {
-					$eraWasSpecified = true;
-				} else {
-					$eraWasSpecified = false;
-					$sign = '';
-				}
-				break;
+			}
 		}
 
-		return [ $newValue, $sign, $eraWasSpecified ];
+		return [ $newValue, $sign ];
 	}
 
 	/**

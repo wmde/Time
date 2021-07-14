@@ -209,7 +209,19 @@ class YearMonthTimeParserTest extends StringValueParserTest {
 			'00001 1999',
 			'000000001 100001999',
 
-			// Dont parse stuff with separators in the year
+			// Possible years BCE with digit groups
+			'1 2 BC',
+			'1 23 BC',
+			'12 3 BC',
+			'12 30 BC',
+			'1 000 BC',
+			'1,000 BC',
+			'1 234 BCE',
+			'1.234 BCE',
+			'12 345 BCE',
+			'12,345 BCE',
+
+			// Don't parse stuff with separators in the year
 			'june 200,000,000',
 			'june 200.000.000',
 
