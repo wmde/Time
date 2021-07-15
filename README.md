@@ -51,6 +51,10 @@ employees for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
 
+### 1.0.4 (2021-07-15)
+
+* Support month+year dates with era
+
 ### 1.0.3 (2021-03-18)
 
 * Update major `data-values/*` versions
