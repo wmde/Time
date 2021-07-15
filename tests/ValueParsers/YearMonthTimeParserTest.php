@@ -59,6 +59,10 @@ class YearMonthTimeParserTest extends ValueParserTestCase {
 				array( '+2016-01-00T00:00:00Z' ),
 			' January 2016 ' =>
 				array( '+2016-01-00T00:00:00Z' ),
+			' January 2016 CE ' =>
+				array( '+2016-01-00T00:00:00Z' ),
+			' January 2016 BCE ' =>
+				array( '-2016-01-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 
 			// leading zeros
 			'1 00001999' =>
@@ -85,8 +89,16 @@ class YearMonthTimeParserTest extends ValueParserTestCase {
 				array( '+0001-01-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 			'1999 January' =>
 				array( '+1999-01-00T00:00:00Z' ),
+			'1999 January CE' =>
+				array( '+1999-01-00T00:00:00Z' ),
+			'1999 January BCE' =>
+				array( '-1999-01-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 			'January 1999' =>
 				array( '+1999-01-00T00:00:00Z' ),
+			'January 1999 CE' =>
+				array( '+1999-01-00T00:00:00Z' ),
+			'January 1999 BCE' =>
+				array( '-1999-01-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 			'January-1' =>
 				array( '+0001-01-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 			'JanuARY-1' =>
@@ -100,7 +112,9 @@ class YearMonthTimeParserTest extends ValueParserTestCase {
 
 			// Unicode
 			'Březen 1999' => array( '+1999-03-00T00:00:00Z' ),
+			'Březen 1999 BCE' => array( '-1999-03-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 			'březen 1999' => array( '+1999-03-00T00:00:00Z' ),
+			'březen 1999 BCE' => array( '-1999-03-00T00:00:00Z', TimeValue::PRECISION_MONTH, $julian ),
 
 			// use different date separators
 			'1-1999' =>
@@ -170,6 +184,11 @@ class YearMonthTimeParserTest extends ValueParserTestCase {
 		$argLists = parent::NON_VALID_CASES;
 
 		$invalid = array(
+			'',
+			' ',
+			'+',
+			'-',
+
 			// These are just wrong
 			'June June June',
 			'June June',
@@ -190,7 +209,19 @@ class YearMonthTimeParserTest extends ValueParserTestCase {
 			'00001 1999',
 			'000000001 100001999',
 
-			// Dont parse stuff with separators in the year
+			// Possible years BCE with digit groups
+			'1 2 BC',
+			'1 23 BC',
+			'12 3 BC',
+			'12 30 BC',
+			'1 000 BC',
+			'1,000 BC',
+			'1 234 BCE',
+			'1.234 BCE',
+			'12 345 BCE',
+			'12,345 BCE',
+
+			// Don't parse stuff with separators in the year
 			'june 200,000,000',
 			'june 200.000.000',
 
@@ -198,11 +229,13 @@ class YearMonthTimeParserTest extends ValueParserTestCase {
 			'1 June 20000',
 			'20000',
 			'-1998',
+			'1998 BCE',
 
-			// BCE is not supported yet
-			'April 1998 BCE',
-			'1998 April BCE',
-			'1998 BCE April',
+			// era in conjunction with sign
+			'April -1998 BCE',
+			'April -1998 CE',
+			'-1998 April BCE',
+			'-1998 April CE',
 		);
 
 		foreach ( $invalid as $value ) {

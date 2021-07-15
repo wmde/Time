@@ -15,8 +15,6 @@ use DataValues\TimeValue;
  * @license GPL-2.0-or-later
  * @author Addshore
  * @author Thiemo Kreuz
- *
- * @todo match BCE dates in here
  */
 class YearMonthTimeParser extends StringValueParser {
 
@@ -33,20 +31,28 @@ class YearMonthTimeParser extends StringValueParser {
 	private $isoTimestampParser;
 
 	/**
+	 * @var EraParser
+	 */
+	private $eraParser;
+
+	/**
 	 * @see StringValueParser::__construct
 	 *
 	 * @param MonthNameProvider $monthNameProvider
 	 * @param ParserOptions|null $options
+	 * @param EraParser|null $eraParser
 	 */
 	public function __construct(
 		MonthNameProvider $monthNameProvider,
-		ParserOptions $options = null
+		ParserOptions $options = null,
+		EraParser $eraParser = null
 	) {
 		parent::__construct( $options );
 
 		$languageCode = $this->getOption( ValueParser::OPT_LANG );
 		$this->monthNumbers = $monthNameProvider->getMonthNumbers( $languageCode );
 		$this->isoTimestampParser = new IsoTimestampParser( null, $this->options );
+		$this->eraParser = $eraParser ?: new EraParser();
 	}
 
 	/**
@@ -58,38 +64,70 @@ class YearMonthTimeParser extends StringValueParser {
 	 * @return TimeValue
 	 */
 	protected function stringParse( $value ) {
+		list( $newValue, $sign ) = $this->splitBySignAndEra( $value );
+
 		// Matches year and month separated by a separator.
 		// \p{L} matches letters outside the ASCII range.
 		$regex = '/^(-?[\d\p{L}]+)\s*?[\/\-\s.,]\s*(-?[\d\p{L}]+)$/u';
-		if ( !preg_match( $regex, trim( $value ), $matches ) ) {
+		if ( !preg_match( $regex, $newValue, $matches ) ) {
 			throw new ParseException( 'Failed to parse year and month', $value, self::FORMAT_NAME );
 		}
 		list( , $a, $b ) = $matches;
 
-		$aIsInt = preg_match( '/^-?\d+$/', $a );
-		$bIsInt = preg_match( '/^-?\d+$/', $b );
+		// non-empty sign indicates the era (e.g. "BCE") was specified
+		// don't accept a negative number as the year
+		$intRegex = $sign !== '' ? '/^\d+$/' : '/^-?\d+$/';
+		$aIsInt = preg_match( $intRegex, $a );
+		$bIsInt = preg_match( $intRegex, $b );
 
 		if ( $aIsInt && $bIsInt ) {
-			if ( $this->canBeMonth( $a ) ) {
-				return $this->getTimeFromYearMonth( $b, $a );
-			} elseif ( $this->canBeMonth( $b ) ) {
-				return $this->getTimeFromYearMonth( $a, $b );
+			// stuff like "1 234 BCE" can be interpreted as "1234 BCE"
+			// this is for YearTimeParser, don't interfere with it
+			if ( $sign !== '-' ) {
+				if ( $this->canBeMonth( $a ) ) {
+					return $this->getTimeFromYearMonth( $sign . $b, $a );
+				} elseif ( $this->canBeMonth( $b ) ) {
+					return $this->getTimeFromYearMonth( $sign . $a, $b );
+				}
 			}
 		} elseif ( $aIsInt ) {
 			$month = $this->parseMonth( $b );
 
 			if ( $month ) {
-				return $this->getTimeFromYearMonth( $a, $month );
+				return $this->getTimeFromYearMonth( $sign . $a, $month );
 			}
 		} elseif ( $bIsInt ) {
 			$month = $this->parseMonth( $a );
 
 			if ( $month ) {
-				return $this->getTimeFromYearMonth( $b, $month );
+				return $this->getTimeFromYearMonth( $sign . $b, $month );
 			}
 		}
 
 		throw new ParseException( 'Failed to parse year and month', $value, self::FORMAT_NAME );
+	}
+
+	/**
+	 * @param string $value
+	 *
+	 * @return array( string $newValue, string $sign )
+	 */
+	private function splitBySignAndEra( $value ) {
+		$trimmedValue = trim( $value );
+		$init = substr( $trimmedValue, 0, 1 );
+		// we want to handle signs at the beginning ourselves
+		if ( $init === '+' || $init === '-' ) {
+			$newValue = $trimmedValue;
+			$sign = '';
+		} else {
+			list( $sign, $newValue ) = $this->eraParser->parse( $trimmedValue );
+			if ( $newValue === $trimmedValue ) {
+				// EraParser defaults to "+" but we need to indicate "unspecified era"
+				$sign = '';
+			}
+		}
+
+		return [ $newValue, $sign ];
 	}
 
 	/**
@@ -114,7 +152,7 @@ class YearMonthTimeParser extends StringValueParser {
 	 * @return TimeValue
 	 */
 	private function getTimeFromYearMonth( $year, $month ) {
-		if ( $year[0] !== '-' ) {
+		if ( $year[0] !== '-' && $year[0] !== '+' ) {
 			$year = '+' . $year;
 		}
 
