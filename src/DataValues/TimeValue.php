@@ -354,7 +354,11 @@ class TimeValue extends DataValueObject {
 	 * @return string
 	 */
 	public function serialize() {
-		return json_encode( array_values( $this->getArrayValue() ) );
+		return json_encode( $this->__serialize() );
+	}
+
+	public function __serialize(): array {
+		return array_values( $this->getArrayValue() );
 	}
 
 	/**
@@ -365,7 +369,11 @@ class TimeValue extends DataValueObject {
 	 * @throws IllegalValueException
 	 */
 	public function unserialize( $value ) {
-		list( $timestamp, $timezone, $before, $after, $precision, $calendarModel ) = json_decode( $value );
+		$this->__unserialize( json_decode( $value ) );
+	}
+
+	public function __unserialize( array $data ): void {
+		list( $timestamp, $timezone, $before, $after, $precision, $calendarModel ) = $data;
 		$this->__construct( $timestamp, $timezone, $before, $after, $precision, $calendarModel );
 	}
 
