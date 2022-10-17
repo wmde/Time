@@ -284,6 +284,27 @@ class TimeValueTest extends TestCase {
 	}
 
 	/**
+	 * @dataProvider instanceProvider
+	 */
+	public function testSerialize( TimeValue $time, array $arguments ) {
+		$timeRoundTrip = unserialize( serialize( $time ) );
+		$this->assertTrue( $time->equals( $timeRoundTrip ) );
+	}
+
+	public function testLegacyUnserialize() {
+		$time = new TimeValue(
+			'+00000002013-01-01T00:00:00Z',
+			0, 0, 0,
+			TimeValue::PRECISION_SECOND,
+			'http://nyan.cat/original.php'
+		);
+		$timeFromSerialization = unserialize(
+			'C:20:"DataValues\TimeValue":68:{["+2013-01-01T00:00:00Z",0,0,0,14,"http:\/\/nyan.cat\/original.php"]}'
+		);
+		$this->assertTrue( $time->equals( $timeFromSerialization ) );
+	}
+
+	/**
 	 * @dataProvider unpaddedYearsProvider
 	 */
 	public function testGivenUnpaddedYear_yearIsPadded( $year, $expected ) {
