@@ -176,7 +176,7 @@ class IsoTimestampParser extends StringValueParser {
 		$option = $this->getOption( self::OPT_PRECISION );
 
 		if ( $option !== null ) {
-			if ( !is_int( $option ) && !ctype_digit( $option ) ) {
+			if ( !is_int( $option ) && ( !is_string( $option ) || !ctype_digit( $option ) ) ) {
 				throw new ParseException( 'Precision must be an integer' );
 			}
 
