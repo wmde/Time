@@ -241,6 +241,12 @@ class PhpDateTimeParserTest extends ValueParserTestCase {
 				array( '+1991-01-01T00:00:00Z' ),
 		);
 
+		// Only supported from PHP 8.1.7 (https://bugs.php.net/bug.php?id=51987, included in PHP 8.1.7)
+		if ( version_compare( PHP_VERSION, '8.1.7', '>=' ) ) {
+			// YYYY-DDD (DDDth day of the year)
+			$valid['2022-033'] = array( '+0000000000002022-02-02T00:00:00Z', TimeValue::PRECISION_DAY, $gregorian );
+		}
+
 		foreach ( $valid as $value => $args ) {
 			$timestamp = $args[0];
 			$precision = isset( $args[1] ) ? $args[1] : TimeValue::PRECISION_DAY;
