@@ -27,7 +27,7 @@ version 1.x of this package:
 ```js
     {
         "require": {
-            "data-values/time": "~1.0"
+            "data-values/time": "~1.1"
         }
     }
 ```
@@ -50,6 +50,15 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany](ht
 employees for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
+
+### 1.1.0 (2022-10-21)
+
+* Improved compatibility with PHP 8.1;
+  in particular, the new `__serialize`/`__unserialize` methods are implemented now
+  (in addition to the still supported `Serializable` interface).
+  Make sure to also use `data-values/data-values` version 3.1.0 (or later) to keep hashes stable.
+* Added support for the YYYY-DDD format (DDDth day of the year) added in PHP 8.1.7.
+  (Not supported in earlier PHP versions.)
 
 ### 1.0.4 (2021-07-15)
 
