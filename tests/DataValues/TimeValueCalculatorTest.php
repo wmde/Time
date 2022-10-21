@@ -22,7 +22,7 @@ class TimeValueCalculatorTest extends TestCase {
 	 */
 	private $calculator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->calculator = new TimeValueCalculator();
 	}
 

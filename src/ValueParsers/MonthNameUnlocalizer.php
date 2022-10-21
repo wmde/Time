@@ -26,7 +26,7 @@ class MonthNameUnlocalizer {
 		$this->replacements = $replacements;
 
 		// Order search strings from longest to shortest
-		uksort( $this->replacements, function ( $a, $b ) {
+		uksort( $this->replacements, static function ( $a, $b ) {
 			return strlen( $b ) - strlen( $a );
 		} );
 	}
