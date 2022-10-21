@@ -51,6 +51,10 @@ employees for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
 
+### 1.1.1 (2022-10-21)
+
+* Allow installation together with DataValues 3.1
+
 ### 1.1.0 (2022-10-21)
 
 * Improved compatibility with PHP 8.1;
