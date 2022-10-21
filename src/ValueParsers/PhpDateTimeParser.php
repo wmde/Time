@@ -144,7 +144,9 @@ class PhpDateTimeParser extends StringValueParser {
 	 * @return string
 	 */
 	private function getValueWithFixedSeparators( $value, $year = null ) {
-		$isYmd = $year !== null && preg_match( '/^\D*' . $year . '\D+\d+\D+\d+\D*$/', $value );
+		// Since PHP 8.1.7 YYYY-DDD means the DDDth day of the year, thus only add dashes
+		// if we have up to two digits in the second field.
+		$isYmd = $year !== null && preg_match( '/^\D*' . $year . '\D+\d{1,2}\D+\d+\D*$/', $value );
 		$separator = $isYmd ? '-' : '.';
 		// Meant to match separator characters after day and month. \p{L} matches letters outside
 		// the ASCII range.
