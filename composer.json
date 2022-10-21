@@ -28,7 +28,7 @@
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~8.5",
-		"mediawiki/mediawiki-codesniffer": "^38"
+		"mediawiki/mediawiki-codesniffer": "^39"
 	},
 	"autoload": {
 		"psr-0": {
