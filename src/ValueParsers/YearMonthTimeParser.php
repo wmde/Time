@@ -65,14 +65,7 @@ class YearMonthTimeParser extends StringValueParser {
 	 */
 	protected function stringParse( $value ) {
 		list( $newValue, $sign ) = $this->splitBySignAndEra( $value );
-
-		// Matches year and month separated by a separator.
-		// \p{L} matches letters outside the ASCII range.
-		$regex = '/^(-?[\d\p{L}]+)\s*?[\/\-\s.,]\s*(-?[\d\p{L}]+)$/u';
-		if ( !preg_match( $regex, $newValue, $matches ) ) {
-			throw new ParseException( 'Failed to parse year and month', $value, self::FORMAT_NAME );
-		}
-		list( , $a, $b ) = $matches;
+		list( $a, $b ) = $this->splitByYearMonth( $value, $newValue );
 
 		// non-empty sign indicates the era (e.g. "BCE") was specified
 		// don't accept a negative number as the year
@@ -105,6 +98,24 @@ class YearMonthTimeParser extends StringValueParser {
 		}
 
 		throw new ParseException( 'Failed to parse year and month', $value, self::FORMAT_NAME );
+	}
+
+	/**
+	 * Returns two strings which can either be the month or year (depending on input order)
+	 *
+	 * @param string $originalValue The value as original given (for error reporting)
+	 * @param string $newValue As produced by splitBySignAndEra
+	 *
+	 * @return array( string $a, string $b )
+	 */
+	private function splitByYearMonth( $originalValue, string $newValue ): array {
+		// Matches year and month separated by a separator.
+		// \p{L} matches letters outside the ASCII range.
+		$regex = '/^(-?[\d\p{L}]+)\s*?[\/\-\s.,]\s*(-?[\d\p{L}]+)$/u';
+		if ( !preg_match( $regex, $newValue, $matches ) ) {
+			throw new ParseException( 'Failed to parse year and month', $originalValue, self::FORMAT_NAME );
+		}
+		return array_splice( $matches, 1 );
 	}
 
 	/**
