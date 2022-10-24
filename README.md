@@ -51,6 +51,10 @@ employees for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
 
+### 1.1.2 (2022-10-24)
+
+* Allow installation together with data-values/common 1.1.0 and data-values/interfaces 1.x
+
 ### 1.1.1 (2022-10-21)
 
 * Allow installation together with DataValues 3.1
