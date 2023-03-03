@@ -79,6 +79,10 @@ class MonthNameUnlocalizerTest extends TestCase {
 			array( '2000', '2000', array(
 				'2' => 'February',
 			) ),
+			// And others (e.g. cs) just repeat the number of the month with punctuation
+			array( '5. 4. 1891', '5. 4. 1891', array(
+				'5.' => 'May',
+			) ),
 		);
 	}
 
