@@ -38,7 +38,7 @@ class CalendarModelParser extends StringValueParser {
 	/**
 	 * @param ParserOptions|null $options
 	 */
-	public function __construct( ParserOptions $options = null ) {
+	public function __construct( ?ParserOptions $options = null ) {
 		parent::__construct( $options );
 
 		$this->defaultOption( self::OPT_CALENDAR_MODEL_URIS, array() );

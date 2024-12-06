@@ -32,7 +32,7 @@ class YearMonthDayTimeParser extends StringValueParser {
 	 * returns an array with the detected sign character and the remaining value.
 	 * @param ParserOptions|null $options
 	 */
-	public function __construct( ValueParser $eraParser = null, ParserOptions $options = null ) {
+	public function __construct( ?ValueParser $eraParser = null, ?ParserOptions $options = null ) {
 		parent::__construct( $options );
 
 		$this->eraParser = $eraParser ?: new EraParser();
@@ -47,8 +47,8 @@ class YearMonthDayTimeParser extends StringValueParser {
 	 */
 	protected function stringParse( $value ) {
 		try {
-			list( $sign, $preparsedValue ) = $this->eraParser->parse( $value );
-			list( $signedYear, $month, $day ) = $this->parseYearMonthDay( $preparsedValue );
+			[ $sign, $preparsedValue ] = $this->eraParser->parse( $value );
+			[ $signedYear, $month, $day ] = $this->parseYearMonthDay( $preparsedValue );
 
 			if ( substr( $signedYear, 0, 1 ) !== '-' ) {
 				$signedYear = $sign . $signedYear;
@@ -76,9 +76,9 @@ class YearMonthDayTimeParser extends StringValueParser {
 		// A 32 in the first spot cannot be confused with anything.
 		if ( $matches[1] < 1 || $matches[1] > 31 ) {
 			if ( $matches[3] > 12 || $matches[2] == $matches[3] ) {
-				list( , $signedYear, $month, $day ) = $matches;
+				[ , $signedYear, $month, $day ] = $matches;
 			} elseif ( $matches[2] > 12 ) {
-				list( , $signedYear, $day, $month ) = $matches;
+				[ , $signedYear, $day, $month ] = $matches;
 			} else {
 				throw new ParseException( 'Cannot distinguish YDM and YMD' );
 			}
@@ -88,9 +88,9 @@ class YearMonthDayTimeParser extends StringValueParser {
 			|| ( abs( $matches[1] ) > 24 && $matches[3] > 31 )
 		) {
 			if ( $matches[1] > 12 || $matches[1] == $matches[2] ) {
-				list( , $day, $month, $signedYear ) = $matches;
+				[ , $day, $month, $signedYear ] = $matches;
 			} elseif ( $matches[2] > 12 ) {
-				list( , $month, $day, $signedYear ) = $matches;
+				[ , $month, $day, $signedYear ] = $matches;
 			} else {
 				throw new ParseException( 'Cannot distinguish DMY and MDY' );
 			}
