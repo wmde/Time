@@ -48,7 +48,7 @@ class TimeFormatter implements ValueFormatter {
 	 *
 	 * @param FormatterOptions|null $options
 	 */
-	public function __construct( FormatterOptions $options = null ) {
+	public function __construct( ?FormatterOptions $options = null ) {
 		$this->options = $options ?: new FormatterOptions();
 
 		$this->options->defaultOption( self::OPT_CALENDARNAMES, array() );

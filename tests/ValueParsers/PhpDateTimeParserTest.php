@@ -47,7 +47,7 @@ class PhpDateTimeParserTest extends ValueParserTestCase {
 		$mock->expects( $this->any() )
 			->method( 'parse' )
 			->with( $this->isType( 'string' ) )
-			->will( $this->returnCallback(
+			->willReturnCallback(
 				static function ( $value ) {
 					$sign = '+';
 					// Tiny parser that supports a single negative sign only
@@ -57,7 +57,7 @@ class PhpDateTimeParserTest extends ValueParserTestCase {
 					}
 					return array( $sign, $value );
 				}
-			) );
+			);
 
 		return $mock;
 	}
