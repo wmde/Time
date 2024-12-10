@@ -47,7 +47,7 @@ class TimeValueCalculator {
 		) {
 			throw new InvalidArgumentException( "Failed to parse time value $time." );
 		}
-		list( , $fullYear, $month, $day, $hour, $minute, $second ) = $matches;
+		[ , $fullYear, $month, $day, $hour, $minute, $second ] = $matches;
 
 		// We use mktime only for the month, day and time calculation. Set the year to the smallest
 		// possible in the 1970-2038 range to be safe, even if it's 1901-2038 since PHP 5.1.0.
@@ -78,10 +78,10 @@ class TimeValueCalculator {
 	 */
 	public function isLeapYear( $year ) {
 		$year = $year < 0 ? ceil( $year ) + 1 : floor( $year );
-		$isMultipleOf4   = fmod( $year,   4 ) === 0.0;
+		$isMultipleOf4   = fmod( $year, 4 ) === 0.0;
 		$isMultipleOf100 = fmod( $year, 100 ) === 0.0;
 		$isMultipleOf400 = fmod( $year, 400 ) === 0.0;
-		return $isMultipleOf4 && !$isMultipleOf100 || $isMultipleOf400;
+		return ( $isMultipleOf4 && !$isMultipleOf100 ) || $isMultipleOf400;
 	}
 
 	/**

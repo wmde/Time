@@ -238,7 +238,7 @@ class TimeValue extends DataValueObject {
 			throw new IllegalValueException( '$timestamp must resemble ISO 8601, given ' . $timestamp );
 		}
 
-		list( , $sign, $year, $month, $day, $hour, $minute, $second ) = $matches;
+		[ , $sign, $year, $month, $day, $hour, $minute, $second ] = $matches;
 
 		if ( $month > 12 ) {
 			throw new IllegalValueException( 'Month out of allowed bounds' );
@@ -373,7 +373,7 @@ class TimeValue extends DataValueObject {
 	}
 
 	public function __unserialize( array $data ): void {
-		list( $timestamp, $timezone, $before, $after, $precision, $calendarModel ) = $data;
+		[ $timestamp, $timezone, $before, $after, $precision, $calendarModel ] = $data;
 		$this->__construct( $timestamp, $timezone, $before, $after, $precision, $calendarModel );
 	}
 

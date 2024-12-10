@@ -32,14 +32,14 @@ class YearMonthTimeParserTest extends ValueParserTestCase {
 		$monthNameProvider->expects( $this->once() )
 			->method( 'getMonthNumbers' )
 			->with( 'en' )
-			->will( $this->returnValue( array(
+			->willReturn( array(
 				'January' => 1,
 				'Jan' => 1,
 				// to test Unicode (it's Czech)
 				'Březen' => 3,
 				'April' => 4,
 				'June' => 6,
-			) ) );
+			) );
 
 		return new YearMonthTimeParser( $monthNameProvider );
 	}

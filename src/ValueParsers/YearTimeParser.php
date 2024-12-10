@@ -47,7 +47,7 @@ class YearTimeParser extends StringValueParser {
 	 * @param ValueParser|null $eraParser
 	 * @param ParserOptions|null $options
 	 */
-	public function __construct( ValueParser $eraParser = null, ParserOptions $options = null ) {
+	public function __construct( ?ValueParser $eraParser = null, ?ParserOptions $options = null ) {
 		parent::__construct( $options );
 
 		$this->defaultOption(
@@ -68,7 +68,7 @@ class YearTimeParser extends StringValueParser {
 	 * @return TimeValue
 	 */
 	protected function stringParse( $value ) {
-		list( $sign, $year ) = $this->eraParser->parse( $value );
+		[ $sign, $year ] = $this->eraParser->parse( $value );
 		$year = trim( $year );
 
 		// Negative dates usually don't have a month, assume non-digits are thousands separators
