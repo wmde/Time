@@ -46,6 +46,10 @@ class MonthNameUnlocalizer {
 			if ( !is_string( $search ) ) {
 				continue;
 			}
+			if ( !preg_match( '/\\p{L}/', $search ) ) {
+				// no letters in here (e.g. "1." for "jan"), do not use (might match day rather than month: T325988)
+				continue;
+			}
 
 			$unlocalized = str_replace( $search, $replace, $date, $count );
 
