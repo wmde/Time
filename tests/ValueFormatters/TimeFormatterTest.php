@@ -27,7 +27,7 @@ class TimeFormatterTest extends TestCase {
 	 *
 	 * @return TimeFormatter
 	 */
-	protected function getInstance( FormatterOptions $options = null ) {
+	protected function getInstance( ?FormatterOptions $options = null ) {
 		return new TimeFormatter( $options );
 	}
 
@@ -109,8 +109,8 @@ class TimeFormatterTest extends TestCase {
 	public function testValidFormat(
 		$value,
 		$expected,
-		FormatterOptions $options = null,
-		ValueFormatter $formatter = null
+		?FormatterOptions $options = null,
+		?ValueFormatter $formatter = null
 	) {
 		if ( $formatter === null ) {
 			$formatter = $this->getInstance( $options );

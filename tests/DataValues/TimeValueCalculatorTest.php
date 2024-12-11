@@ -39,16 +39,16 @@ class TimeValueCalculatorTest extends TestCase {
 
 		$timeValue->expects( $this->any() )
 			->method( 'getTime' )
-			->will( $this->returnValue( $time ) );
+			->willReturn( $time );
 		$timeValue->expects( $this->any() )
 			->method( 'getTimezone' )
-			->will( $this->returnValue( $timezone ) );
+			->willReturn( $timezone );
 		$timeValue->expects( $this->any() )
 			->method( 'getPrecision' )
-			->will( $this->returnValue( TimeValue::PRECISION_DAY ) );
+			->willReturn( TimeValue::PRECISION_DAY );
 		$timeValue->expects( $this->any() )
 			->method( 'getCalendarModel' )
-			->will( $this->returnValue( 'Stardate' ) );
+			->willReturn( 'Stardate' );
 
 		return $timeValue;
 	}
