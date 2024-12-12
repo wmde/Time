@@ -27,7 +27,7 @@ version 1.x of this package:
 ```js
     {
         "require": {
-            "data-values/time": "~1.1"
+            "data-values/time": "~1.2"
         }
     }
 ```
@@ -50,6 +50,12 @@ DataValues Time has been written by the Wikidata team, as [Wikimedia Germany](ht
 employees for the [Wikidata project](https://wikidata.org/).
 
 ## Release notes
+
+### 1.2.0 (2024-12-12)
+
+* Drop support for PHP 7.2, 7.3
+* Upgrade codesniffer rules to current `mediawiki/mediawiki-codesniffer` version (45.0.0)
+* Make nullable type parameter declarations explicit for compatibility with PHP 8.4
 
 ### 1.1.2 (2022-10-24)
 
